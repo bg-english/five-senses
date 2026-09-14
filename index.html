@@ -138,6 +138,29 @@
   }
   .funfact strong{ color:var(--accent); }
 
+  .tab[data-target="quiz"]{ --accent-tint:#ECEFEA; }
+  .tab[data-target="quiz"][aria-selected="true"]{ color:var(--ink); }
+
+  .conditions,.care-tips{
+    margin-top:26px; border-radius:0 10px 10px 0; padding:20px 22px; font-size:15.5px;
+  }
+  .conditions{ background:#FDF1F4; border-left:4px solid #D9436B; }
+  .conditions h4{ color:#D9436B; margin:0 0 10px; font-size:19px; font-family:'Fraunces',Georgia,serif; }
+  .care-tips{ background:#F1FAF4; border-left:4px solid #2E9E63; margin-top:14px; }
+  .care-tips h4{ color:#2E9E63; margin:0 0 10px; font-size:19px; font-family:'Fraunces',Georgia,serif; }
+  .conditions ul,.care-tips ul{ margin:0; padding-left:22px; }
+  .conditions li,.care-tips li{ margin-bottom:8px; line-height:1.5; }
+
+  .quiz-toggle{
+    font-family:'Inter',sans-serif; font-weight:700; font-size:14px; color:var(--ink);
+    background:var(--paper-2); border:1.5px solid var(--line); border-radius:8px;
+    padding:10px 20px; cursor:pointer; margin-top:10px; transition:all .15s ease;
+  }
+  .quiz-toggle:hover{ background:var(--line); }
+
+  .quiz-answer{ display:none; margin-top:6px; font-size:14.5px; color:#2E9E63; font-weight:600; }
+  .quiz-answer.show{ display:block; }
+
   footer{ max-width:960px; margin:0 auto 60px; padding:0 28px; color:#7d8985; font-size:13.5px; }
 
   @media (max-width:600px){
@@ -178,6 +201,10 @@
     <svg viewBox="0 0 24 24" fill="none"><path d="M8 13V6.5C8 5.7 8.7 5 9.5 5C10.3 5 11 5.7 11 6.5V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M11 12V5.5C11 4.7 11.7 4 12.5 4C13.3 4 14 4.7 14 5.5V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M14 12V6.5C14 5.7 14.7 5 15.5 5C16.3 5 17 5.7 17 6.5V13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 13V15C8 18 10 20 13 20C16 20 17.5 18 17.5 15V13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     <span class="tab-text">Touch</span>
   </button>
+  <button class="tab" data-target="quiz" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="tab-text">Quiz</span>
+  </button>
 </div>
 
 <div class="panels">
@@ -194,7 +221,7 @@
     </div>
 
     <div class="chips">
-      <button class="chip" data-part="sight-cornea" data-def="<span class='def-word'>1 · Cornea</span> The clear, curved layer at the front of the eye. It protects the eye and helps focus light.<span class='es'>· córnea</span>">1 Cornea</button><button class="chip" data-part="sight-iris" data-def="<span class='def-word'>2 · Iris</span> The colored part of the eye. It controls how much light enters through the pupil.<span class='es'>· iris</span>">2 Iris</button><button class="chip" data-part="sight-pupil" data-def="<span class='def-word'>3 · Pupil</span> The small black opening in the center of the iris. Light passes through it.<span class='es'>· pupila</span>">3 Pupil</button><button class="chip" data-part="sight-lens" data-def="<span class='def-word'>4 · Lens</span> A clear, flexible part behind the pupil. It focuses light onto the retina.<span class='es'>· cristalino</span>">4 Lens</button><button class="chip" data-part="sight-retina" data-def="<span class='def-word'>5 · Retina</span> The layer at the back of the eye. It changes light into signals for the brain.<span class='es'>· retina</span>">5 Retina</button><button class="chip" data-part="sight-optic" data-def="<span class='def-word'>6 · Optic nerve</span> The nerve that carries visual signals from the retina to the brain.<span class='es'>· nervio óptico</span>">6 Optic nerve</button><button class="chip" data-part="sight-sclera" data-def="<span class='def-word'>7 · Sclera</span> The white, tough outer layer of the eye. It protects the eyeball.<span class='es'>· esclerótica</span>">7 Sclera</button>
+      <button class="chip" data-part="sight-cornea" data-def="<span class='def-word'>1 · Cornea</span> The clear, curved outer layer at the front of the eye. It protects the eye and refracts (bends) about 65% of incoming light to begin focusing it onto the retina.<span class='es'>· córnea</span>">1 Cornea</button><button class="chip" data-part="sight-iris" data-def="<span class='def-word'>2 · Iris</span> The colored, ring-shaped muscle behind the cornea. It controls the size of the pupil, dilating in the dark and constricting in bright light to regulate how much light enters the eye.<span class='es'>· iris</span>">2 Iris</button><button class="chip" data-part="sight-pupil" data-def="<span class='def-word'>3 · Pupil</span> The small black opening in the center of the iris. It is not a structure but an opening through which light enters. Its size changes automatically based on light intensity.<span class='es'>· pupila</span>">3 Pupil</button><button class="chip" data-part="sight-lens" data-def="<span class='def-word'>4 · Lens</span> A transparent, flexible structure behind the pupil. It changes shape (accommodation) to focus on objects at different distances, contributing about 35% of the eye's total focusing power.<span class='es'>· cristalino</span>">4 Lens</button><button class="chip" data-part="sight-retina" data-def="<span class='def-word'>5 · Retina</span> The light-sensitive layer at the back of the eye. It contains two types of photoreceptors: rods (for low-light and peripheral vision) and cones (for color and detailed vision). It converts light into electrical signals.<span class='es'>· retina</span>">5 Retina</button><button class="chip" data-part="sight-optic" data-def="<span class='def-word'>6 · Optic nerve</span> A bundle of over 1 million nerve fibers that carries all visual signals from the retina to the brain's visual cortex, where images are interpreted.<span class='es'>· nervio óptico</span>">6 Optic nerve</button><button class="chip" data-part="sight-sclera" data-def="<span class='def-word'>7 · Sclera</span> The tough, white outer coat of the eyeball. It maintains the shape of the eye and provides attachment points for the extraocular muscles that move the eye.<span class='es'>· esclerótica</span>">7 Sclera</button>
     </div>
     <div class="definition-box"><span class="placeholder">Click a number or word to see its meaning here.</span></div>
 
@@ -234,6 +261,28 @@
     </div>
 
     <div class="funfact"><strong>Did you know?</strong> The image that forms on your retina is upside down. Your brain flips it so the world looks right side up.</div>
+
+    <div class="conditions">
+      <h4>Common Eye Conditions</h4>
+      <ul>
+        <li><strong>Myopia (nearsightedness):</strong> The eyeball is too long or the cornea is too curved. Distant objects look blurry because light focuses in front of the retina.</li>
+        <li><strong>Hyperopia (farsightedness):</strong> The eyeball is too short. Close objects look blurry because light focuses behind the retina.</li>
+        <li><strong>Astigmatism:</strong> The cornea or lens has an irregular curve, causing blurred vision at any distance.</li>
+        <li><strong>Cataracts:</strong> The lens becomes cloudy and opaque, making vision foggy. Common in older adults.</li>
+        <li><strong>Glaucoma:</strong> High pressure inside the eye damages the optic nerve. If untreated, it can cause permanent vision loss.</li>
+        <li><strong>Conjunctivitis (pink eye):</strong> Inflammation or infection of the conjunctiva, causing redness, itching, and discharge.</li>
+      </ul>
+    </div>
+    <div class="care-tips">
+      <h4>How to Take Care of Your Eyes</h4>
+      <ul>
+        <li>Wear sunglasses that block UV rays when you are outdoors.</li>
+        <li>Follow the <strong>20-20-20 rule</strong>: every 20 minutes, look at something 20 feet away for 20 seconds.</li>
+        <li>Eat foods rich in <strong>vitamin A</strong> (carrots, sweet potatoes) and <strong>omega-3 fatty acids</strong> (fish).</li>
+        <li>Keep a safe distance from screens and books.</li>
+        <li>Schedule regular eye exams, even if your vision seems fine.</li>
+      </ul>
+    </div>
   </section>
 
   <section class="panel" data-sense="hearing" id="panel-hearing">
@@ -248,7 +297,7 @@
     </div>
 
     <div class="chips">
-      <button class="chip" data-part="hearing-pinna" data-def="<span class='def-word'>1 · Pinna</span> The visible part of the ear. It collects sound waves and directs them inward.<span class='es'>· pabellón auricular</span>">1 Pinna</button><button class="chip" data-part="hearing-canal" data-def="<span class='def-word'>2 · Ear canal</span> A tube that carries sound waves from the pinna to the eardrum.<span class='es'>· conducto auditivo</span>">2 Ear canal</button><button class="chip" data-part="hearing-eardrum" data-def="<span class='def-word'>3 · Eardrum</span> A thin, tight membrane that vibrates when sound waves hit it.<span class='es'>· tímpano</span>">3 Eardrum</button><button class="chip" data-part="hearing-ossicles" data-def="<span class='def-word'>4 · Ossicles</span> Three tiny bones that amplify (strengthen) the vibrations from the eardrum.<span class='es'>· huesecillos</span>">4 Ossicles</button><button class="chip" data-part="hearing-cochlea" data-def="<span class='def-word'>5 · Cochlea</span> A spiral-shaped organ filled with liquid. It changes vibrations into electrical signals.<span class='es'>· cóclea</span>">5 Cochlea</button><button class="chip" data-part="hearing-nerve" data-def="<span class='def-word'>6 · Auditory nerve</span> The nerve that carries sound signals from the cochlea to the brain.<span class='es'>· nervio auditivo</span>">6 Auditory nerve</button>
+      <button class="chip" data-part="hearing-pinna" data-def="<span class='def-word'>1 · Pinna</span> The visible, cartilaginous part of the outer ear. Its curved shape collects sound waves and funnels them into the ear canal. It also helps determine the direction of sound.<span class='es'>· pabellón auricular</span>">1 Pinna</button><button class="chip" data-part="hearing-canal" data-def="<span class='def-word'>2 · Ear canal</span> A tube about 2.5 cm long that carries sound waves from the pinna to the eardrum. It is lined with tiny hairs and glands that produce earwax to protect the ear from dust and infections.<span class='es'>· conducto auditivo</span>">2 Ear canal</button><button class="chip" data-part="hearing-eardrum" data-def="<span class='def-word'>3 · Eardrum (tympanic membrane)</span> A thin, cone-shaped membrane that separates the outer and middle ear. When sound waves strike it, it vibrates at the same frequency as the sound, converting air pressure waves into mechanical vibrations.<span class='es'>· tímpano</span>">3 Eardrum</button><button class="chip" data-part="hearing-ossicles" data-def="<span class='def-word'>4 · Ossicles</span> Three tiny bones in the middle ear — the hammer (malleus), anvil (incus), and stirrup (stapes). They form a chain that amplifies vibrations from the eardrum and transmits them to the inner ear.<span class='es'>· huesecillos</span>">4 Ossicles</button><button class="chip" data-part="hearing-cochlea" data-def="<span class='def-word'>5 · Cochlea</span> A spiral-shaped, fluid-filled organ in the inner ear. It contains thousands of tiny hair cells that bend with fluid movement and convert mechanical vibrations into electrical nerve impulses. Different areas of the cochlea detect different frequencies (pitches).<span class='es'>· cóclea</span>">5 Cochlea</button><button class="chip" data-part="hearing-nerve" data-def="<span class='def-word'>6 · Auditory nerve</span> A bundle of nerve fibers that carries all sound signals from the cochlea to the brain's auditory cortex, where they are interpreted as music, speech, or noise.<span class='es'>· nervio auditivo</span>">6 Auditory nerve</button>
     </div>
     <div class="definition-box"><span class="placeholder">Click a number or word to see its meaning here.</span></div>
 
@@ -288,6 +337,27 @@
     </div>
 
     <div class="funfact"><strong>Did you know?</strong> The stirrup, one of the ossicles, is the smallest bone in your whole body — smaller than a grain of rice.</div>
+
+    <div class="conditions">
+      <h4>Common Ear Conditions</h4>
+      <ul>
+        <li><strong>Tinnitus:</strong> A constant ringing, buzzing, or hissing sound in the ears with no external source. Often caused by loud noise exposure.</li>
+        <li><strong>Presbycusis:</strong> Age-related hearing loss that gradually reduces the ability to hear high-pitched sounds.</li>
+        <li><strong>Otitis media:</strong> An infection of the middle ear, common in children, that causes pain and fluid buildup behind the eardrum.</li>
+        <li><strong>Ménière's disease:</strong> A disorder of the inner ear that causes vertigo (spinning sensation), tinnitus, and hearing loss.</li>
+        <li><strong>Noise-induced hearing loss:</strong> Damage to the hair cells in the cochlea caused by prolonged exposure to loud sounds. It is permanent and cannot be reversed.</li>
+      </ul>
+    </div>
+    <div class="care-tips">
+      <h4>How to Take Care of Your Ears</h4>
+      <ul>
+        <li>Keep volume below <strong>60%</strong> when using headphones or earbuds.</li>
+        <li>Wear earplugs in loud environments (concerts, construction sites).</li>
+        <li>Keep ears dry after swimming to prevent infections.</li>
+        <li>Never insert cotton swabs or sharp objects into the ear canal.</li>
+        <li>Get your hearing checked regularly, especially if you work around loud noise.</li>
+      </ul>
+    </div>
   </section>
 
   <section class="panel" data-sense="smell" id="panel-smell">
@@ -302,7 +372,7 @@
     </div>
 
     <div class="chips">
-      <button class="chip" data-part="smell-nostril" data-def="<span class='def-word'>1 · Nostril</span> One of the two openings where air and smells enter the nose.<span class='es'>· fosa nasal</span>">1 Nostril</button><button class="chip" data-part="smell-cavity" data-def="<span class='def-word'>2 · Nasal cavity</span> The space inside the nose where air travels.<span class='es'>· cavidad nasal</span>">2 Nasal cavity</button><button class="chip" data-part="smell-receptors" data-def="<span class='def-word'>3 · Olfactory receptors</span> Special cells that detect tiny smell molecules in the air.<span class='es'>· receptores olfativos</span>">3 Olfactory receptors</button><button class="chip" data-part="smell-bulb" data-def="<span class='def-word'>4 · Olfactory bulb</span> A structure that collects signals from the olfactory receptors.<span class='es'>· bulbo olfativo</span>">4 Olfactory bulb</button><button class="chip" data-part="smell-nerve" data-def="<span class='def-word'>5 · Olfactory nerve</span> The nerve that carries smell signals to the brain.<span class='es'>· nervio olfativo</span>">5 Olfactory nerve</button>
+      <button class="chip" data-part="smell-nostril" data-def="<span class='def-word'>1 · Nostril (nares)</span> One of the two external openings of the nose. Air and smell molecules enter the respiratory system here. Each nostril alternates in being the dominant airflow pathway every few hours.<span class='es'>· fosa nasal</span>">1 Nostril</button><button class="chip" data-part="smell-cavity" data-def="<span class='def-word'>2 · Nasal cavity</span> The large, mucus-lined space behind the nostrils. It warms, filters, and humidifies incoming air. The upper portion contains the olfactory epithelium where smell detection occurs.<span class='es'>· cavidad nasal</span>">2 Nasal cavity</button><button class="chip" data-part="smell-receptors" data-def="<span class='def-word'>3 · Olfactory receptors</span> Specialized neurons located in the olfactory epithelium. Humans have about 400 different types, each tuned to detect specific molecular shapes. They send signals directly to the brain without passing through the thalamus first.<span class='es'>· receptores olfativos</span>">3 Olfactory receptors</button><button class="chip" data-part="smell-bulb" data-def="<span class='def-word'>4 · Olfactory bulb</span> A neural structure at the front of the brain, just above the nasal cavity. It processes smell signals and is part of the limbic system, which is why smells are strongly linked to emotions and memories.<span class='es'>· bulbo olfativo</span>">4 Olfactory bulb</button><button class="chip" data-part="smell-nerve" data-def="<span class='def-word'>5 · Olfactory nerve</span> A network of nerve fibers that connects the olfactory receptors to the olfactory bulb. It is the shortest cranial nerve and the only one that can partially regenerate after damage.<span class='es'>· nervio olfativo</span>">5 Olfactory nerve</button>
     </div>
     <div class="definition-box"><span class="placeholder">Click a number or word to see its meaning here.</span></div>
 
@@ -341,6 +411,27 @@
     </div>
 
     <div class="funfact"><strong>Did you know?</strong> Smell is closely connected to memory. That is why a smell can suddenly remind you of a place or a person.</div>
+
+    <div class="conditions">
+      <h4>Common Nose &amp; Smell Conditions</h4>
+      <ul>
+        <li><strong>Anosmia:</strong> Complete loss of the sense of smell. It can be caused by viral infections (like COVID-19), head injuries, or neurological conditions.</li>
+        <li><strong>Hyposmia:</strong> A reduced ability to detect smells. It may be temporary (from a cold) or permanent.</li>
+        <li><strong>Parosmia:</strong> Smells are distorted — something pleasant may smell foul. Often occurs during recovery from anosmia.</li>
+        <li><strong>Rhinitis:</strong> Inflammation of the nasal lining, causing a runny or stuffy nose, sneezing, and reduced smell. Can be allergic or non-allergic.</li>
+        <li><strong>Sinusitis:</strong> Inflammation or infection of the sinuses (air-filled cavities around the nose), causing pain, pressure, and temporary loss of smell.</li>
+      </ul>
+    </div>
+    <div class="care-tips">
+      <h4>How to Take Care of Your Nose &amp; Smell</h4>
+      <ul>
+        <li>Blow your nose gently, one nostril at a time, to avoid pushing mucus into the sinuses.</li>
+        <li>Use a saline rinse to keep nasal passages clean and moist.</li>
+        <li>Avoid smoking and strong chemical irritants that damage olfactory receptors.</li>
+        <li>Use a humidifier in dry environments to prevent nasal dryness.</li>
+        <li>If you lose your sense of smell suddenly, see a doctor — early treatment improves recovery.</li>
+      </ul>
+    </div>
   </section>
 
   <section class="panel" data-sense="taste" id="panel-taste">
@@ -355,7 +446,7 @@
     </div>
 
     <div class="chips">
-      <button class="chip" data-part="taste-papillae" data-def="<span class='def-word'>1 · Papillae</span> Small bumps on the surface of the tongue. Most taste buds are located inside them.<span class='es'>· papilas</span>">1 Papillae</button><button class="chip" data-part="taste-buds" data-def="<span class='def-word'>2 · Taste buds</span> Small groups of cells inside the papillae. They detect chemicals from food.<span class='es'>· botones gustativos</span>">2 Taste buds</button><button class="chip" data-part="taste-cells" data-def="<span class='def-word'>3 · Taste cells</span> Cells inside each taste bud. They react to sweet, sour, salty, bitter, or umami flavors.<span class='es'>· células gustativas</span>">3 Taste cells</button><button class="chip" data-part="taste-nerve" data-def="<span class='def-word'>4 · Gustatory nerve</span> The nerve that carries taste signals from the tongue to the brain.<span class='es'>· nervio gustativo</span>">4 Gustatory nerve</button>
+      <button class="chip" data-part="taste-papillae" data-def="<span class='def-word'>1 · Papillae</span> Small bumps visible on the tongue surface. There are three main types: fungiform (front and sides, mushroom-shaped), circumvallate (back, large and round), and filiform (most of the tongue, provide texture). Most contain taste buds.<span class='es'>· papilas</span>">1 Papillae</button><button class="chip" data-part="taste-buds" data-def="<span class='def-word'>2 · Taste buds</span> Onion-shaped clusters of 50–100 cells located inside the papillae. Each taste bud has a small opening called the taste pore where dissolved food chemicals enter. Humans have about 10,000 taste buds, which replace themselves every 10–14 days.<span class='es'>· botones gustativos</span>">2 Taste buds</button><button class="chip" data-part="taste-cells" data-def="<span class='def-word'>3 · Taste cells</span> Specialized cells inside each taste bud. Each cell typically responds to one of the five basic tastes. When activated, they release chemical messengers that trigger nerve impulses sent to the brain.<span class='es'>· células gustativas</span>">3 Taste cells</button><button class="chip" data-part="taste-nerve" data-def="<span class='def-word'>4 · Gustatory nerve</span> A nerve that carries taste signals from the tongue to the brain. The facial nerve (VII) handles the front two-thirds of the tongue, the glossopharyngeal nerve (IX) handles the back third, and the vagus nerve (X) handles the throat area.<span class='es'>· nervio gustativo</span>">4 Gustatory nerve</button>
     </div>
     <div class="definition-box"><span class="placeholder">Click a number or word to see its meaning here.</span></div>
 
@@ -394,6 +485,27 @@
     </div>
 
     <div class="funfact"><strong>Did you know?</strong> Flavor is a mix of taste AND smell. That is why food tastes different when you have a cold and your nose is blocked.</div>
+
+    <div class="conditions">
+      <h4>Common Taste Conditions</h4>
+      <ul>
+        <li><strong>Ageusia:</strong> Complete loss of taste. It often occurs alongside anosmia (loss of smell) because flavor depends on both senses.</li>
+        <li><strong>Hypogeusia:</strong> A reduced ability to taste. Certain flavors (especially salty and sweet) may become harder to detect.</li>
+        <li><strong>Dysgeusia:</strong> A distorted sense of taste. Food may taste metallic, salty, or foul even when it is fresh.</li>
+        <li><strong>Burning mouth syndrome:</strong> A painful sensation of burning on the tongue and roof of the mouth, often without a visible cause. It can be chronic and stressful.</li>
+        <li><strong>Geographic tongue:</strong> Smooth, red patches with white borders appear on the tongue. It is harmless but can cause sensitivity to certain foods.</li>
+      </ul>
+    </div>
+    <div class="care-tips">
+      <h4>How to Take Care of Your Tongue &amp; Taste</h4>
+      <ul>
+        <li>Maintain good <strong>oral hygiene</strong>: brush your tongue gently along with your teeth.</li>
+        <li>Stay well hydrated — saliva is essential for dissolving food chemicals so you can taste them.</li>
+        <li>Eat a balanced diet with enough <strong>vitamin B12</strong> and <strong>zinc</strong>, which support taste cell health.</li>
+        <li>Avoid extremely hot food or drinks that can damage taste buds.</li>
+        <li>If you notice a persistent change in taste, consult a doctor — it may signal an infection or medication side effect.</li>
+      </ul>
+    </div>
   </section>
 
   <section class="panel" data-sense="touch" id="panel-touch">
@@ -408,7 +520,7 @@
     </div>
 
     <div class="chips">
-      <button class="chip" data-part="touch-epidermis" data-def="<span class='def-word'>1 · Epidermis</span> The thin, outer layer of the skin. It protects the body.<span class='es'>· epidermis</span>">1 Epidermis</button><button class="chip" data-part="touch-dermis" data-def="<span class='def-word'>2 · Dermis</span> The layer below the epidermis. It contains most sensory receptors, hair follicles, and sweat glands.<span class='es'>· dermis</span>">2 Dermis</button><button class="chip" data-part="touch-hypodermis" data-def="<span class='def-word'>3 · Hypodermis</span> The deepest layer of skin. It stores fat and connects the skin to the muscle.<span class='es'>· hipodermis</span>">3 Hypodermis</button><button class="chip" data-part="touch-receptors" data-def="<span class='def-word'>4 · Sensory receptors</span> Special nerve endings that detect pressure, temperature, and pain.<span class='es'>· receptores sensoriales</span>">4 Sensory receptors</button><button class="chip" data-part="touch-follicle" data-def="<span class='def-word'>5 · Hair follicle</span> A small structure that holds the root of a hair.<span class='es'>· folículo piloso</span>">5 Hair follicle</button><button class="chip" data-part="touch-sweat" data-def="<span class='def-word'>6 · Sweat gland</span> A small structure that produces sweat to cool the body.<span class='es'>· glándula sudorípara</span>">6 Sweat gland</button>
+      <button class="chip" data-part="touch-epidermis" data-def="<span class='def-word'>1 · Epidermis</span> The thin, outermost layer of the skin. It is a waterproof barrier made of 5 sub-layers. It continuously produces new cells that migrate to the surface, replacing old ones every 2–4 weeks. It contains melanocytes that produce melanin (skin pigment).<span class='es'>· epidermis</span>">1 Epidermis</button><button class="chip" data-part="touch-dermis" data-def="<span class='def-word'>2 · Dermis</span> The thick layer below the epidermis. It contains most sensory receptors, blood vessels, hair follicles, sweat glands, and collagen fibers that give skin its strength and elasticity.<span class='es'>· dermis</span>">2 Dermis</button><button class="chip" data-part="touch-hypodermis" data-def="<span class='def-word'>3 · Hypodermis (subcutaneous tissue)</span> The deepest layer of skin, made mostly of adipose (fat) tissue. It stores energy, insulates the body against heat loss, and cushions and connects the skin to underlying muscles and bones.<span class='es'>· hipodermis</span>">3 Hypodermis</button><button class="chip" data-part="touch-receptors" data-def="<span class='def-word'>4 · Sensory receptors</span> Specialized nerve endings in the dermis and epidermis. Different types detect different sensations: Meissner's corpuscles (light touch), Pacinian corpuscles (deep pressure and vibration), Ruffini endings (stretch), and free nerve endings (pain and temperature).<span class='es'>· receptores sensoriales</span>">4 Sensory receptors</button><button class="chip" data-part="touch-follicle" data-def="<span class='def-word'>5 · Hair follicle</span> A small, tube-shaped structure in the dermis that surrounds the root of a hair. It is connected to tiny muscles (arrector pili) that make hair stand up when you are cold or scared ("goosebumps").<span class='es'>· folículo piloso</span>">5 Hair follicle</button><button class="chip" data-part="touch-sweat" data-def="<span class='def-word'>6 · Sweat gland</span> A coiled tube in the dermis that produces sweat (perspiration). Eccrine glands are found all over the body and cool the skin through evaporation. Apocrine glands (armpits, groin) produce a thicker sweat linked to body odor.<span class='es'>· glándula sudorípara</span>">6 Sweat gland</button>
     </div>
     <div class="definition-box"><span class="placeholder">Click a number or word to see its meaning here.</span></div>
 
@@ -447,6 +559,187 @@
     </div>
 
     <div class="funfact"><strong>Did you know?</strong> Your fingertips and lips have many more receptors than your back. That is why they are much more sensitive to touch.</div>
+
+    <div class="conditions">
+      <h4>Common Skin &amp; Touch Conditions</h4>
+      <ul>
+        <li><strong>Dermatitis:</strong> General term for skin inflammation. It causes redness, itching, and sometimes blisters. Contact dermatitis is triggered by irritants or allergens.</li>
+        <li><strong>Eczema (atopic dermatitis):</strong> A chronic condition that causes dry, itchy, inflamed skin. It often starts in childhood and can flare up periodically.</li>
+        <li><strong>Psoriasis:</strong> An autoimmune condition where skin cells grow too fast, forming thick, silvery scales. It can be painful and affect quality of life.</li>
+        <li><strong>Peripheral neuropathy:</strong> Damage to peripheral nerves causes numbness, tingling, or burning pain, usually in the hands and feet. Common in diabetes.</li>
+        <li><strong>Carpal tunnel syndrome:</strong> Compression of the median nerve in the wrist. Causes tingling, numbness, and weakness in the hand and fingers.</li>
+      </ul>
+    </div>
+    <div class="care-tips">
+      <h4>How to Take Care of Your Skin &amp; Touch</h4>
+      <ul>
+        <li>Moisturize your skin daily to prevent dryness and cracking.</li>
+        <li>Apply <strong>sunscreen (SPF 30+)</strong> every day to protect against UV damage and skin cancer.</li>
+        <li>Check your skin regularly for new moles or changes in existing ones.</li>
+        <li>Wear gloves when handling harsh chemicals or in extreme cold.</li>
+        <li>Maintain good posture and take breaks from repetitive hand movements to prevent nerve compression.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" data-sense="quiz" id="panel-quiz">
+    <h2>Quiz — The Five Senses</h2>
+    <p style="font-size:16px;color:#3c4a46;margin:0 0 22px;">Test your knowledge of all five senses. Answer every question, then click <strong>Check answers</strong>.</p>
+
+    <div class="quiz" data-quiz="quiz-sight">
+      <h3 style="font-size:19px;">Sight</h3>
+      <fieldset class="quizq" data-correct="b">
+        <legend>1. What controls the size of the pupil?</legend>
+        <label class="opt"><input type="radio" name="quiz-s1" value="a"> The lens</label>
+        <label class="opt"><input type="radio" name="quiz-s1" value="b"> The iris</label>
+        <label class="opt"><input type="radio" name="quiz-s1" value="c"> The sclera</label>
+        <label class="opt"><input type="radio" name="quiz-s1" value="d"> The optic nerve</label>
+        <div class="quiz-answer" data-for="quiz-s1">The iris controls the size of the pupil, letting more or less light in.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="c">
+        <legend>2. Which part changes light into electrical signals?</legend>
+        <label class="opt"><input type="radio" name="quiz-s2" value="a"> Cornea</label>
+        <label class="opt"><input type="radio" name="quiz-s2" value="b"> Lens</label>
+        <label class="opt"><input type="radio" name="quiz-s2" value="c"> Retina</label>
+        <label class="opt"><input type="radio" name="quiz-s2" value="d"> Sclera</label>
+        <div class="quiz-answer" data-for="quiz-s2">The retina contains photoreceptor cells (rods and cones) that convert light into electrical signals.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="b">
+        <legend>3. What is the main job of the cornea?</legend>
+        <label class="opt"><input type="radio" name="quiz-s3" value="a"> Store the image</label>
+        <label class="opt"><input type="radio" name="quiz-s3" value="b"> Protect the eye and begin focusing light</label>
+        <label class="opt"><input type="radio" name="quiz-s3" value="c"> Send signals to the brain</label>
+        <label class="opt"><input type="radio" name="quiz-s3" value="d"> Produce tears</label>
+        <div class="quiz-answer" data-for="quiz-s3">The cornea is a clear protective layer that refracts (bends) about 65% of incoming light.</div>
+      </fieldset>
+      <button class="quiz-btn" type="button" data-check="quiz-sight">Check answers</button>
+      <span class="quiz-result" data-result="quiz-sight"></span>
+      <button class="quiz-toggle" type="button" data-toggle="quiz-sight">Show / Hide answers</button>
+    </div>
+
+    <div class="quiz" data-quiz="quiz-hearing">
+      <h3 style="font-size:19px;">Hearing</h3>
+      <fieldset class="quizq" data-correct="b">
+        <legend>4. What happens to the eardrum when sound waves arrive?</legend>
+        <label class="opt"><input type="radio" name="quiz-h1" value="a"> It produces liquid</label>
+        <label class="opt"><input type="radio" name="quiz-h1" value="b"> It vibrates</label>
+        <label class="opt"><input type="radio" name="quiz-h1" value="c"> It changes color</label>
+        <label class="opt"><input type="radio" name="quiz-h1" value="d"> It stops the sound</label>
+        <div class="quiz-answer" data-for="quiz-h1">The eardrum vibrates when struck by sound waves, passing vibrations to the ossicles.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="a">
+        <legend>5. What is the job of the ossicles?</legend>
+        <label class="opt"><input type="radio" name="quiz-h2" value="a"> Amplify vibrations</label>
+        <label class="opt"><input type="radio" name="quiz-h2" value="b"> Produce saliva</label>
+        <label class="opt"><input type="radio" name="quiz-h2" value="c"> Detect light</label>
+        <label class="opt"><input type="radio" name="quiz-h2" value="d"> Store memories</label>
+        <div class="quiz-answer" data-for="quiz-h2">The three ossicles (hammer, anvil, stirrup) amplify and transmit vibrations from the eardrum to the cochlea.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="c">
+        <legend>6. Which part changes vibrations into electrical signals?</legend>
+        <label class="opt"><input type="radio" name="quiz-h3" value="a"> Pinna</label>
+        <label class="opt"><input type="radio" name="quiz-h3" value="b"> Ear canal</label>
+        <label class="opt"><input type="radio" name="quiz-h3" value="c"> Cochlea</label>
+        <label class="opt"><input type="radio" name="quiz-h3" value="d"> Eardrum</label>
+        <div class="quiz-answer" data-for="quiz-h3">The cochlea contains tiny hair cells that convert vibrations into electrical signals sent to the brain.</div>
+      </fieldset>
+      <button class="quiz-btn" type="button" data-check="quiz-hearing">Check answers</button>
+      <span class="quiz-result" data-result="quiz-hearing"></span>
+      <button class="quiz-toggle" type="button" data-toggle="quiz-hearing">Show / Hide answers</button>
+    </div>
+
+    <div class="quiz" data-quiz="quiz-smell">
+      <h3 style="font-size:19px;">Smell</h3>
+      <fieldset class="quizq" data-correct="b">
+        <legend>7. Where do smell molecules first enter your body?</legend>
+        <label class="opt"><input type="radio" name="quiz-m1" value="a"> Ear canal</label>
+        <label class="opt"><input type="radio" name="quiz-m1" value="b"> Nostrils</label>
+        <label class="opt"><input type="radio" name="quiz-m1" value="c"> Taste buds</label>
+        <label class="opt"><input type="radio" name="quiz-m1" value="d"> Skin</label>
+        <div class="quiz-answer" data-for="quiz-m1">Smell molecules enter the body through the nostrils and travel into the nasal cavity.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="a">
+        <legend>8. What do olfactory receptors do?</legend>
+        <label class="opt"><input type="radio" name="quiz-m2" value="a"> Detect smell molecules</label>
+        <label class="opt"><input type="radio" name="quiz-m2" value="b"> Produce sound</label>
+        <label class="opt"><input type="radio" name="quiz-m2" value="c"> Digest food</label>
+        <label class="opt"><input type="radio" name="quiz-m2" value="d"> Detect light</label>
+        <div class="quiz-answer" data-for="quiz-m2">Olfactory receptors are specialized cells that detect chemical molecules responsible for smells.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="c">
+        <legend>9. What carries smell signals to the brain?</legend>
+        <label class="opt"><input type="radio" name="quiz-m3" value="a"> Optic nerve</label>
+        <label class="opt"><input type="radio" name="quiz-m3" value="b"> Auditory nerve</label>
+        <label class="opt"><input type="radio" name="quiz-m3" value="c"> Olfactory nerve</label>
+        <label class="opt"><input type="radio" name="quiz-m3" value="d"> Spinal nerve</label>
+        <div class="quiz-answer" data-for="quiz-m3">The olfactory nerve carries smell signals from the olfactory bulb to the brain.</div>
+      </fieldset>
+      <button class="quiz-btn" type="button" data-check="quiz-smell">Check answers</button>
+      <span class="quiz-result" data-result="quiz-smell"></span>
+      <button class="quiz-toggle" type="button" data-toggle="quiz-smell">Show / Hide answers</button>
+    </div>
+
+    <div class="quiz" data-quiz="quiz-taste">
+      <h3 style="font-size:19px;">Taste</h3>
+      <fieldset class="quizq" data-correct="a">
+        <legend>10. What must happen to food chemicals before you can taste them?</legend>
+        <label class="opt"><input type="radio" name="quiz-t1" value="a"> They must be dissolved in saliva</label>
+        <label class="opt"><input type="radio" name="quiz-t1" value="b"> They must be heated</label>
+        <label class="opt"><input type="radio" name="quiz-t1" value="c"> They must touch your nostrils</label>
+        <label class="opt"><input type="radio" name="quiz-t1" value="d"> They must be chewed twice</label>
+        <div class="quiz-answer" data-for="quiz-t1">Only dissolved chemicals can activate taste cells. Saliva breaks down food so taste buds can detect it.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="b">
+        <legend>11. Where are taste buds located?</legend>
+        <label class="opt"><input type="radio" name="quiz-t2" value="a"> In the ear canal</label>
+        <label class="opt"><input type="radio" name="quiz-t2" value="b"> Inside the papillae</label>
+        <label class="opt"><input type="radio" name="quiz-t2" value="c"> In the nasal cavity</label>
+        <label class="opt"><input type="radio" name="quiz-t2" value="d"> In the epidermis</label>
+        <div class="quiz-answer" data-for="quiz-t2">Taste buds are located inside the papillae, the small bumps visible on the tongue surface.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="c">
+        <legend>12. Which of these is NOT one of the five basic tastes?</legend>
+        <label class="opt"><input type="radio" name="quiz-t3" value="a"> Sweet</label>
+        <label class="opt"><input type="radio" name="quiz-t3" value="b"> Bitter</label>
+        <label class="opt"><input type="radio" name="quiz-t3" value="c"> Spicy</label>
+        <label class="opt"><input type="radio" name="quiz-t3" value="d"> Umami</label>
+        <div class="quiz-answer" data-for="quiz-t3">The five basic tastes are sweet, sour, salty, bitter, and umami. Spicy is a pain sensation, not a taste.</div>
+      </fieldset>
+      <button class="quiz-btn" type="button" data-check="quiz-taste">Check answers</button>
+      <span class="quiz-result" data-result="quiz-taste"></span>
+      <button class="quiz-toggle" type="button" data-toggle="quiz-taste">Show / Hide answers</button>
+    </div>
+
+    <div class="quiz" data-quiz="quiz-touch">
+      <h3 style="font-size:19px;">Touch</h3>
+      <fieldset class="quizq" data-correct="b">
+        <legend>13. Which layer of skin contains most sensory receptors?</legend>
+        <label class="opt"><input type="radio" name="quiz-p1" value="a"> Epidermis</label>
+        <label class="opt"><input type="radio" name="quiz-p1" value="b"> Dermis</label>
+        <label class="opt"><input type="radio" name="quiz-p1" value="c"> Hypodermis</label>
+        <label class="opt"><input type="radio" name="quiz-p1" value="d"> Cornea</label>
+        <div class="quiz-answer" data-for="quiz-p1">The dermis, the middle layer of skin, contains most of the sensory receptors, hair follicles, and sweat glands.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="c">
+        <legend>14. What do sensory receptors in the skin detect?</legend>
+        <label class="opt"><input type="radio" name="quiz-p2" value="a"> Light and color</label>
+        <label class="opt"><input type="radio" name="quiz-p2" value="b"> Sound waves</label>
+        <label class="opt"><input type="radio" name="quiz-p2" value="c"> Pressure, temperature, and pain</label>
+        <label class="opt"><input type="radio" name="quiz-p2" value="d"> Smell molecules</label>
+        <div class="quiz-answer" data-for="quiz-p2">Skin receptors detect mechanical pressure, temperature changes, and pain signals.</div>
+      </fieldset>
+      <fieldset class="quizq" data-correct="c">
+        <legend>15. What is the deepest layer of the skin called?</legend>
+        <label class="opt"><input type="radio" name="quiz-p3" value="a"> Epidermis</label>
+        <label class="opt"><input type="radio" name="quiz-p3" value="b"> Cochlea</label>
+        <label class="opt"><input type="radio" name="quiz-p3" value="c"> Hypodermis</label>
+        <label class="opt"><input type="radio" name="quiz-p3" value="d"> Retina</label>
+        <div class="quiz-answer" data-for="quiz-p3">The hypodermis is the deepest layer, made mostly of fat that stores energy and cushions the body.</div>
+      </fieldset>
+      <button class="quiz-btn" type="button" data-check="quiz-touch">Check answers</button>
+      <span class="quiz-result" data-result="quiz-touch"></span>
+      <button class="quiz-toggle" type="button" data-toggle="quiz-touch">Show / Hide answers</button>
+    </div>
   </section>
 
 </div>
@@ -508,6 +801,13 @@
         resultEl.style.color = correctCount === questions.length ? '#2E9E63' : '#182126';
         resultEl.textContent = correctCount + ' / ' + questions.length + ' correct';
       }
+    });
+  });
+  document.querySelectorAll('.quiz-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const quizId = btn.dataset.toggle;
+      const quiz = document.querySelector('.quiz[data-quiz="' + quizId + '"]');
+      quiz.querySelectorAll('.quiz-answer').forEach(a => a.classList.toggle('show'));
     });
   });
 </script>
