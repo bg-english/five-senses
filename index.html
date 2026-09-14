@@ -161,6 +161,15 @@
   .quiz-answer{ display:none; margin-top:6px; font-size:14.5px; color:#2E9E63; font-weight:600; }
   .quiz-answer.show{ display:block; }
 
+  .page-nav{ max-width:960px; margin:0 auto; padding:0 28px; display:flex; gap:10px; flex-wrap:wrap; }
+  .page-nav a{
+    font-family:'Inter',sans-serif; font-size:14px; font-weight:600; text-decoration:none;
+    padding:10px 18px; border-radius:999px; border:1.5px solid var(--line); background:#fff; color:var(--ink);
+    transition:all .15s ease;
+  }
+  .page-nav a:hover{ border-color:var(--gold); color:var(--gold); }
+  .page-nav a.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
   footer{ max-width:960px; margin:0 auto 60px; padding:0 28px; color:#7d8985; font-size:13.5px; }
 
   @media (max-width:600px){
@@ -178,6 +187,11 @@
   <div class="kicker">Science · Unit: The Human Body</div>
   <h1>The Five Senses</h1>
   <p class="lede">A field guide to how your body reads the world. Explore each organ, learn the English vocabulary, and test what you remember.</p>
+</div>
+
+<div class="page-nav">
+  <a href="index.html" class="active">The Five Senses</a>
+  <a href="biblical_senses.html">Spiritual Senses — Hebrews 5:14</a>
 </div>
 
 <div class="tabbar" role="tablist">
