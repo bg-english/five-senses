@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spiritual Senses — Distinguishing Good from Evil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#182126;
+    --paper:#F4F6F4;
+    --paper-2:#ECEFEA;
+    --line: rgba(24,33,38,0.14);
+    --gold:#B8860B;
+    --gold-tint:#FBF5E6;
+    --sight:#5B4FCF;
+    --sight-tint:#E9E7FB;
+    --hearing:#D9822B;
+    --hearing-tint:#FBEBD8;
+    --smell:#2E9E63;
+    --smell-tint:#E2F4E9;
+    --taste:#D9436B;
+    --taste-tint:#FBE3EA;
+    --touch:#1E8F97;
+    --touch-tint:#DFF1F2;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif; line-height:1.55;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces', Georgia, serif; margin:0 0 0.4em 0; font-weight:600; letter-spacing:-0.01em;}
+  .masthead{ max-width:960px; margin:0 auto; padding:52px 28px 20px; }
+  .masthead .kicker{ font-size:14px; color:#5b6a66; margin-bottom:10px; }
+  .masthead h1{ font-size:clamp(32px,5vw,48px); line-height:1.08; }
+  .masthead p.lede{ max-width:60ch; font-size:18px; color:#3c4a46; margin-top:10px; }
+  .verse-box{
+    max-width:960px; margin:28px auto 0; padding:0 28px;
+  }
+  .verse-card{
+    background:var(--gold-tint); border:1.5px solid #D4B85C; border-radius:14px;
+    padding:36px clamp(20px,4vw,48px); text-align:center;
+  }
+  .verse-card .ref{ font-size:14px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; }
+  .verse-card blockquote{
+    font-family:'Fraunces',Georgia,serif; font-size:clamp(22px,3.5vw,32px);
+    font-style:italic; color:var(--ink); line-height:1.3; margin:0 0 14px;
+  }
+  .verse-card .translation{ font-size:14px; color:#7d8985; }
+  .tabbar{ max-width:960px; margin:32px auto 0; padding:0 28px; display:flex; gap:8px; flex-wrap:wrap; }
+  .tab{
+    font-family:'Inter',sans-serif; font-size:15px; font-weight:600; color:var(--ink);
+    background:var(--paper-2); border:1px solid var(--line); border-bottom:none;
+    padding:12px 18px 14px; border-radius:10px 10px 0 0; cursor:pointer;
+    display:flex; align-items:center; gap:9px; opacity:0.62; transform:translateY(4px);
+    transition:transform .16s ease, opacity .16s ease, background .16s ease;
+  }
+  .tab svg{width:20px;height:20px;flex:none;}
+  .tab:hover{opacity:0.85;}
+  .tab[aria-selected="true"]{ opacity:1; transform:translateY(0); background:var(--accent-tint, var(--paper)); border-color:var(--line); }
+  .tab[data-target="principle"][aria-selected="true"]{ --accent-tint:var(--gold-tint); color:var(--gold); }
+  .tab[data-target="sight"][aria-selected="true"]{ --accent-tint:var(--sight-tint); color:var(--sight); }
+  .tab[data-target="hearing"][aria-selected="true"]{ --accent-tint:var(--hearing-tint); color:var(--hearing); }
+  .tab[data-target="smell"][aria-selected="true"]{ --accent-tint:var(--smell-tint); color:var(--smell); }
+  .tab[data-target="taste"][aria-selected="true"]{ --accent-tint:var(--taste-tint); color:var(--taste); }
+  .tab[data-target="touch"][aria-selected="true"]{ --accent-tint:var(--touch-tint); color:var(--touch); }
+  .panels{ max-width:960px; margin:0 auto 80px; padding:0 28px; }
+  .panel{
+    display:none; border:1px solid var(--line); border-radius:0 10px 10px 10px;
+    padding:38px clamp(20px,4vw,46px) 44px; background:var(--paper); animation:fadein .35s ease;
+  }
+  .panel.active{display:block;}
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .panel[data-sense="principle"]{ --accent:var(--gold); --tint:var(--gold-tint); }
+  .panel[data-sense="sight"]{ --accent:var(--sight); --tint:var(--sight-tint); }
+  .panel[data-sense="hearing"]{ --accent:var(--hearing); --tint:var(--hearing-tint); }
+  .panel[data-sense="smell"]{ --accent:var(--smell); --tint:var(--smell-tint); }
+  .panel[data-sense="taste"]{ --accent:var(--taste); --tint:var(--taste-tint); }
+  .panel[data-sense="touch"]{ --accent:var(--touch); --tint:var(--touch-tint); }
+  .reading{ margin-top:20px; }
+  .reading h3{ font-size:22px; color:var(--accent); }
+  .reading p{ font-size:16.5px; max-width:70ch; color:#212b28; margin:0 0 14px; }
+  .analogy-box{
+    margin-top:24px; background:var(--tint); border-left:4px solid var(--accent);
+    border-radius:0 10px 10px 0; padding:20px 24px;
+  }
+  .analogy-box h4{ color:var(--accent); margin:0 0 10px; font-size:19px; }
+  .analogy-box ul{ margin:0; padding-left:22px; }
+  .analogy-box li{ margin-bottom:10px; font-size:15.5px; line-height:1.5; }
+  .analogy-box li strong{ color:var(--accent); }
+  .challenge{
+    margin-top:26px; background:#fff; border:1.5px solid var(--line); border-radius:10px;
+    padding:20px 24px;
+  }
+  .challenge h4{ color:var(--ink); margin:0 0 10px; font-size:19px; }
+  .challenge ol{ margin:0; padding-left:22px; }
+  .challenge li{ margin-bottom:8px; font-size:15.5px; line-height:1.5; }
+  footer{ max-width:960px; margin:0 auto 60px; padding:0 28px; color:#7d8985; font-size:13.5px; }
+  @media (max-width:600px){
+    .panel{ padding:28px 18px 34px; }
+    .tab{ padding:10px 13px 12px; font-size:14px; }
+    .tab span.tab-text{ display:none; }
+    .verse-card{ padding:28px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="kicker">Science &amp; Faith · Unit: The Human Body</div>
+  <h1>Spiritual Senses</h1>
+  <p class="lede">How the five senses God gave us can teach us to distinguish good from evil — what helps us grow from what harms us.</p>
+</div>
+
+<div class="verse-box">
+  <div class="verse-card">
+    <div class="ref">Hebrews 5:14</div>
+    <blockquote>"But solid food is for the mature, who by constant use have trained themselves to distinguish good from evil."</blockquote>
+    <div class="translation">New International Version (NIV)</div>
+  </div>
+</div>
+
+<div class="tabbar" role="tablist">
+  <button class="tab" data-target="principle" role="tab" aria-selected="true">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="tab-text">Principle</span>
+  </button>
+  <button class="tab" data-target="sight" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M2 12C4.5 7 8 4.5 12 4.5S19.5 7 22 12C19.5 17 16 19.5 12 19.5S4.5 17 2 12Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/></svg>
+    <span class="tab-text">Sight</span>
+  </button>
+  <button class="tab" data-target="hearing" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M8 5C4.5 6 3 9.5 3 12.5C3 16 5 18 7 18M8 5C12 3 17 5.5 17 11C17 13.5 15 14.5 15 17C15 19 16.5 20 16.5 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 10C9 8.5 10 8 11 8.5C12 9 12 12 11 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="tab-text">Hearing</span>
+  </button>
+  <button class="tab" data-target="smell" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M15 4C12 4 10 7 10 11C10 15 8 16 6 15.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6 15.5C5 17.5 6.5 19.5 8.5 19C10 18.6 10.3 17 9.5 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="tab-text">Smell</span>
+  </button>
+  <button class="tab" data-target="taste" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="6.2" ry="8.5" stroke="currentColor" stroke-width="1.8"/><circle cx="9.3" cy="8.5" r="0.9" fill="currentColor"/><circle cx="13" cy="7.6" r="0.9" fill="currentColor"/><circle cx="15" cy="10" r="0.9" fill="currentColor"/><circle cx="9" cy="12" r="0.9" fill="currentColor"/></svg>
+    <span class="tab-text">Taste</span>
+  </button>
+  <button class="tab" data-target="touch" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M8 13V6.5C8 5.7 8.7 5 9.5 5C10.3 5 11 5.7 11 6.5V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M11 12V5.5C11 4.7 11.7 4 12.5 4C13.3 4 14 4.7 14 5.5V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M14 12V6.5C14 5.7 14.7 5 15.5 5C16.3 5 17 5.7 17 6.5V13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 13V15C8 18 10 20 13 20C16 20 17.5 18 17.5 15V13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="tab-text">Touch</span>
+  </button>
+</div>
+
+<div class="panels">
+
+  <section class="panel active" data-sense="principle" id="panel-principle">
+    <h2>The Biblical Principle</h2>
+
+    <div class="reading">
+      <h3>Training to Distinguish Good from Evil</h3>
+      <p>The writer of Hebrews uses a powerful image: spiritual maturity is like moving from milk to solid food. A baby cannot eat steak — not because steak is bad, but because the baby's digestive system is not ready. In the same way, new believers start with the basics of faith, but mature Christians train themselves to make wise decisions.</p>
+      <p>How do they train? <strong>"By constant use."</strong> Just as a musician practices scales every day, or an athlete trains their body daily, spiritual discernment is built through repeated, intentional practice. The more we exercise our spiritual senses, the sharper they become.</p>
+      <p>God gave us five physical senses — sight, hearing, smell, taste, and touch — and each one is a window to the world. What we allow through those windows shapes our thoughts, our character, and ultimately our relationship with God. Learning to filter what we see, hear, smell, taste, and touch is the beginning of wisdom.</p>
+    </div>
+
+    <div class="analogy-box">
+      <h4>The Connection: Physical Senses → Spiritual Discernment</h4>
+      <ul>
+        <li><strong>Physical senses</strong> help us navigate the material world — they tell us what is safe and what is dangerous.</li>
+        <li><strong>Spiritual senses</strong> help us navigate the moral world — they tell us what is good and what is harmful to our soul.</li>
+        <li>Just as a damaged sense (blindness, deafness) limits our interaction with the physical world, a neglected spiritual sense limits our ability to make wise choices.</li>
+        <li>The good news: spiritual senses, like physical ones, can be <strong>trained and strengthened</strong> through practice, Scripture, prayer, and community.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" data-sense="sight" id="panel-sight">
+    <h2>Sight — What You Look At</h2>
+
+    <div class="reading">
+      <h3>Physical Sense: Sight</h3>
+      <p>Your eyes are the windows to the world. The cornea and lens focus light onto the retina, where rods and cones convert images into electrical signals the brain can interpret. But your eyes do not just receive — they <strong>choose</strong>. You decide where to look and what to focus on.</p>
+
+      <h3>Spiritual Parallel: Discernment of Vision</h3>
+      <p>What we choose to look at shapes our inner world. Just as the eye can be damaged by staring at the sun, the soul can be damaged by constantly looking at what is harmful. Scripture says, <em>"I will not look with approval on anything that is vile"</em> (Psalm 101:3).</p>
+    </div>
+
+    <div class="analogy-box">
+      <h4>Sight and Discernment</h4>
+      <ul>
+        <li><strong>Good (healthy vision):</strong> Looking at what is true, noble, pure, lovely, admirable — things that are excellent or praiseworthy (Philippians 4:8).</li>
+        <li><strong>Evil (damaged vision):</strong> Consuming content that promotes violence, lust, greed, or hatred — content that desensitizes the conscience.</li>
+        <li><strong>Training the eye:</strong> Practice choosing what you watch, read, and scroll through. Ask: "Does this build me up or tear me down?"</li>
+      </ul>
+    </div>
+
+    <div class="challenge">
+      <h4>Challenge</h4>
+      <ol>
+        <li>What is the last thing you watched that did not honor God? How did it affect your mood or thoughts?</li>
+        <li>Can you identify one change you could make this week in what you watch or read?</li>
+        <li>Read Philippians 4:8. Write down five things that pass this test.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="panel" data-sense="hearing" id="panel-hearing">
+    <h2>Hearing — What You Listen To</h2>
+
+    <div class="reading">
+      <h3>Physical Sense: Hearing</h3>
+      <p>Sound waves enter through the pinna, travel down the ear canal, vibrate the eardrum, and are amplified by three tiny bones before reaching the cochlea. Hair cells convert vibrations into signals the brain interprets as speech, music, or noise. Your ear does not filter — <strong>your mind does</strong>.</p>
+
+      <h3>Spiritual Parallel: Discernment of Hearing</h3>
+      <p>What we listen to enters our minds and takes root. The words of others — friends, teachers, media — shape our beliefs and attitudes. Jesus said, <em>"Everyone who hears these words of mine and puts them into practice is like a wise man"</em> (Matthew 7:24).</p>
+    </div>
+
+    <div class="analogy-box">
+      <h4>Hearing and Discernment</h4>
+      <ul>
+        <li><strong>Good (healthy hearing):</strong> Listening to truth, wise counsel, worship music, Scripture, and encouragement that builds faith.</li>
+        <li><strong>Evil (damaged hearing):</strong> Filling your ears with gossip, lies, complaints, vulgar language, or teachings that distort the truth.</li>
+        <li><strong>Training the ear:</strong> Be intentional about what you listen to. Ask: "Does this voice align with God's character?"</li>
+      </ul>
+    </div>
+
+    <div class="challenge">
+      <h4>Challenge</h4>
+      <ol>
+        <li>What kind of music or podcasts do you listen to most? Do they lift your spirit or lower it?</li>
+        <li>Is there someone in your life whose words always leave you feeling discouraged? How can you protect your hearing?</li>
+        <li>Read Romans 10:17. How does faith come by hearing?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="panel" data-sense="smell" id="panel-smell">
+    <h2>Smell — What You Are Near</h2>
+
+    <div class="reading">
+      <h3>Physical Sense: Smell</h3>
+      <p>When you breathe in, air molecules reach the olfactory epithelium at the top of the nasal cavity. About 400 types of olfactory receptors detect different molecules and send signals directly to the brain's limbic system — the center of emotion and memory. That is why a smell can instantly transport you to a distant place or a forgotten moment.</p>
+
+      <h3>Spiritual Parallel: Discernment of Atmosphere</h3>
+      <p>Smell is about <strong>what surrounds you</strong>. You cannot always see the air you breathe, but it enters your body and affects you deeply. In the same way, the spiritual atmosphere you place yourself in — the environments, relationships, and habits you surround yourself with — shapes who you become.</p>
+    </div>
+
+    <div class="analogy-box">
+      <h4>Smell and Discernment</h4>
+      <ul>
+        <li><strong>Good (healthy smell):</strong> Surrounding yourself with environments that promote peace, growth, worship, and genuine community.</li>
+        <li><strong>Evil (damaged smell):</strong> Staying in toxic environments — places of dishonesty, manipulation, substance abuse, or spiritual emptiness — even when nothing "visible" seems wrong.</li>
+        <li><strong>Training the nose:</strong> Learn to detect when something is "off" even before you can explain why. That intuition is the Holy Spirit's voice. Trust it.</li>
+      </ul>
+    </div>
+
+    <div class="challenge">
+      <h4>Challenge</h4>
+      <ol>
+        <li>Think of a situation where you felt something was "not right" but could not explain it. What was that feeling?</li>
+        <li>What environments do you spend the most time in? Are they helping or hurting your spiritual health?</li>
+        <li>Read 2 Corinthians 2:15-16. What does it mean to be the "fragrance of Christ"?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="panel" data-sense="taste" id="panel-taste">
+    <h2>Taste — What You Feed On</h2>
+
+    <div class="reading">
+      <h3>Physical Sense: Taste</h3>
+      <p>When you eat, saliva dissolves chemicals from food. Taste cells inside your taste buds detect five basic flavors: sweet, sour, salty, bitter, and umami. But taste is not just about the tongue — the brain combines taste with smell, memory, and emotion to create the full experience of flavor. What you eat literally becomes part of your body.</p>
+
+      <h3>Spiritual Parallel: Discernment of Input</h3>
+      <p>Taste is about <strong>what you consume</strong> — not just food, but ideas, entertainment, relationships, and experiences. What you take in shapes your character. The Psalmist declared, <em>"Taste and see that the Lord is good"</em> (Psalm 34:8). When you sample God's goodness, your palate changes — you begin to prefer what is wholesome.</p>
+    </div>
+
+    <div class="analogy-box">
+      <h4>Taste and Discernment</h4>
+      <ul>
+        <li><strong>Good (healthy taste):</strong> Feeding on Scripture, prayer, worship, acts of service, and relationships that challenge you to grow.</li>
+        <li><strong>Evil (damaged taste):</strong> Consuming entertainment, habits, or relationships that numb your conscience, exploit others, or pull you away from God's purpose.</li>
+        <li><strong>Training the palate:</strong> Start with small spiritual habits — daily Bible reading, weekly worship, serving someone in need. Over time, your taste changes. What once seemed boring becomes life-giving.</li>
+      </ul>
+    </div>
+
+    <div class="challenge">
+      <h4>Challenge</h4>
+      <ol>
+        <li>What are you "feeding on" most — spiritually speaking? (books, shows, conversations, habits)</li>
+        <li>Read 1 Peter 2:2-3. Why does the writer compare God's word to milk for a newborn?</li>
+        <li>Try this week: replace 30 minutes of one habit with time in Scripture or prayer. Notice how you feel afterward.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="panel" data-sense="touch" id="panel-touch">
+    <h2>Touch — What You Reach For</h2>
+
+    <div class="reading">
+      <h3>Physical Sense: Touch</h3>
+      <p>Your skin is the largest organ of your body. Different receptors detect pressure, temperature, pain, and vibration. Touch is the most intimate sense — it requires contact. You cannot touch something without being changed by it, even slightly. A handshake, a hug, a burn — every touch leaves a mark.</p>
+
+      <h3>Spiritual Parallel: Discernment of Action</h3>
+      <p>Touch is about <strong>what you engage with</strong> — the actions you take, the things you put your hands to, the relationships you enter. Proverbs says, <em>"Do not lay your hand on anyone without thought"</em> (Proverbs 6:30, paraphrased). Every action has consequences. What you reach for reveals what you value.</p>
+    </div>
+
+    <div class="analogy-box">
+      <h4>Touch and Discernment</h4>
+      <ul>
+        <li><strong>Good (healthy touch):</strong> Using your hands to build, create, help, heal, and bless others. Reaching out in generosity, kindness, and service.</li>
+        <li><strong>Evil (damaged touch):</strong> Using your hands to take, manipulate, harm, steal, or control. Reaching for what is not yours or using power to exploit the weak.</li>
+        <li><strong>Training the hands:</strong> Ask yourself before every action: "Will this action reflect God's love or my selfishness?" Practice doing good until it becomes your default.</li>
+      </ul>
+    </div>
+
+    <div class="challenge">
+      <h4>Challenge</h4>
+      <ol>
+        <li>What did you do with your hands this week that you are proud of? What do you regret?</li>
+        <li>Read James 2:14-17. Why is faith without action called "dead"?</li>
+        <li>Plan one intentional act of service this week — use your hands to bless someone.</li>
+      </ol>
+    </div>
+  </section>
+
+</div>
+
+<footer>Spiritual Senses · Science &amp; Faith — connecting the five senses to the biblical principle of distinguishing good from evil.</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+      tab.setAttribute('aria-selected', 'true');
+      const target = tab.dataset.target;
+      panels.forEach(p => p.classList.toggle('active', p.dataset.sense === target));
+    });
+  });
+</script>
+
+</body>
+</html>
