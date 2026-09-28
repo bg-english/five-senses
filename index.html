@@ -104,15 +104,51 @@
   .chip:hover{ border-color:var(--accent); }
   .chip.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
 
+  /* ---------- Part detail card (definition box) ---------- */
   .definition-box{
-    min-height:64px; background:#fff; border:1.5px dashed var(--line); border-radius:10px;
-    padding:14px 18px; font-size:15.5px; display:flex; align-items:center;
+    background:#fff; border:1.5px solid var(--line); border-radius:12px;
+    font-size:15.5px; overflow:hidden;
   }
+  .definition-box .placeholder{ display:block; padding:16px 18px; color:#7d8985; font-style:italic; }
   .definition-box .def-word{ color:var(--accent); font-weight:700; margin-right:6px; }
-  .definition-box .placeholder{ color:#7d8985; font-style:italic; }
   .definition-box .es{ color:#7d8985; font-size:14px; margin-left:6px;}
-  .definition-box .def-section{ padding:14px 20px; border-bottom:1px solid var(--line); }
-  .definition-box .def-section:last-child{ border-bottom:none; }
+
+  /* header: number badge + part name + Spanish term + definition */
+  .def-header{
+    display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px;
+    padding:14px 18px; background:var(--tint); border-bottom:1.5px solid var(--line);
+  }
+  .def-num{
+    flex:none; width:30px; height:30px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:14px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .def-name{
+    font-family:'Fraunces',Georgia,serif; font-size:21px; font-weight:600;
+    color:var(--accent); line-height:1.15;
+  }
+  .def-es{
+    font-size:13px; font-weight:600; color:#5b6a66; background:#fff;
+    border:1px solid var(--line); border-radius:999px; padding:3px 10px;
+  }
+  .def-text{ flex-basis:100%; margin:2px 0 0; font-size:15px; line-height:1.5; color:#212b28; }
+
+  /* body: function at full width, then a grid of condition/treatment/care cards */
+  .def-section{ padding:16px 18px; }
+  .def-func{ background:#fff; border-bottom:1.5px solid var(--line); }
+  .def-func p{ font-size:15px; }
+  .def-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:14px; padding:16px 18px; background:var(--paper-2);
+  }
+  .def-grid .def-section{
+    background:#fff; border:1.5px solid var(--line); border-top-width:4px;
+    border-radius:10px; padding:14px 16px;
+  }
+  .def-grid .def-dis{ border-top-color:#D9436B; background:#FDF3F6; }
+  .def-grid .def-treat{ border-top-color:#5B4FCF; background:#F5F4FD; }
+  .def-grid .def-care{ border-top-color:#2E9E63; background:#F1FAF4; }
+
   .definition-box .def-section h5{
     font-family:'Inter',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase;
     letter-spacing:0.06em; margin:0 0 8px; display:flex; align-items:center; gap:6px;
@@ -120,12 +156,15 @@
   .definition-box .def-section h5 .icon{ font-size:15px; }
   .definition-box .def-section ul{ margin:0; padding-left:18px; }
   .definition-box .def-section li{ margin-bottom:6px; font-size:14.5px; line-height:1.45; }
+  .definition-box .def-section li:last-child{ margin-bottom:0; }
   .definition-box .def-section li strong{ color:var(--accent); }
-  .definition-box .def-section p{ margin:0; font-size:14.5px; line-height:1.45; }
+  .definition-box .def-section p{ margin:0; font-size:14.5px; line-height:1.5; }
   .def-func h5{ color:var(--accent); }
   .def-dis h5{ color:#D9436B; }
   .def-treat h5{ color:#5B4FCF; }
   .def-care h5{ color:#2E9E63; }
+  .def-grid .def-dis li strong{ color:#D9436B; }
+  .def-grid .def-treat li strong{ color:#5B4FCF; }
 
   .reading{ margin-top:34px; }
   .reading h3{ font-size:22px; color:var(--accent); }
@@ -153,6 +192,25 @@
   }
   .funfact strong{ color:var(--accent); }
 
+  /* closing blocks: common conditions + care tips, side by side on wide screens */
+  .end-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px; margin-top:30px;
+  }
+  .end-grid .conditions,
+  .end-grid .care-tips{
+    margin-top:0; background:#fff; border:1.5px solid var(--line);
+    border-top:4px solid var(--accent); border-radius:10px; padding:18px 20px;
+  }
+  .end-grid h4{
+    font-family:'Fraunces',Georgia,serif; font-size:19px; font-weight:600;
+    color:var(--accent); margin:0 0 10px;
+  }
+  .end-grid ul{ margin:0; padding-left:20px; }
+  .end-grid li{ font-size:14.5px; line-height:1.5; margin-bottom:7px; color:#212b28; }
+  .end-grid li:last-child{ margin-bottom:0; }
+  .end-grid li strong{ color:var(--accent); }
+
   .page-nav{ max-width:960px; margin:0 auto; padding:0 28px; display:flex; gap:10px; flex-wrap:wrap; }
   .page-nav a{
     font-family:'Inter',sans-serif; font-size:14px; font-weight:600; text-decoration:none;
@@ -170,6 +228,10 @@
     .tab span.tab-text{ display:none; }
     .marker{ width:24px; height:24px; margin-left:-12px; margin-top:-12px; }
     .marker-num{ font-size:12px; }
+    .def-grid{ grid-template-columns:1fr; padding:14px; gap:12px; }
+    .def-header{ padding:12px 14px; }
+    .def-name{ font-size:19px; }
+    .def-section{ padding:14px; }
   }
 </style>
 </head>
@@ -268,6 +330,7 @@
 
     <div class="funfact"><strong>Did you know?</strong> The image that forms on your retina is upside down. Your brain flips it so the world looks right side up.</div>
 
+    <div class="end-grid">
     <div class="conditions">
       <h4>Common Eye Conditions</h4>
       <ul>
@@ -290,6 +353,7 @@
         <li>Schedule regular eye exams, even if your vision seems fine.</li>
       </ul>
     </div>
+    </div>
   </section>
 
   <section class="panel" data-sense="hearing" id="panel-hearing">
@@ -304,7 +368,7 @@
     </div>
 
     <div class="chips">
-      <button class="chip" data-part="hearing-pinna" data-def="<span class='def-word'>1 · Pinna</span> The visible part of the ear. It collects sound waves and directs them inward.<span class='es'>· pabellón auricular</span>" data-function="The visible part of the outer ear. Made of cartilage covered by skin. Its funnel shape collects sound waves and channels them into the ear canal. Also helps determine the direction of sound." data-diseases="<li><strong>Cauliflower ear:</strong> Blood clot (hematoma) from trauma that deforms the ear cartilage. Common in wrestlers and rugby players.</li><li><strong>Ear infections (otitis externa):</strong> Infection of the pinna skin from swimming or inserting objects.</li><li><strong>Ear deformities:</strong> Congenital differences in pinna shape like prominent ears or microtia (underdeveloped ear).</li>" data-treatments="<li><strong>Ot外部血肿:</strong> Needle drainage and compression dressing within 24 hours. If untreated, surgical removal of scar tissue may be needed.</li><li><strong>Congenital deformities:</strong> Otoplasty surgery (ear pinning) for protruding ears. Reconstruction with rib cartilage for microtia.</li><li><strong>Skin cancer:</strong> Surgical excision, Mohs surgery, or radiation therapy.</li>" data-care="<li>Wear a helmet during contact sports to prevent cauliflower ear.</li><li>Apply sunscreen to ears when outdoors.</li><li>Protect ears from extreme cold to prevent frostbite.</li><li>Never pierce ears with unsterilized equipment.</li>">1 Pinna</button><button class="chip" data-part="hearing-canal" data-def="<span class='def-word'>2 · Ear canal</span> A tube that carries sound waves from the pinna to the eardrum.<span class='es'>· conducto auditivo</span>" data-function="A tube about 2.5 cm long that carries sound from the pinna to the eardrum. Produces cerumen (earwax) that traps dust and protects the ear from infection." data-diseases="<li><strong>Cerumen impaction:</strong> Excess earwax blocking the canal, causing hearing loss and discomfort. Affects 1 in 20 adults.</li><li><strong>Swimmer's ear (otitis externa):</strong> Infection of the ear canal from water retention. Causes pain, swelling, and discharge.</li><li><strong>Canal stenosis:</strong> Narrowing of the ear canal from chronic inflammation or trauma.</li>" data-treatments="<li><strong>Cerumen impaction:</strong> Wax softening drops (carbamide peroxide), irrigation with warm water, or manual removal with curette by a professional.</li><li><strong>Swimmer's ear:</strong> Antibiotic ear drops (ciprofloxacin, polymyxin B) for 7-14 days. Keep ears dry during treatment.</li><li><strong>Canal stenosis:</strong> Surgical widening (canaloplasty) in severe cases.</li>" data-care="<li>Never insert cotton swabs, fingers, or objects into the ear canal -- they push wax deeper.</li><li>Use ear drops after swimming to keep the canal dry.</li><li>Leave earwax alone -- it is the ear's natural cleaning system.</li><li>If you feel hearing loss, see a doctor rather than self-treating.</li>">2 Ear canal</button><button class="chip" data-part="hearing-eardrum" data-def="<span class='def-word'>3 · Eardrum</span> A thin, tight membrane that vibrates when sound waves hit it.<span class='es'>· tímpano</span>" data-function="A thin, cone-shaped membrane that vibrates when sound waves strike it. These vibrations are passed to the ossicles. Also protects the middle ear from water, bacteria, and foreign objects." data-diseases="<li><strong>Perforated eardrum:</strong> A hole or tear in the eardrum from infection, loud noise, or trauma. Causes pain, hearing loss, and sometimes drainage.</li><li><strong>Otitis media:</strong> Middle ear infection behind the eardrum. Causes pain, fever, and fluid buildup. Most common in children.</li><li><strong>Tympanosclerosis:</strong> Scarring and calcification of the eardrum from chronic infections. Can stiffen the membrane and reduce hearing.</li>" data-treatments="<li><strong>Perforated eardrum:</strong> Most heal on their own in 2-3 months. Tympanoplasty (surgical patch) for large or persistent holes.</li><li><strong>Otitis media:</strong> Antibiotics (amoxicillin) for bacterial infections. Tubes (myringotomy) for recurrent cases in children.</li><li><strong>Tympanosclerosis:</strong> Monitored if minor. Tympanoplasty if hearing is affected.</li>" data-care="<li>Never put objects in your ear -- even cotton swabs can cause perforation.</li><li>Treat ear infections promptly to prevent eardrum damage.</li><li>Blow your nose gently (one nostril at a time) to avoid pressure damage.</li><li>Use ear protection during air travel when sick to prevent barotrauma.</li>">3 Eardrum</button><button class="chip" data-part="hearing-ossicles" data-def="<span class='def-word'>4 · Ossicles</span> Three tiny bones that amplify (strengthen) the vibrations from the eardrum.<span class='es'>· huesecillos</span>" data-function="Three tiny bones in the middle ear: hammer (malleus), anvil (incus), and stirrup (stapes). They amplify vibrations from the eardrum and transmit them to the cochlea. The stirrup is the smallest bone in the body." data-diseases="<li><strong>Otosclerosis:</strong> Abnormal bone growth that fixes the stapes in place, causing progressive conductive hearing loss. More common in women.</li><li><strong>Ossicular chain disruption:</strong> Trauma that separates the ossicle chain, causing sudden hearing loss.</li><li><strong>Cholesteatoma:</strong> Abnormal skin growth in the middle ear that can erode the ossicles and cause hearing loss.</li>" data-treatments="<li><strong>Otosclerosis:</strong> Stapedectomy or stapedotomy -- replacing the fixed stapes with a tiny prosthesis. Success rate over 90%.</li><li><strong>Ossicular chain disruption:</strong> Ossiculoplasty -- reconstructing the ossicle chain with prosthetic implants.</li><li><strong>Cholesteatoma:</strong> Surgical removal (canal wall up or down mastoidectomy) to prevent bone erosion.</li>" data-care="<li>Seek medical attention for persistent hearing loss or ear drainage.</li><li>Treat ear infections to prevent ossicle damage.</li><li>During air travel, swallow frequently or use decongestants to equalize pressure.</li>">4 Ossicles</button><button class="chip" data-part="hearing-cochlea" data-def="<span class='def-word'>5 · Cochlea</span> A spiral-shaped organ filled with liquid. It changes vibrations into electrical signals.<span class='es'>· cóclea</span>" data-function="A snail-shaped, fluid-filled organ in the inner ear. Contains thousands of tiny hair cells that convert sound vibrations into electrical signals sent to the brain via the auditory nerve." data-diseases="<li><strong>Presbycusis:</strong> Age-related hearing loss from gradual hair cell death. Affects high frequencies first. Affects 1 in 3 people over 65.</li><li><strong>Noise-induced hearing loss:</strong> Permanent damage to hair cells from loud sounds. Most common preventable cause of hearing loss.</li><li><strong>Ménière's disease:</strong> Excess fluid in the cochlea causing episodes of vertigo, tinnitus, and fluctuating hearing loss.</li>" data-treatments="<li><strong>Presbycusis:</strong> Hearing aids with digital noise reduction. Cochlear implants for severe-to-profound loss.</li><li><strong>Noise-induced hearing loss:</strong> Prevention is key. Hearing aids for existing damage. No treatment can restore lost hair cells yet.</li><li><strong>Ménière's disease:</strong> Low-salt diet, diuretics, intratympanic gentamicin injections, or vestibular nerve section for severe cases.</li>" data-care="<li>Keep headphone volume below 60% and limit use to 60 minutes at a time.</li><li>Wear earplugs at concerts and in noisy environments.</li><li>Avoid sudden exposure to very loud sounds.</li><li>Get a baseline hearing test at age 40, then every 3-5 years.</li>">5 Cochlea</button><button class="chip" data-part="hearing-nerve" data-def="<span class='def-word'>6 · Auditory nerve</span> The nerve that carries sound signals from the cochlea to the brain.<span class='es'>· nervio auditivo</span>" data-function="The cranial nerve (VIII) that carries electrical signals from the cochlea to the brain's auditory cortex. Also carries balance information from the vestibular system." data-diseases="<li><strong>Vestibular schwannoma (acoustic neuroma):</strong> Benign tumor on the auditory nerve. Causes gradual hearing loss and balance problems on one side.</li><li><strong>Auditory neuropathy spectrum disorder (ANSD):</strong> Sound enters the ear normally but is not transmitted properly to the brain. Causes variable hearing loss.</li><li><strong>Acoustic trauma:</strong> Sudden damage from an extremely loud sound (explosion, gunshot). Can cause immediate hearing loss and tinnitus.</li>" data-treatments="<li><strong>Vestibular schwannoma:</strong> Observation for small tumors, stereotactic radiosurgery (Gamma Knife), or microsurgical removal for larger ones.</li><li><strong>ANSD:</strong> Hearing aids for mild cases, cochlear implants for severe cases. Auditory training therapy.</li><li><strong>Acoustic trauma:</strong> High-dose corticosteroids within 2 weeks of injury may restore some hearing.</li>" data-care="<li>Report sudden hearing loss or one-sided tinnitus immediately -- time-sensitive treatment.</li><li>Use hearing protection around heavy machinery or firearms.</li><li>Keep regular audiometric checkups.</li>">6 Auditory nerve</button><button class="chip" data-part="hearing-semicircular" data-def="<span class='def-word'>7 · Semicircular canals</span> Three fluid-filled loops in the inner ear that detect rotational head movements.<span class='es'>· canales semicirculares</span>" data-function="Three fluid-filled loops in the inner ear arranged at right angles to each other. Detect rotational head movements and send signals to the brain to maintain balance and coordinate eye movements." data-diseases="<li><strong>BPPV (benign paroxysmal positional vertigo):</strong> Tiny calcium crystals break loose and enter the canals, causing brief episodes of intense vertigo with head movements.</li><li><strong>Labyrinthitis:</strong> Inflammation of the inner ear (including semicircular canals) from infection. Causes vertigo, nausea, and hearing loss.</li><li><strong>Vestibular hypofunction:</strong> Reduced function of the vestibular system from aging, infection, or medication. Causes chronic imbalance.</li>" data-treatments="<li><strong>BPPV:</strong> Epley maneuver -- a series of head movements to reposition crystals out of the canals. Curable in 80% of cases with one treatment.</li><li><strong>Labyrinthitis:</strong> Vestibular rehabilitation therapy (VRT), antihistamines for vertigo, and steroids in early stages.</li><li><strong>Vestibular hypofunction:</strong> VRT exercises to retrain the brain to use remaining balance signals. Takes 6-12 weeks.</li>" data-care="<li>Move slowly when getting up from bed or a chair if you have BPPV.</li><li>Stay hydrated -- dehydration worsens dizziness.</li><li>Avoid sudden head movements during vertigo episodes.</li><li>Complete VRT exercises as prescribed for best recovery.</li>">7 Semicircular canals</button><button class="chip" data-part="hearing-eustachian" data-def="<span class='def-word'>8 · Eustachian tube</span> A narrow tube connecting the middle ear to the back of the nose.<span class='es'>· trompa de Eustaquio</span>" data-function="A narrow tube connecting the middle ear to the back of the nose (nasopharynx). Equalizes air pressure on both sides of the eardrum. Opens when you swallow, yawn, or chew." data-diseases="<li><strong>Eustachian tube dysfunction:</strong> The tube fails to open properly, causing muffled hearing, popping, and a feeling of fullness in the ear. Common with colds and allergies.</li><li><strong>Otitis media with effusion (OME):</strong> Fluid accumulates in the middle ear because the Eustachian tube is blocked. Common in children.</li><li><strong>Patulous Eustachian tube:</strong> The tube stays open too much, causing autophony (hearing your own voice and breathing loudly in your ear).</li>" data-treatments="<li><strong>Eustachian tube dysfunction:</strong> Nasal steroids (fluticasone), decongestants, and autoinsufflation (Valsalva maneuver). Balloon tuboplasty for chronic cases.</li><li><strong>OME:</strong> Watchful waiting in children -- most resolve in 3 months. Ear tubes (myringotomy) if persistent.</li><li><strong>Patulous tube:</strong> Weight gain if underweight, estrogen nasal drops, or surgical narrowing of the tube.</li>" data-care="<li>Swallow, chew gum, or yawn during altitude changes to equalize pressure.</li><li>Treat nasal congestion promptly -- it blocks the Eustachian tube.</li><li>Never fly with an active ear infection.</li><li>Use nasal saline spray to keep the tube clear.</li>">8 Eustachian tube</button>
+      <button class="chip" data-part="hearing-pinna" data-def="<span class='def-word'>1 · Pinna</span> The visible part of the ear. It collects sound waves and directs them inward.<span class='es'>· pabellón auricular</span>" data-function="The visible part of the outer ear. Made of cartilage covered by skin. Its funnel shape collects sound waves and channels them into the ear canal. Also helps determine the direction of sound." data-diseases="<li><strong>Cauliflower ear:</strong> Blood clot (hematoma) from trauma that deforms the ear cartilage. Common in wrestlers and rugby players.</li><li><strong>Ear infections (otitis externa):</strong> Infection of the pinna skin from swimming or inserting objects.</li><li><strong>Ear deformities:</strong> Congenital differences in pinna shape like prominent ears or microtia (underdeveloped ear).</li>" data-treatments="<li><strong>Aural hematoma:</strong> Needle drainage and compression dressing within 24 hours. If untreated, surgical removal of scar tissue may be needed.</li><li><strong>Congenital deformities:</strong> Otoplasty surgery (ear pinning) for protruding ears. Reconstruction with rib cartilage for microtia.</li><li><strong>Skin cancer:</strong> Surgical excision, Mohs surgery, or radiation therapy.</li>" data-care="<li>Wear a helmet during contact sports to prevent cauliflower ear.</li><li>Apply sunscreen to ears when outdoors.</li><li>Protect ears from extreme cold to prevent frostbite.</li><li>Never pierce ears with unsterilized equipment.</li>">1 Pinna</button><button class="chip" data-part="hearing-canal" data-def="<span class='def-word'>2 · Ear canal</span> A tube that carries sound waves from the pinna to the eardrum.<span class='es'>· conducto auditivo</span>" data-function="A tube about 2.5 cm long that carries sound from the pinna to the eardrum. Produces cerumen (earwax) that traps dust and protects the ear from infection." data-diseases="<li><strong>Cerumen impaction:</strong> Excess earwax blocking the canal, causing hearing loss and discomfort. Affects 1 in 20 adults.</li><li><strong>Swimmer's ear (otitis externa):</strong> Infection of the ear canal from water retention. Causes pain, swelling, and discharge.</li><li><strong>Canal stenosis:</strong> Narrowing of the ear canal from chronic inflammation or trauma.</li>" data-treatments="<li><strong>Cerumen impaction:</strong> Wax softening drops (carbamide peroxide), irrigation with warm water, or manual removal with curette by a professional.</li><li><strong>Swimmer's ear:</strong> Antibiotic ear drops (ciprofloxacin, polymyxin B) for 7-14 days. Keep ears dry during treatment.</li><li><strong>Canal stenosis:</strong> Surgical widening (canaloplasty) in severe cases.</li>" data-care="<li>Never insert cotton swabs, fingers, or objects into the ear canal -- they push wax deeper.</li><li>Use ear drops after swimming to keep the canal dry.</li><li>Leave earwax alone -- it is the ear's natural cleaning system.</li><li>If you feel hearing loss, see a doctor rather than self-treating.</li>">2 Ear canal</button><button class="chip" data-part="hearing-eardrum" data-def="<span class='def-word'>3 · Eardrum</span> A thin, tight membrane that vibrates when sound waves hit it.<span class='es'>· tímpano</span>" data-function="A thin, cone-shaped membrane that vibrates when sound waves strike it. These vibrations are passed to the ossicles. Also protects the middle ear from water, bacteria, and foreign objects." data-diseases="<li><strong>Perforated eardrum:</strong> A hole or tear in the eardrum from infection, loud noise, or trauma. Causes pain, hearing loss, and sometimes drainage.</li><li><strong>Otitis media:</strong> Middle ear infection behind the eardrum. Causes pain, fever, and fluid buildup. Most common in children.</li><li><strong>Tympanosclerosis:</strong> Scarring and calcification of the eardrum from chronic infections. Can stiffen the membrane and reduce hearing.</li>" data-treatments="<li><strong>Perforated eardrum:</strong> Most heal on their own in 2-3 months. Tympanoplasty (surgical patch) for large or persistent holes.</li><li><strong>Otitis media:</strong> Antibiotics (amoxicillin) for bacterial infections. Tubes (myringotomy) for recurrent cases in children.</li><li><strong>Tympanosclerosis:</strong> Monitored if minor. Tympanoplasty if hearing is affected.</li>" data-care="<li>Never put objects in your ear -- even cotton swabs can cause perforation.</li><li>Treat ear infections promptly to prevent eardrum damage.</li><li>Blow your nose gently (one nostril at a time) to avoid pressure damage.</li><li>Use ear protection during air travel when sick to prevent barotrauma.</li>">3 Eardrum</button><button class="chip" data-part="hearing-ossicles" data-def="<span class='def-word'>4 · Ossicles</span> Three tiny bones that amplify (strengthen) the vibrations from the eardrum.<span class='es'>· huesecillos</span>" data-function="Three tiny bones in the middle ear: hammer (malleus), anvil (incus), and stirrup (stapes). They amplify vibrations from the eardrum and transmit them to the cochlea. The stirrup is the smallest bone in the body." data-diseases="<li><strong>Otosclerosis:</strong> Abnormal bone growth that fixes the stapes in place, causing progressive conductive hearing loss. More common in women.</li><li><strong>Ossicular chain disruption:</strong> Trauma that separates the ossicle chain, causing sudden hearing loss.</li><li><strong>Cholesteatoma:</strong> Abnormal skin growth in the middle ear that can erode the ossicles and cause hearing loss.</li>" data-treatments="<li><strong>Otosclerosis:</strong> Stapedectomy or stapedotomy -- replacing the fixed stapes with a tiny prosthesis. Success rate over 90%.</li><li><strong>Ossicular chain disruption:</strong> Ossiculoplasty -- reconstructing the ossicle chain with prosthetic implants.</li><li><strong>Cholesteatoma:</strong> Surgical removal (canal wall up or down mastoidectomy) to prevent bone erosion.</li>" data-care="<li>Seek medical attention for persistent hearing loss or ear drainage.</li><li>Treat ear infections to prevent ossicle damage.</li><li>During air travel, swallow frequently or use decongestants to equalize pressure.</li>">4 Ossicles</button><button class="chip" data-part="hearing-cochlea" data-def="<span class='def-word'>5 · Cochlea</span> A spiral-shaped organ filled with liquid. It changes vibrations into electrical signals.<span class='es'>· cóclea</span>" data-function="A snail-shaped, fluid-filled organ in the inner ear. Contains thousands of tiny hair cells that convert sound vibrations into electrical signals sent to the brain via the auditory nerve." data-diseases="<li><strong>Presbycusis:</strong> Age-related hearing loss from gradual hair cell death. Affects high frequencies first. Affects 1 in 3 people over 65.</li><li><strong>Noise-induced hearing loss:</strong> Permanent damage to hair cells from loud sounds. Most common preventable cause of hearing loss.</li><li><strong>Ménière's disease:</strong> Excess fluid in the cochlea causing episodes of vertigo, tinnitus, and fluctuating hearing loss.</li>" data-treatments="<li><strong>Presbycusis:</strong> Hearing aids with digital noise reduction. Cochlear implants for severe-to-profound loss.</li><li><strong>Noise-induced hearing loss:</strong> Prevention is key. Hearing aids for existing damage. No treatment can restore lost hair cells yet.</li><li><strong>Ménière's disease:</strong> Low-salt diet, diuretics, intratympanic gentamicin injections, or vestibular nerve section for severe cases.</li>" data-care="<li>Keep headphone volume below 60% and limit use to 60 minutes at a time.</li><li>Wear earplugs at concerts and in noisy environments.</li><li>Avoid sudden exposure to very loud sounds.</li><li>Get a baseline hearing test at age 40, then every 3-5 years.</li>">5 Cochlea</button><button class="chip" data-part="hearing-nerve" data-def="<span class='def-word'>6 · Auditory nerve</span> The nerve that carries sound signals from the cochlea to the brain.<span class='es'>· nervio auditivo</span>" data-function="The cranial nerve (VIII) that carries electrical signals from the cochlea to the brain's auditory cortex. Also carries balance information from the vestibular system." data-diseases="<li><strong>Vestibular schwannoma (acoustic neuroma):</strong> Benign tumor on the auditory nerve. Causes gradual hearing loss and balance problems on one side.</li><li><strong>Auditory neuropathy spectrum disorder (ANSD):</strong> Sound enters the ear normally but is not transmitted properly to the brain. Causes variable hearing loss.</li><li><strong>Acoustic trauma:</strong> Sudden damage from an extremely loud sound (explosion, gunshot). Can cause immediate hearing loss and tinnitus.</li>" data-treatments="<li><strong>Vestibular schwannoma:</strong> Observation for small tumors, stereotactic radiosurgery (Gamma Knife), or microsurgical removal for larger ones.</li><li><strong>ANSD:</strong> Hearing aids for mild cases, cochlear implants for severe cases. Auditory training therapy.</li><li><strong>Acoustic trauma:</strong> High-dose corticosteroids within 2 weeks of injury may restore some hearing.</li>" data-care="<li>Report sudden hearing loss or one-sided tinnitus immediately -- time-sensitive treatment.</li><li>Use hearing protection around heavy machinery or firearms.</li><li>Keep regular audiometric checkups.</li>">6 Auditory nerve</button><button class="chip" data-part="hearing-semicircular" data-def="<span class='def-word'>7 · Semicircular canals</span> Three fluid-filled loops in the inner ear that detect rotational head movements.<span class='es'>· canales semicirculares</span>" data-function="Three fluid-filled loops in the inner ear arranged at right angles to each other. Detect rotational head movements and send signals to the brain to maintain balance and coordinate eye movements." data-diseases="<li><strong>BPPV (benign paroxysmal positional vertigo):</strong> Tiny calcium crystals break loose and enter the canals, causing brief episodes of intense vertigo with head movements.</li><li><strong>Labyrinthitis:</strong> Inflammation of the inner ear (including semicircular canals) from infection. Causes vertigo, nausea, and hearing loss.</li><li><strong>Vestibular hypofunction:</strong> Reduced function of the vestibular system from aging, infection, or medication. Causes chronic imbalance.</li>" data-treatments="<li><strong>BPPV:</strong> Epley maneuver -- a series of head movements to reposition crystals out of the canals. Curable in 80% of cases with one treatment.</li><li><strong>Labyrinthitis:</strong> Vestibular rehabilitation therapy (VRT), antihistamines for vertigo, and steroids in early stages.</li><li><strong>Vestibular hypofunction:</strong> VRT exercises to retrain the brain to use remaining balance signals. Takes 6-12 weeks.</li>" data-care="<li>Move slowly when getting up from bed or a chair if you have BPPV.</li><li>Stay hydrated -- dehydration worsens dizziness.</li><li>Avoid sudden head movements during vertigo episodes.</li><li>Complete VRT exercises as prescribed for best recovery.</li>">7 Semicircular canals</button><button class="chip" data-part="hearing-eustachian" data-def="<span class='def-word'>8 · Eustachian tube</span> A narrow tube connecting the middle ear to the back of the nose.<span class='es'>· trompa de Eustaquio</span>" data-function="A narrow tube connecting the middle ear to the back of the nose (nasopharynx). Equalizes air pressure on both sides of the eardrum. Opens when you swallow, yawn, or chew." data-diseases="<li><strong>Eustachian tube dysfunction:</strong> The tube fails to open properly, causing muffled hearing, popping, and a feeling of fullness in the ear. Common with colds and allergies.</li><li><strong>Otitis media with effusion (OME):</strong> Fluid accumulates in the middle ear because the Eustachian tube is blocked. Common in children.</li><li><strong>Patulous Eustachian tube:</strong> The tube stays open too much, causing autophony (hearing your own voice and breathing loudly in your ear).</li>" data-treatments="<li><strong>Eustachian tube dysfunction:</strong> Nasal steroids (fluticasone), decongestants, and autoinsufflation (Valsalva maneuver). Balloon tuboplasty for chronic cases.</li><li><strong>OME:</strong> Watchful waiting in children -- most resolve in 3 months. Ear tubes (myringotomy) if persistent.</li><li><strong>Patulous tube:</strong> Weight gain if underweight, estrogen nasal drops, or surgical narrowing of the tube.</li>" data-care="<li>Swallow, chew gum, or yawn during altitude changes to equalize pressure.</li><li>Treat nasal congestion promptly -- it blocks the Eustachian tube.</li><li>Never fly with an active ear infection.</li><li>Use nasal saline spray to keep the tube clear.</li>">8 Eustachian tube</button>
     </div>
     <div class="definition-box" id="defbox-hearing"><span class="placeholder">Click a number or word to see its meaning here.</span></div>
 
@@ -345,6 +409,7 @@
 
     <div class="funfact"><strong>Did you know?</strong> The stirrup, one of the ossicles, is the smallest bone in your whole body — smaller than a grain of rice.</div>
 
+    <div class="end-grid">
     <div class="conditions">
       <h4>Common Ear Conditions</h4>
       <ul>
@@ -365,6 +430,7 @@
         <li>Never insert cotton swabs or sharp objects into the ear canal.</li>
         <li>Get your hearing checked regularly, especially if you work around loud noise.</li>
       </ul>
+    </div>
     </div>
   </section>
 
@@ -420,6 +486,7 @@
 
     <div class="funfact"><strong>Did you know?</strong> Smell is closely connected to memory. That is why a smell can suddenly remind you of a place or a person.</div>
 
+    <div class="end-grid">
     <div class="conditions">
       <h4>Common Nose &amp; Smell Conditions</h4>
       <ul>
@@ -440,6 +507,7 @@
         <li>Use a humidifier in dry environments to prevent nasal dryness.</li>
         <li>If you lose your sense of smell suddenly, see a doctor — early treatment improves recovery.</li>
       </ul>
+    </div>
     </div>
   </section>
 
@@ -495,6 +563,7 @@
 
     <div class="funfact"><strong>Did you know?</strong> Flavor is a mix of taste AND smell. That is why food tastes different when you have a cold and your nose is blocked.</div>
 
+    <div class="end-grid">
     <div class="conditions">
       <h4>Common Taste Conditions</h4>
       <ul>
@@ -515,6 +584,7 @@
         <li>Avoid extremely hot food or drinks that can damage taste buds.</li>
         <li>If you notice a persistent change in taste, consult a doctor — it may signal an infection or medication side effect.</li>
       </ul>
+    </div>
     </div>
   </section>
 
@@ -570,6 +640,7 @@
 
     <div class="funfact"><strong>Did you know?</strong> Your fingertips and lips have many more receptors than your back. That is why they are much more sensitive to touch.</div>
 
+    <div class="end-grid">
     <div class="conditions">
       <h4>Common Skin &amp; Touch Conditions</h4>
       <ul>
@@ -591,6 +662,7 @@
         <li>Maintain good posture and take breaks from repetitive hand movements to prevent nerve compression.</li>
       </ul>
     </div>
+    </div>
   </section>
 
 </div>
@@ -605,6 +677,12 @@
       tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
       tab.setAttribute('aria-selected', 'true');
       const target = tab.dataset.target;
+      if (target === 'quiz') {
+        const active = document.querySelector('.panel.active');
+        const quiz = active && active.querySelector('.quiz');
+        if (quiz) quiz.scrollIntoView({ behavior:'smooth', block:'start' });
+        return;
+      }
       panels.forEach(p => p.classList.toggle('active', p.dataset.sense === target));
     });
   });
@@ -617,19 +695,36 @@
     if (!chip) return;
     let html = '';
     if (chip.dataset.def) {
-      html += '<div class="def-header">' + chip.dataset.def + '</div>';
+      const label = chip.textContent.trim();
+      const num = label.split(' ')[0];
+      const name = label.slice(num.length + 1);
+      const es = (chip.dataset.def.match(/<span class='es'>(.*?)<\/span>/) || [,''])[1].replace(/^\s*·\s*/, '').trim();
+      const text = chip.dataset.def
+        .replace(/<span class='def-word'>.*?<\/span>/, '')
+        .replace(/<span class='es'>.*?<\/span>/, '')
+        .trim();
+      html += '<div class="def-header">'
+        + '<span class="def-num">' + num + '</span>'
+        + '<span class="def-name">' + name + '</span>'
+        + (es ? '<span class="def-es">' + es + '</span>' : '')
+        + '<p class="def-text">' + text + '</p>'
+        + '</div>';
     }
     if (chip.dataset.function) {
       html += '<div class="def-section def-func"><h5><span class="icon">&#9889;</span> Function</h5><p>' + chip.dataset.function + '</p></div>';
     }
-    if (chip.dataset.diseases) {
-      html += '<div class="def-section def-dis"><h5><span class="icon">&#127979;</span> Related Conditions</h5><ul>' + chip.dataset.diseases + '</ul></div>';
-    }
-    if (chip.dataset.treatments) {
-      html += '<div class="def-section def-treat"><h5><span class="icon">&#128138;</span> Recent Treatments</h5><ul>' + chip.dataset.treatments + '</ul></div>';
-    }
-    if (chip.dataset.care) {
-      html += '<div class="def-section def-care"><h5><span class="icon">&#128737;&#65039;</span> How to Care</h5><ul>' + chip.dataset.care + '</ul></div>';
+    if (chip.dataset.diseases || chip.dataset.treatments || chip.dataset.care) {
+      html += '<div class="def-grid">';
+      if (chip.dataset.diseases) {
+        html += '<div class="def-section def-dis"><h5><span class="icon">&#127979;</span> Related Conditions</h5><ul>' + chip.dataset.diseases + '</ul></div>';
+      }
+      if (chip.dataset.treatments) {
+        html += '<div class="def-section def-treat"><h5><span class="icon">&#128138;</span> Recent Treatments</h5><ul>' + chip.dataset.treatments + '</ul></div>';
+      }
+      if (chip.dataset.care) {
+        html += '<div class="def-section def-care"><h5><span class="icon">&#128737;&#65039;</span> How to Care</h5><ul>' + chip.dataset.care + '</ul></div>';
+      }
+      html += '</div>';
     }
     box.innerHTML = html;
   }
