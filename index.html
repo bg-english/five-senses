@@ -169,6 +169,17 @@
   .reading{ margin-top:34px; }
   .reading h3{ font-size:22px; color:var(--accent); }
   .reading p{ font-size:16.5px; max-width:70ch; color:#212b28; margin:0 0 14px; }
+  .reading-media{
+    margin:0 0 18px; background:#fff; border:1.5px solid var(--line);
+    border-radius:12px; padding:10px;
+  }
+  .reading-media video{
+    display:block; width:100%; height:auto; aspect-ratio:16/9;
+    border-radius:8px; background:#000;
+  }
+  .reading-media figcaption{
+    font-size:13.5px; color:#7d8985; margin-top:8px; padding:0 4px 2px;
+  }
 
   .quiz{ margin-top:34px; }
   .quiz h3{ font-size:22px; color:var(--accent); }
@@ -296,6 +307,12 @@
     <div class="reading">
       <h3>The Path of Light</h3>
       <p>Your eyes collect light and turn it into pictures your brain can understand. Let's follow the path of light through the eye.</p>
+      <figure class="reading-media">
+        <video src="path-of-light.mp4" autoplay muted loop playsinline controls preload="metadata">
+          Your browser does not support HTML5 video. <a href="path-of-light.mp4">Download the clip</a>.
+        </video>
+        <figcaption>Fig. 2 — The path of light through the eye (10-second animation).</figcaption>
+      </figure>
       <p>First, light enters through the <strong>cornea</strong>, a clear window that bends the light and starts to focus it. Next, light passes through the <strong>pupil</strong>, the small opening controlled by the <strong>iris</strong>. In bright light the pupil gets smaller; in the dark it gets bigger.</p>
       <p>The light then travels through the <strong>lens</strong>, which changes shape to focus objects that are close or far away. It reaches the <strong>retina</strong>, at the back of the eye, where special cells change light into electrical signals.</p>
       <p>Finally, the <strong>optic nerve</strong> carries these signals to the brain, which creates the image you see. The <strong>sclera</strong>, the white part of the eye, does not focus light — it simply protects the delicate parts inside.</p>
