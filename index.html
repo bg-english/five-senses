@@ -3,46 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Five Senses — Interactive Field Guide (8th Grade Science &amp; English)</title>
-  <meta name="description" content="Interactive CLIL field guide to the five human senses for 8th grade: sight, hearing, smell, taste, and touch. Includes clean SVG diagrams, audio vocabulary, hands-on experiments, and formative quizzes.">
-  <meta property="og:title" content="The Five Senses — Interactive Field Guide">
-  <meta property="og:description" content="Explore how every sense follows the same path: stimulus → receptor → nerve → brain. Learn the science and the English vocabulary.">
+  <title>The Five Senses — Interactive CLIL Field Guide (8th Grade Science &amp; English)</title>
+  <meta name="description" content="Interactive CLIL field guide to human sensory biology for 8th grade: sight, hearing, smell, taste, and touch. Features precise SVG diagrams, active pronunciation coach, POE inquiry labs, and live writing validator.">
+  <meta property="og:title" content="The Five Senses — Interactive CLIL Field Guide">
+  <meta property="og:description" content="Explore how every sense follows the universal biological path: Stimulus → Sense Organ → Sensory Transduction → Nerve → Brain Cortex.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%234338CA'/%3E%3Cpath d='M6 16C9 10 12.5 8 16 8s7 2 10 8c-3 6-6.5 8-10 8s-7-2-10-8z' fill='none' stroke='%23fff' stroke-width='2.2'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23fff'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <!-- Header & Masthead -->
+  <!-- Masthead Header -->
   <header class="masthead">
     <div class="container">
-      <div class="sub-nav">
-        <a href="index.html" class="sub-nav-link" aria-current="page" style="background:var(--ink); color:#FFF;">🔬 The Five Senses (Science &amp; English)</a>
-        <a href="biblical_senses.html" class="sub-nav-link">📖 Spiritual Senses — Hebrews 5:14</a>
+      <div class="masthead-top">
+        <div class="sub-nav">
+          <a href="index.html" class="sub-nav-link active" aria-current="page">🔬 The Five Senses (Science &amp; English)</a>
+          <a href="biblical_senses.html" class="sub-nav-link">📖 Spiritual Senses — Hebrews 5:14</a>
+        </div>
+
+        <!-- Scaffolding Mode Switcher (A2 Guided vs B1 Immersion) -->
+        <div class="scaffolding-switcher" role="radiogroup" aria-label="CLIL Scaffolding Level">
+          <button class="scaffold-btn active" id="btn-scaffold-guided" onclick="setScaffoldingMode('guided')" aria-pressed="true" title="Shows optional Spanish translations and vocabulary hints">🟢 Guided CLIL (A2)</button>
+          <button class="scaffold-btn" id="btn-scaffold-immersion" onclick="setScaffoldingMode('immersion')" aria-pressed="false" title="100% English immersion with contextual glossary">🔵 Immersion (B1)</button>
+        </div>
       </div>
 
-      <div class="kicker">8th Grade Science &amp; English (CLIL) · Unit: The Human Body</div>
+      <div class="kicker">8th Grade Science &amp; English (CLIL) · Unit: The Human Nervous System</div>
       <h1>The Five Senses</h1>
-      <p class="lede">An interactive study guide to how your body reads the world. Explore each sense organ, listen to the English vocabulary, practice with active exercises, and test what you understand.</p>
+      <p class="lede">An interactive field guide to how your body reads the world. Explore specialized anatomy, practice with our real-time pronunciation coach, test your hypotheses in mini-labs, and validate your scientific writing.</p>
 
-      <!-- Unifying Model Banner -->
+      <!-- Unifying Biological Model Banner -->
       <div class="big-idea-banner" role="region" aria-label="Unifying scientific model">
         <div class="big-idea-title">
-          <span>🧠 The Big Idea — Every sense follows the same path:</span>
+          <span>🧠 The Big Idea — Every sense follows the same universal neural path:</span>
         </div>
         <div class="big-idea-flow">
-          <span class="big-idea-node">1. Stimulus <small style="font-weight:400; color:var(--muted)">(Estímulo)</small></span>
+          <span class="big-idea-node">1. Stimulus <small>(Estímulo físico/químico)</small></span>
           <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">2. Sense Organ <small style="font-weight:400; color:var(--muted)">(Órgano)</small></span>
+          <span class="big-idea-node">2. Sense Organ <small>(Órgano receptor)</small></span>
           <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">3. Receptor Cells <small style="font-weight:400; color:var(--muted)">(Receptores)</small></span>
+          <span class="big-idea-node">3. Transduction <small>(Células receptoras)</small></span>
           <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">4. Nerve <small style="font-weight:400; color:var(--muted)">(Nervio)</small></span>
+          <span class="big-idea-node">4. Sensory Nerve <small>(Nervio craneal / espinal)</small></span>
           <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">5. Brain <small style="font-weight:400; color:var(--muted)">(Cerebro)</small></span>
+          <span class="big-idea-node">5. Brain Cortex <small>(Corteza cerebral)</small></span>
         </div>
       </div>
     </div>
@@ -54,22 +62,27 @@
       <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-sight" id="tab-sight" data-target="sight">
         <span aria-hidden="true">👁️</span>
         <span>Sight</span>
+        <span class="tab-badge" id="badge-sight">0%</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-hearing" id="tab-hearing" data-target="hearing">
         <span aria-hidden="true">👂</span>
         <span>Hearing</span>
+        <span class="tab-badge" id="badge-hearing">0%</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-smell" id="tab-smell" data-target="smell">
         <span aria-hidden="true">👃</span>
         <span>Smell</span>
+        <span class="tab-badge" id="badge-smell">0%</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-taste" id="tab-taste" data-target="taste">
         <span aria-hidden="true">👅</span>
         <span>Taste</span>
+        <span class="tab-badge" id="badge-taste">0%</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-touch" id="tab-touch" data-target="touch">
         <span aria-hidden="true">✋</span>
         <span>Touch</span>
+        <span class="tab-badge" id="badge-touch">0%</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-compare" id="tab-compare" data-target="compare">
         <span aria-hidden="true">📊</span>
@@ -77,7 +90,7 @@
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-glossary" id="tab-glossary" data-target="glossary">
         <span aria-hidden="true">🗂️</span>
-        <span>Flashcards &amp; Glossary</span>
+        <span>Flashcards &amp; Roots</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-final" id="tab-final" data-target="final">
         <span aria-hidden="true">🎓</span>
@@ -89,7 +102,7 @@
       </button>
     </nav>
 
-    <!-- Five Sense Panels (Populated by js/app.js) -->
+    <!-- Five Sense Panels (Rendered dynamically by js/app.js) -->
     <section class="sense-panel active" id="panel-sight" data-sense="sight" role="tabpanel" aria-labelledby="tab-sight"></section>
     <section class="sense-panel" id="panel-hearing" data-sense="hearing" role="tabpanel" aria-labelledby="tab-hearing"></section>
     <section class="sense-panel" id="panel-smell" data-sense="smell" role="tabpanel" aria-labelledby="tab-smell"></section>
@@ -99,9 +112,9 @@
     <!-- Compare & Synthesize Panel -->
     <section class="sense-panel" id="panel-compare" role="tabpanel" aria-labelledby="tab-compare">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Synthesis · Síntesis de la unidad</span>
+        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Synthesis &amp; Cross-Cutting Concepts</span>
         <h2 class="sense-title">Compare the Five Senses</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">Every sense organ is a specialized detector, but they all follow the exact same biological pattern. Study the summary table or switch to <strong>Practice Mode</strong> to fill in the missing pieces yourself.</p>
+        <p style="color:var(--ink-light); margin-top:6px;">Every sense organ is a specialized bio-detector, but they all converge on the same five-step neural architecture. Study the comparative synthesis table or switch to <strong>Interactive Practice Mode</strong> to test your mastery.</p>
       </div>
 
       <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
@@ -112,12 +125,12 @@
       <div class="compare-table-wrap" id="compare-table-content" aria-live="polite"></div>
     </section>
 
-    <!-- Glossary & Flashcards Panel -->
+    <!-- Flashcards, Roots & Glossary Panel -->
     <section class="sense-panel" id="panel-glossary" role="tabpanel" aria-labelledby="tab-glossary">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Vocabulary · 38 Key Terms</span>
-        <h2 class="sense-title">Flashcards &amp; Bilingüal Glossary</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">Search any word in English or Spanish, listen to its pronunciation, or flip flashcards to test your memory.</p>
+        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Vocabulary &amp; Scientific Morphology</span>
+        <h2 class="sense-title">Flashcards, Scientific Roots &amp; Glossary</h2>
+        <p style="color:var(--ink-light); margin-top:6px;">Master key terminology with bidirectional flashcards (Term ⇄ Definition), test your pronunciation, or learn the Greek and Latin roots behind scientific vocabulary.</p>
       </div>
       <div id="glossary-panel-content"></div>
     </section>
@@ -125,14 +138,14 @@
     <!-- Final Exam Panel -->
     <section class="sense-panel" id="panel-final" role="tabpanel" aria-labelledby="tab-final">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Summative Assessment · 16 Questions</span>
-        <h2 class="sense-title">Final Unit Exam</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">Test your knowledge across all five senses and how they work together. Enter your name to print or save your results report.</p>
+        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Summative Assessment · NGSS &amp; CEFR Aligned</span>
+        <h2 class="sense-title">Final Unit Assessment</h2>
+        <p style="color:var(--ink-light); margin-top:6px;">Evaluate your understanding across all five senses, sensory transduction, and cortical processing. Enter your name below to generate and print your official Student Mastery Certificate.</p>
       </div>
 
-      <div style="background:var(--paper-tint); padding:16px; border-radius:10px; margin-bottom:20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-        <label for="student-name" style="font-weight:700;">Student Name:</label>
-        <input type="text" id="student-name" placeholder="Write your full name..." style="padding:8px 12px; border:1.5px solid var(--line); border-radius:6px; font-size:0.95rem; flex:1; min-width:220px;">
+      <div style="background:var(--paper-tint); padding:16px; border-radius:12px; margin-bottom:20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <label for="student-name" style="font-weight:700;">Student Full Name:</label>
+        <input type="text" id="student-name" placeholder="Write your full name..." style="padding:8px 12px; border:1.5px solid var(--line); border-radius:8px; font-size:0.95rem; flex:1; min-width:220px;">
         <button class="action-btn" style="padding:8px 16px; font-size:0.9rem; background:var(--muted);" onclick="rebuildFinalExam()">🔀 New Shuffled Exam</button>
       </div>
 
@@ -147,15 +160,15 @@
     <!-- Teacher Guide Panel -->
     <section class="sense-panel" id="panel-teacher" role="tabpanel" aria-labelledby="tab-teacher">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">For Educators · Guía Docente CLIL</span>
-        <h2 class="sense-title">Teacher Guide &amp; Lesson Plan</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">How to use this resource in an 8th-grade Science / English (CLIL / AICLE) classroom.</p>
+        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">For Educators · Guía Docente CLIL / AICLE</span>
+        <h2 class="sense-title">Teacher Guide &amp; Lesson Sequence</h2>
+        <p style="color:var(--ink-light); margin-top:6px;">Pedagogical framework, laboratory materials, language scaffolding strategies, and rubric for an 8th-grade bilingual Science unit.</p>
       </div>
       <div id="teacher-guide-content"></div>
     </section>
   </main>
 
-  <!-- Glossary Modal -->
+  <!-- Accessible Glossary Modal -->
   <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-window">
       <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
@@ -166,8 +179,8 @@
 
   <footer>
     <div class="container">
-      <p><strong>Science &amp; English · The Five Senses</strong> — An interactive reading, vocabulary, and review unit for 8th grade.</p>
-      <p style="margin-top:6px; font-size:0.82rem;">⚠️ <em>Educational notice:</em> The health and care sections on this site are for school learning only and do not constitute medical advice.</p>
+      <p><strong>Science &amp; English · The Five Senses</strong> — Interactive CLIL Field Guide for 8th Grade.</p>
+      <p style="margin-top:6px; font-size:0.82rem;">⚠️ <em>Educational Notice:</em> Anatomy and sensory care recommendations are designed for educational exploration only and do not constitute clinical medical advice.</p>
     </div>
   </footer>
 

@@ -1,572 +1,816 @@
 /* =========================================================
-   The Five Senses — learning content
-   Conventions:
-   - In every multiple-choice item, options[0] is the correct
-     answer. The app shuffles the options at runtime, so the
-     page never shows which one is correct.
-   - In reading paragraphs, [[wordId|text]] creates a
-     clickable glossary word.
+   The Five Senses — CLIL & Scientific Biology Learning Engine
+   8th Grade Science & English (CEFR A2-B1)
+   NGSS Standards: MS-LS1-8 (Sensory Receptors & Brain Processing)
    ========================================================= */
 
 const UNIT = {
   title: "The Five Senses",
-  subtitle: "How your body reads the world",
-  bigIdea: "Every sense follows the same path: stimulus → receptor → nerve → brain.",
-  bigIdeaEs: "Todos los sentidos siguen el mismo camino: estímulo → receptor → nervio → cerebro.",
+  subtitle: "Interactive CLIL Field Guide to Sensory Biology & Scientific English",
+  bigIdea: "Every sense follows the same universal path: Stimulus → Sense Organ → Receptor Cells (Sensory Transduction) → Sensory Nerve → Brain Cortex.",
+  bigIdeaEs: "Todos los sentidos siguen el mismo camino universal: Estímulo → Órgano sensorial → Células receptoras (Transducción sensorial) → Nervio sensorial → Corteza cerebral.",
   objectives: [
-    "I can name the organ and the main parts of each sense.",
-    "I can explain the path of each sense from stimulus to brain.",
-    "I can use the key vocabulary in English sentences.",
-    "I can compare the five senses and explain how they work together.",
-    "I can name one problem and one way to take care of each sense organ."
+    "I can name the organ, specialized structures, and primary brain cortex for each sense.",
+    "I can explain sensory transduction: how receptor cells convert environmental stimuli into electrical nerve impulses.",
+    "I can trace the neural pathway of each sense using scientific sequence connectors and CALP verbs.",
+    "I can classify sensory receptors into photoreceptors, mechanoreceptors, and chemoreceptors.",
+    "I can formulate hypotheses, record observations, and interpret evidence in hands-on inquiry experiments.",
+    "I can compare the five senses and evaluate how sensory integration (like taste + smell = flavor) shapes perception."
   ],
   path: [
-    { en: "Stimulus", es: "Estímulo", ex: "light, sound, odor, chemicals, pressure" },
-    { en: "Organ", es: "Órgano", ex: "eye, ear, nose, tongue, skin" },
-    { en: "Receptors", es: "Receptores", ex: "special cells change the stimulus into signals" },
-    { en: "Nerve", es: "Nervio", ex: "carries the signals" },
-    { en: "Brain", es: "Cerebro", ex: "interprets the signals: you see, hear, smell, taste, feel" }
+    { en: "1. Stimulus", es: "1. Estímulo", def: "Physical or chemical energy from the environment (light waves, sound waves, odor molecules, dissolved tastants, mechanical pressure)." },
+    { en: "2. Sense Organ", es: "2. Órgano sensorial", def: "Specialized anatomical structure that captures and focuses the stimulus (eye, ear, nose, tongue, skin)." },
+    { en: "3. Receptor Cells", es: "3. Células receptoras", def: "Specialized cells that perform sensory transduction: converting stimulus energy into electrical impulses (action potentials)." },
+    { en: "4. Sensory Nerve", es: "4. Nervio sensorial", def: "Bundle of axons (cranial or spinal nerves) that transmits electrical signals rapidly toward the central nervous system." },
+    { en: "5. Brain Cortex", es: "5. Corteza cerebral", def: "Specific cerebral cortex lobe that processes, integrates, and interprets the signals into conscious perception." }
+  ],
+  morphologyRoots: [
+    { root: "photo-", meaning: "Light", es: "Luz", examples: "photoreceptor, photosynthesis, photon", def: "Related to light or radiant energy." },
+    { root: "mechano-", meaning: "Mechanical / Movement", es: "Mecánico / Movimiento", examples: "mechanoreceptor, mechanism", def: "Related to physical pressure, motion, or sound vibrations." },
+    { root: "chemo-", meaning: "Chemical", es: "Químico", examples: "chemoreceptor, chemical, chemistry", def: "Related to molecules and chemical compounds." },
+    { root: "thermo-", meaning: "Heat / Temperature", es: "Calor / Temperatura", examples: "thermoreceptor, thermometer, thermal", def: "Related to temperature variations." },
+    { root: "noci-", meaning: "Harm / Pain / Damage", es: "Daño / Dolor", examples: "nociceptor, noxious", def: "Related to tissue injury or threatening noxious stimuli." },
+    { root: "-ceptor", meaning: "Receiver / Detector", es: "Receptor / El que recibe", examples: "receptor, intercept, sensory receptor", def: "A biological structure or molecule that receives signals." },
+    { root: "epi-", meaning: "Upon / Over / Outer", es: "Sobre / Encima / Capa exterior", examples: "epidermis, epicentre, epithelium", def: "Situated on the outside or top layer." },
+    { root: "hypo-", meaning: "Below / Under / Deficient", es: "Debajo / Capa inferior", examples: "hypodermis, hypothermia, hypothesis", def: "Situated beneath or in lower concentration." },
+    { root: "-itis", meaning: "Inflammation", es: "Inflamación", examples: "conjunctivitis, otitis, sinusitis", def: "Medical suffix denoting inflammatory swelling or infection." },
+    { root: "an-", meaning: "Without / Lack of", es: "Sin / Carencia de", examples: "anosmia (lack of smell), anemia", def: "Prefix indicating absence or deficiency." }
   ]
 };
 
 const SENSES = [
   /* ===================================================== SIGHT */
   {
-    id: "sight", name: "Sight", es: "Vista", organ: "The Eye", organEs: "El ojo",
+    id: "sight",
+    name: "Sight",
+    es: "Vista",
+    organ: "The Eye",
+    organEs: "El ojo",
+    cortex: "Visual Cortex (Occipital Lobe)",
+    cortexEs: "Corteza visual (Lóbulo occipital)",
+    receptorClassification: "Photoreceptors (Rods & Cones)",
+    receptorClassificationEs: "Fotorreceptores (Bastones y Conos)",
+    transduction: "Light photons strike photopigments in rods and cones in the retina, converting radiant light into electrical nerve impulses.",
+    transductionEs: "Los fotones de luz activan fotopigmentos en conos y bastones de la retina, convirtiendo la luz en impulsos nerviosos eléctricos.",
+    wordFamily: "see (verb) → sight (noun) → visual (adjective) → optic (anatomical) → photoreceptor (cellular)",
     objectives: [
-      "I can name and locate 6 parts of the eye.",
-      "I can describe the path of light using first, next, then, finally.",
-      "I can explain why the pupil changes size.",
-      "I can name one eye problem and one way to protect my eyes."
+      "I can name and locate the 6 core structures of the human eye and their physiological functions.",
+      "I can describe the step-by-step path of light from the cornea to the visual cortex using sequence connectors.",
+      "I can explain sensory transduction in rods and cones and distinguish their roles in dim light vs. color vision.",
+      "I can formulate a hypothesis, test my optical blind spot, and explain why the brain fills in the visual gap."
     ],
     warmup: {
-      q: "Look at something near you, then out of the window. Did your eyes feel any change?",
-      qEs: "Mira algo cerca de ti y luego por la ventana. ¿Notaste algún cambio en tus ojos?",
-      task: "Cover one eye and try to touch the tip of a pen with another pen. Is it harder?",
-      taskEs: "Tápate un ojo e intenta tocar la punta de un bolígrafo con otro. ¿Es más difícil?"
+      q: "Look at your classmate's eyes in normal room light, then turn toward a bright window. What happens to the pupil?",
+      qEs: "Mira los ojos de tu compañero con luz normal y luego hacia una ventana brillante. ¿Qué le pasa a la pupila?",
+      task: "Cover one eye with your hand. Now try to touch the tips of two pencils together horizontally. Is depth perception harder?",
+      taskEs: "Tápate un ojo. Intenta juntar las puntas de dos lápices horizontalmente. ¿Cuesta más calcular la distancia?"
     },
     words: [
-      { id: "cornea", en: "cornea", es: "córnea", ipa: "/ˈkɔːr.ni.ə/", def: "The clear, curved window at the front of the eye.", ex: "Light enters the eye through the cornea.", note: "✅ Cognate: cornea = córnea.", spot: true },
-      { id: "iris", en: "iris", es: "iris", ipa: "/ˈaɪ.rɪs/", def: "The colored ring of muscle around the pupil.", ex: "My iris is brown, so I have brown eyes.", note: "✅ Same word in Spanish.", spot: true },
-      { id: "pupil", en: "pupil", es: "pupila", ipa: "/ˈpjuː.pəl/", def: "The black opening in the center of the iris.", ex: "In the dark, your pupil gets bigger.", note: "⚠️ 'Pupil' also means 'student' in English.", spot: true },
-      { id: "lens", en: "lens", es: "cristalino", ipa: "/lenz/", def: "The clear part behind the pupil that focuses light.", ex: "The lens changes shape to focus on near objects.", note: "⚠️ False friend: in the eye, lens = cristalino (not 'lente').", spot: true },
-      { id: "retina", en: "retina", es: "retina", ipa: "/ˈret.ɪ.nə/", def: "The layer at the back of the eye that changes light into signals.", ex: "The retina has cells called rods and cones.", note: "✅ Cognate: retina = retina.", spot: true },
-      { id: "opticnerve", en: "optic nerve", es: "nervio óptico", ipa: "/ˈɑːp.tɪk nɜːrv/", def: "The nerve that carries signals from the retina to the brain.", ex: "The optic nerve sends the image to the brain.", note: "💡 Word family: see → sight → visual → optic.", spot: true },
-      { id: "light", en: "light", es: "luz", ipa: "/laɪt/", def: "The stimulus for sight. It travels in straight lines.", ex: "Without light, we cannot see colors.", note: "⚠️ 'Light' can also mean 'not heavy' (ligero)." },
-      { id: "focus", en: "focus", es: "enfocar", ipa: "/ˈfoʊ.kəs/", def: "To bend light so that the image is clear and sharp.", ex: "The cornea and lens focus light on the retina.", note: "✅ Cognate: focus ≈ enfocar." }
+      { id: "cornea", en: "cornea", es: "córnea", ipa: "/ˈkɔːr.ni.ə/", def: "The transparent, curved outer layer at the front of the eye that protects it and begins refracting (bending) light.", ex: "Light enters the eye through the cornea, which does most of the focusing.", note: "✅ Cognate: cornea = córnea.", spot: true },
+      { id: "iris", en: "iris", es: "iris", ipa: "/ˈaɪ.rɪs/", def: "The colored ring of muscle that contracts and dilates to regulate the amount of light entering the pupil.", ex: "In bright sunlight, the iris constricts to make the pupil smaller.", note: "✅ Identical in Spanish.", spot: true },
+      { id: "pupil", en: "pupil", es: "pupila", ipa: "/ˈpjuː.pəl/", def: "The adjustable circular opening in the center of the iris through which light passes into the interior.", ex: "In the dark, your pupil dilates to admit more light.", note: "⚠️ Homonym: 'pupil' also means 'student' in school.", spot: true },
+      { id: "lens", en: "lens (crystalline lens)", es: "cristalino", ipa: "/lenz/", def: "The flexible, biconvex transparent structure behind the pupil that changes shape to finely focus light onto the retina.", ex: "Ciliary muscles change the curvature of the lens so you can focus on near objects.", note: "⚠️ False friend: the biological lens of the eye is 'el cristalino' (not 'lente').", spot: true },
+      { id: "retina", en: "retina", es: "retina", ipa: "/ˈret.ɪ.nə/", def: "The light-sensitive sensory layer lining the back of the eye containing photoreceptor cells (rods and cones).", ex: "The retina converts focused light into electrochemical nerve signals.", note: "✅ Cognate: retina = retina.", spot: true },
+      { id: "opticnerve", en: "optic nerve", es: "nervio óptico", ipa: "/ˈɑːp.tɪk nɜːrv/", def: "The cranial nerve (CN II) composed of over one million axon fibers that transmits visual signals from the retina to the brain.", ex: "The optic nerve carries electrical impulses to the visual cortex in the occipital lobe.", note: "💡 Word family: optic → optical → optician.", spot: true },
+      { id: "photoreceptors", en: "photoreceptors", es: "fotorreceptores", ipa: "/ˌfoʊ.toʊ.rɪˈsep.tərz/", def: "Specialized sensory neurons (rods and cones) that perform sensory transduction by converting light photons into neural impulses.", ex: "Rods detect dim light and movement, while cones detect fine detail and colors.", note: "💡 Greek root: photo- (light) + -ceptor (receiver)." },
+      { id: "visualcortex", en: "visual cortex", es: "corteza visual", ipa: "/ˈvɪʒ.u.əl ˈkɔːr.teks/", def: "The region of the cerebral cortex located in the occipital lobe at the back of the brain where visual signals are processed and perceived.", ex: "Although the retina creates an upside-down image, the visual cortex interprets it right-side up.", note: "💡 Word family: vision → visual → visual cortex." }
     ],
-    path: ["light", "cornea", "pupil", "lens", "retina", "opticnerve", "brain"],
-    pathLabels: { light: "Light", cornea: "Cornea", pupil: "Pupil", lens: "Lens", retina: "Retina", opticnerve: "Optic nerve", brain: "Brain" },
+    path: ["light", "cornea", "pupil", "lens", "retina", "opticnerve", "visualcortex"],
+    pathLabels: {
+      light: "1. Light stimulus (Fotones)",
+      cornea: "2. Cornea (Refracción inicial)",
+      pupil: "3. Pupil (Regulación de apertura)",
+      lens: "4. Lens (Enfoque fino)",
+      retina: "5. Retina: Rods & Cones (Transducción)",
+      opticnerve: "6. Optic nerve (Transmisión)",
+      visualcortex: "7. Visual Cortex (Percepción en lóbulo occipital)"
+    },
     reading: {
-      title: "The Path of Light",
-      video: { src: "path-of-light.mp4", caption: "Animation: the path of light through the eye (10 seconds). Press play." },
+      title: "The Path of Light & Visual Transduction",
+      video: { src: "path-of-light.mp4", caption: "Animation: The path of light through the ocular media to the retina and visual cortex." },
       paragraphs: [
-        "Your eyes collect [[light|light]] and turn it into signals your brain can understand. Let's follow the path of light through the eye.",
-        "First, light enters through the [[cornea|cornea]], a clear window that bends the light and starts to [[focus|focus]] it. Next, light passes through the [[pupil|pupil]], the black opening in the center of the [[iris|iris]]. The iris is a muscle: in bright light it makes the pupil smaller, and in the dark it makes the pupil bigger.",
-        "Then the light travels through the [[lens|lens]]. The lens changes shape to focus objects that are near or far away. The light reaches the [[retina|retina]] at the back of the eye. The retina has millions of receptor cells called rods and cones. They change light into electrical signals.",
-        "Finally, the [[opticnerve|optic nerve]] carries these signals to the brain. The brain interprets the signals and creates the image you see."
+        "Every visual experience begins when [[photoreceptors|photoreceptors]] capture [[light|light]] reflected from objects in our surroundings. To understand vision, we must follow how light traverses the eye and how its physical energy is transduced into electrical signals.",
+        "First, light strikes the [[cornea|cornea]], a clear, curved dome that shields the eye and performs about two-thirds of the total refraction (bending) of light. Next, the light enters the [[pupil|pupil]], the central aperture surrounded by the pigmented [[iris|iris]]. The sphincter and dilator muscles of the iris rapidly adjust the pupil diameter: in intense sunlight the pupil constricts to protect the interior, while in low ambient light it dilates to maximize photon capture.",
+        "Then, the light beam passes through the flexible [[lens|lens]]. Controlled by delicate ciliary muscles, the lens alters its focal curvature (a dynamic process termed accommodation) so that rays from both near and distant objects converge sharply onto the [[retina|retina]] at the posterior surface of the eyeball. Because light rays cross as they pass through the lens, the real image formed on the retina is geometrically inverted (upside down) and reversed.",
+        "At the retina, millions of specialized [[photoreceptors|photoreceptor cells]]—approximately 120 million rods and 6 million cones—perform sensory transduction. Rods operate in dim light (scotopic vision) but do not differentiate hues, whereas cones operate in bright daylight (photopic vision) and mediate high-acuity color detection (red, green, and blue). At the optic disc, where retinal ganglion axons bundle together to exit the eyeball, there are no photoreceptors at all; this anatomical gap is our natural physiological blind spot.",
+        "Finally, the [[opticnerve|optic nerve]] conducts these action potentials through the optic chiasm and lateral geniculate nucleus directly to the [[visualcortex|visual cortex]] located in the occipital lobe at the rear of the brain. Here, the brain decodes spatial coordinates, contrast, motion, and color, effortlessly turning the inverted retinal signals into the upright, three-dimensional scene you consciously perceive."
       ],
       checks: [
-        { after: 1, q: "What controls the size of the pupil?", options: ["The iris", "The lens", "The retina"], explain: "The iris is a ring of muscle. It makes the pupil bigger or smaller." },
-        { after: 2, q: "Which cells change light into signals?", options: ["Rods and cones in the retina", "Cells in the cornea", "Cells in the lens"], explain: "Rods and cones are the receptors of sight. They are in the retina." }
+        { after: 1, q: "Which anatomical structure adjusts the pupil's diameter in response to light intensity?", options: ["The iris muscle", "The crystalline lens", "The vitreous humor", "The optic nerve"], explain: "The iris contains smooth sphincter and dilator muscles that regulate how much light enters through the pupil." },
+        { after: 3, q: "Why does the human eye have an anatomical blind spot (optic disc)?", options: ["There are no photoreceptors where the optic nerve exits the retina", "The cornea has a protective opaque scar", "The lens cannot refract light at high angles", "The pupil closes completely in dim light"], explain: "At the optic disc, ganglion cell axons leave the eyeball to form the optic nerve, leaving zero rods or cones in that specific spot." }
       ]
     },
-    funfact: "The image on your retina is upside down! Your brain turns it the right way up.",
+    funfact: "Because the eye functions like a convex camera lens, the image projected on your retina is upside down and reversed left-to-right! Your visual cortex neural networks automatically process and invert the signals so you perceive the world right-side up.",
     health: {
       problems: [
-        { name: "Myopia (nearsightedness)", text: "Far objects look blurry because light focuses in front of the retina. Glasses or contact lenses correct it." },
-        { name: "Conjunctivitis (pink eye)", text: "The thin layer that covers the white of the eye becomes red and itchy. It can be contagious." }
+        { name: "Myopia (Nearsightedness)", text: "The eyeball is slightly too long relative to the cornea's curvature, causing light to focus in front of the retina. Distant objects appear blurry, while close objects remain sharp. Corrected with diverging (concave) lenses." },
+        { name: "Hyperopia (Farsightedness)", text: "The eyeball is shorter than normal, causing the focal point of near objects to fall behind the retina. Corrected with converging (convex) lenses." },
+        { name: "Astigmatism", text: "An irregular, oval curvature of the cornea or lens causing multiple focal points and blurred vision at all distances." },
+        { name: "Conjunctivitis (Pink Eye)", text: "Inflammation or bacterial/viral infection of the conjunctiva, the clear membrane covering the sclera and inner eyelids." }
       ],
       care: [
-        "Wear sunglasses that block UV light outdoors.",
-        "Follow the 20-20-20 rule: every 20 minutes, look at something 20 feet (6 m) away for 20 seconds.",
-        "Don't rub your eyes, and get regular eye exams."
+        "Practice the 20-20-20 rule during screen use: every 20 minutes, gaze at an object at least 20 feet (6 meters) away for 20 seconds to relax ciliary muscles.",
+        "Wear UV-blocking sunglasses (UV400 rating) when exposed to intense solar radiation to safeguard the cornea and retina.",
+        "Avoid rubbing eyes with unwashed hands, and schedule regular comprehensive optometric examinations."
       ]
     },
     deeper: [
-      { name: "Sclera", es: "esclerótica", text: "The white, tough outer layer that protects the eye." },
-      { name: "Rods and cones", es: "bastones y conos", text: "Rods work in dim light (black and white). Cones need bright light and detect color and detail." },
-      { name: "Fovea", es: "fóvea", text: "A tiny spot in the retina with many cones. It gives you sharp vision for reading." },
-      { name: "Blind spot", es: "punto ciego", text: "The place where the optic nerve leaves the eye. There are no rods or cones there, so you cannot see light that falls on it. Try the experiment below!" },
-      { name: "Vitreous humor", es: "humor vítreo", text: "A clear gel that fills the eye and keeps its round shape." }
+      { name: "Fovea Centralis", es: "fóvea centralis", text: "A tiny 1.5 mm depression in the center of the macula densely packed with cone photoreceptors, providing our sharpest, highest-resolution color vision for reading." },
+      { name: "Sclera", es: "esclerótica", text: "The tough, opaque fibrous outer coating of the eyeball ('the white of the eye') that maintains structural shape and anchors extrinsic eye muscles." },
+      { name: "Ciliary Body & Zonules", es: "cuerpo ciliar y zónulas", text: "Muscular and ligamentous structures that suspend the lens; contraction relaxes tension on the lens, allowing it to become rounder for near vision." },
+      { name: "Aqueous & Vitreous Humors", es: "humor acuoso y vítreo", text: "Aqueous humor is a watery fluid nourishing the cornea and lens in the anterior chamber; vitreous humor is a clear gel maintaining intraocular pressure in the posterior cavity." }
     ],
     match: [
-      ["cornea", "Clear window that starts to focus light"],
-      ["iris", "Muscle that controls the size of the pupil"],
-      ["lens", "Changes shape to focus near or far"],
-      ["retina", "Changes light into electrical signals"],
-      ["opticnerve", "Carries signals to the brain"]
+      ["cornea", "Transparent outer shield that performs the initial refraction of light"],
+      ["iris", "Contractile colored muscular ring regulating pupil diameter"],
+      ["lens", "Flexible biconvex disc performing dynamic optical accommodation"],
+      ["retina", "Sensory layer containing rods and cones that transduce photons into nerve signals"],
+      ["opticnerve", "Cranial nerve bundle transmitting electrical action potentials to the brain"]
     ],
     cloze: {
-      text: "Light enters the eye through the {cornea}. It passes through the {pupil}, which gets bigger in the dark. The {lens} focuses the light on the {retina}. Then the {optic nerve} carries the signals to the brain.",
-      extra: ["eardrum", "iris"]
+      text: "Light enters the eye through the transparent {cornea}, which bends the light rays. The light passes through the {pupil}, whose diameter is modulated by the muscular {iris}. Next, the flexible {lens} focuses the rays precisely onto the {retina}. Specialized {photoreceptors} transduce the photons into electrical nerve impulses, which the {optic nerve} conducts to the visual cortex.",
+      extra: ["eardrum", "cochlea", "mucus"]
     },
     experiment: {
-      title: "Find your blind spot",
+      title: "Mapping Your Physiological Blind Spot (Optic Disc)",
       type: "blindspot",
-      predict: { q: "Do you think there is a place in your eye that cannot see?", options: ["Yes", "No", "I'm not sure"] },
+      predict: {
+        q: "What do you hypothesize will happen when the black dot's image falls directly onto the region where the optic nerve leaves the eyeball?",
+        qEs: "¿Qué crees que ocurrirá cuando la imagen del punto negro coincida exactamente con la zona donde el nervio óptico sale del globo ocular?",
+        options: [
+          "The dot will temporarily vanish because there are no rods or cones at the optic disc",
+          "The cross (+) will change color due to pupil dilation",
+          "The entire screen will go completely dark in both eyes",
+          "The dot will appear twice as large due to lens magnification"
+        ],
+        explain: "Because the optic disc contains no photoreceptors (rods or cones), light falling on that focal region cannot generate nerve signals, making the dot disappear."
+      },
+      materials: ["Computer screen or tablet", "Ruler or calibrated on-screen distance slider", "One hand to occlude the left eye"],
       steps: [
-        "Cover or close your LEFT eye.",
-        "Look at the cross (+) with your RIGHT eye. Keep looking at it.",
-        "Move your face slowly closer to the screen (start at about 50 cm).",
-        "At some point the dot disappears! Then it comes back."
+        "Sit upright directly facing your screen at an initial distance of approximately 45–50 cm.",
+        "Completely cover your LEFT eye with your left hand (do not press on the eyelid).",
+        "With your RIGHT eye open, stare continuously at the cross (+) on the left side of the stage.",
+        "Use the distance calibration slider below to match your screen size, then move your head slowly toward and away from the screen.",
+        "At a specific distance (around 30–38 cm depending on screen scale), observe the solid black circle completely disappear from your peripheral field!"
       ],
-      explain: "The dot disappears when its light falls on your blind spot: the place where the optic nerve leaves the retina. There are no rods or cones there. Your brain fills the gap, so normally you don't notice it."
+      observe: {
+        prompt: "Record your observation: At what distance did the circle disappear for your right eye, and what did you perceive in place of the dot?",
+        promptEs: "Registra tu observación: ¿A qué distancia desapareció el círculo y qué viste en su lugar?",
+        type: "slider",
+        label: "Focal vanishing distance (cm)"
+      },
+      explain: "When the black circle's image falls on the optic disc—the spot on your retina where ganglion axons exit to form the optic nerve—there are zero photoreceptor cells (rods or cones) to detect it. Remarkably, you do not see a black hole or blank void; your visual cortex uses active perceptual interpolation ('filling-in') to automatically synthesize the surrounding white background over the missing data."
     },
     frames: [
-      "The ___ is a part of the eye.",
-      "The ___ helps us to ___.",
-      "First, light ___. Next, ___. Then, ___. Finally, ___.",
-      "If the ___ is damaged, we cannot ___."
+      "Light enters through the ___ and is focused by the ___ onto the ___.",
+      "In bright light, the iris ___ so that the pupil ___; in dim light, it ___.",
+      "Sensory transduction occurs when rods and cones convert ___ into ___.",
+      "If the optic nerve is severed, the brain cannot receive visual signals because ___.",
+      "Whereas rods operate in ___, cones are specialized for ___."
     ],
     writing: {
-      prompt: "Explain how you see a tree. Use first, next, then, finally.",
-      promptEs: "Explica cómo ves un árbol. Usa first, next, then, finally.",
-      bank: ["light", "cornea", "pupil", "lens", "retina", "optic nerve", "brain", "first", "next", "then", "finally"],
-      model: "First, light from the tree enters my eye through the cornea. Next, it passes through the pupil. Then, the lens focuses the light on the retina, where rods and cones change it into signals. Finally, the optic nerve carries the signals to my brain, and I see the tree."
+      prompt: "Explain how your visual system allows you to see a bird flying outside your classroom window. Incorporate the scientific sequence from photon entry to cortical perception.",
+      promptEs: "Explica cómo tu sistema visual te permite ver un pájaro volando fuera de la ventana. Incorpora la secuencia científica desde la entrada del fotón hasta la percepción cortical.",
+      bank: ["cornea", "pupil", "iris", "lens", "retina", "photoreceptors", "rods and cones", "optic nerve", "visual cortex", "transduction", "refracts", "focuses"],
+      verbs: ["enters", "refracts", "focuses", "converges", "transduces", "converts", "transmits", "interprets"],
+      connectors: ["First", "Next", "Subsequently", "Then", "As a result", "Finally"],
+      model: "First, light photons reflected from the flying bird strike the transparent cornea, which refracts the incoming rays. Next, the light passes through the pupil, while the iris adjusts its aperture to control illumination. Then, the crystalline lens dynamically changes curvature to focus the light sharply onto the retina. At the retina, specialized photoreceptors (rods and cones) perform sensory transduction, converting radiant photon energy into electrical action potentials. Finally, the optic nerve conducts these nerve impulses to the visual cortex in the occipital lobe, where the brain interprets the moving bird right-side up."
     },
     quiz: [
-      { level: "Remember", q: "Which part is the colored part of the eye?", options: ["Iris", "Pupil", "Retina", "Cornea"], explain: "The iris is the colored ring. The pupil is the black hole in its center." },
-      { level: "Remember", q: "Which part changes light into signals for the brain?", options: ["Retina", "Lens", "Cornea", "Iris"], explain: "The lens and cornea focus light, but the retina (with rods and cones) changes it into signals." },
-      { level: "Understand", q: "Why does the pupil get bigger in the dark?", options: ["To let more light into the eye", "To protect the retina from light", "To focus on far objects", "To produce tears"], explain: "When there is little light, the iris opens the pupil so more light can reach the retina." },
-      { level: "Understand", q: "What is the correct path of light?", options: ["cornea → pupil → lens → retina", "lens → cornea → retina → pupil", "retina → lens → pupil → cornea", "pupil → cornea → retina → lens"], explain: "Light passes from the front to the back: cornea, pupil, lens, and finally the retina." },
-      { level: "Apply", q: "You walk out of a dark cinema into bright sunlight. What happens to your pupils?", options: ["They get smaller", "They get bigger", "They stay the same", "They change color"], explain: "In bright light the iris makes the pupil smaller to protect the retina from too much light." },
-      { level: "Apply", q: "A person's optic nerve is badly damaged, but the rest of the eye is healthy. What happens?", options: ["The brain cannot receive signals from that eye", "The person sees everything upside down", "The lens cannot focus", "The iris loses its color"], explain: "The retina can make signals, but without the optic nerve they never reach the brain, so the person cannot see with that eye." }
+      { level: "Remember", q: "Which part of the eye is the colored ring of muscle that modulates pupil size?", options: ["Iris", "Pupil", "Cornea", "Sclera"], explain: "The iris is the contractile circular muscle that controls the aperture of the pupil." },
+      { level: "Remember", q: "Where does sensory transduction take place within the visual system?", options: ["In the photoreceptors of the retina", "In the crystalline lens", "Along the optic nerve sheath", "Within the cornea"], explain: "Sensory transduction—the conversion of light photons into electrical impulses—is performed exclusively by rods and cones in the retina." },
+      { level: "Understand", q: "How do rods and cones differ in their physiological roles?", options: ["Rods operate in dim light without color; cones require bright light and detect color and fine detail", "Rods detect red and green wavelengths; cones operate only in darkness", "Rods are concentrated entirely in the cornea; cones line the optic nerve", "Rods focus distant objects; cones adjust the pupil diameter"], explain: "Rods provide high-sensitivity monochromatic vision in dim light, whereas cones provide high-acuity trichromatic color vision." },
+      { level: "Understand", q: "What is the biological cause of the physiological blind spot in human vision?", options: ["The absence of photoreceptors at the optic disc where nerve fibers exit the eyeball", "A temporary exhaustion of photopigments in the pupil", "An opaque barrier of blood vessels directly in front of the lens", "A developmental defect that affects only one hemisphere of the brain"], explain: "The optic disc contains only exiting nerve fibers and blood vessels, lacking rods and cones completely." },
+      { level: "Apply", q: "A student moves from a sunlit soccer field into a pitch-black auditorium. Why are they temporarily unable to see clearly?", options: ["Their pupils must dilate and their rod photoreceptors require time to regenerate photopigments", "Their cornea has temporarily lost its refractive curvature", "Their crystalline lens becomes cloudy when exposed to sudden darkness", "The optic nerve stops transmitting signals until sound is heard"], explain: "Dark adaptation requires pupil dilation by the iris and biochemical regeneration of rhodopsin in rod cells." },
+      { level: "Apply", q: "In a patient with severe myopia, light rays converge and focus in front of the retina. Which corrective lens solves this optical issue?", options: ["A diverging (concave) lens that spreads light rays before they enter the cornea", "A converging (convex) lens that shortens the focal point", "An opaque contact lens that blocks all peripheral rays", "A cylindrical lens that rotates the retinal image 180 degrees"], explain: "Concave (diverging) lenses compensate for excessive focal convergence by spreading the rays slightly so the focal point falls precisely on the retina." },
+      { level: "Analyze", q: "A clinical patient suffers a traumatic injury that severs the left optic nerve completely, while both eyes and the visual cortex remain structurally intact. What is the expected physiological outcome?", options: ["Total loss of vision in the left eye, while the right eye retains full visual field processing", "The patient sees everything upside down through the left eye", "The left pupil remains permanently constricted while color vision is preserved", "Both eyes lose peripheral vision but retain sharp foveal vision"], explain: "Because the optic nerve carries all electrical signals from that specific eyeball to the brain, severing the left optic nerve eliminates signal transmission from the left retina entirely." },
+      { level: "Evaluate", q: "Evaluate this scientific claim: 'The human eye perceives the world directly, acting like a video screen that sends finished pictures to the brain.' Why is this claim scientifically inaccurate?", options: ["The eye does not send pictures; photoreceptors decompose light into electrical impulses that the visual cortex must actively assemble and reconstruct into an image", "The eye only detects sound vibrations and passes them to the vestibular system", "The retina is completely transparent and does not interact with photons", "Images on the retina are right-side up, so the brain does not perform any processing"], explain: "The eye does not transmit finished pictures. It performs sensory transduction, breaking light down into discrete electrophysiological signals that are reconstructed in specialized visual cortex circuits." }
     ]
   },
 
   /* ===================================================== HEARING */
   {
-    id: "hearing", name: "Hearing", es: "Oído", organ: "The Ear", organEs: "El oído",
+    id: "hearing",
+    name: "Hearing",
+    es: "Oído",
+    organ: "The Ear",
+    organEs: "El oído",
+    cortex: "Auditory Cortex (Temporal Lobe)",
+    cortexEs: "Corteza auditiva (Lóbulo temporal)",
+    receptorClassification: "Mechanoreceptors (Auditory Hair Cells)",
+    receptorClassificationEs: "Mecanirreceptores (Células ciliadas auditivas)",
+    transduction: "Sound pressure vibrations in cochlear fluid physically deflect stereocilia on hair cells, opening mechanically-gated ion channels and generating electrical impulses.",
+    transductionEs: "Las vibraciones de presión sonora en el líquido coclear flexionan los estereocilios de las células ciliadas, abriendo canales iónicos mecánicos y generando impulsos eléctricos.",
+    wordFamily: "hear (verb) → hearing (noun) → auditory (anatomical) → audio (technological) → mechanoreceptor (cellular)",
     objectives: [
-      "I can name and locate 6 parts of the ear.",
-      "I can describe the path of sound from the pinna to the brain.",
-      "I can explain where vibrations change into signals.",
-      "I can explain how loud noise damages hearing and how to prevent it."
+      "I can locate and describe the function of the outer, middle, and inner ear structures.",
+      "I can trace acoustic energy transformation from sound waves to mechanical vibrations, fluid waves, and nerve impulses.",
+      "I can explain how auditory hair cells in the cochlea perform mechanotransduction.",
+      "I can analyze how binaural hearing enables horizontal sound localization and evaluate the risk of acoustic trauma."
     ],
     warmup: {
-      q: "Close your eyes for 30 seconds. How many different sounds can you hear?",
-      qEs: "Cierra los ojos 30 segundos. ¿Cuántos sonidos diferentes puedes oír?",
-      task: "Put your fingers on your throat and say 'aaaa'. What do you feel?",
-      taskEs: "Pon los dedos en tu garganta y di 'aaaa'. ¿Qué sientes?"
+      q: "Close your eyes for 30 seconds and remain completely silent. How many distinct audio frequencies or sound sources can your brain isolate?",
+      qEs: "Cierra los ojos durante 30 segundos en silencio total. ¿Cuántas fuentes o frecuencias de sonido distintas logra aislar tu cerebro?",
+      task: "Gently place two fingers against your vocal cords and vocalize a continuous 'mmmmm'. Can you feel the physical mechanical vibration?",
+      taskEs: "Coloca dos dedos en tu garganta y haz un sonido continuo 'mmmmm'. ¿Sientes la vibración mecánica física?"
     },
     words: [
-      { id: "pinna", en: "pinna (outer ear)", es: "pabellón auricular (oreja)", ipa: "/ˈpɪn.ə/", def: "The part of the ear you can see. It collects sound waves.", ex: "The pinna is made of cartilage and skin.", note: "💡 In everyday English people say 'ear' or 'outer ear'.", spot: true },
-      { id: "earcanal", en: "ear canal", es: "conducto auditivo", ipa: "/ɪr kəˈnæl/", def: "The tube that carries sound waves to the eardrum.", ex: "Earwax protects the ear canal.", note: "✅ Canal ≈ canal / conducto.", spot: true },
-      { id: "eardrum", en: "eardrum", es: "tímpano", ipa: "/ˈɪr.drʌm/", def: "A thin membrane that vibrates when sound waves hit it.", ex: "Sound waves make the eardrum vibrate.", note: "💡 ear + drum (tambor): it works like a small drum.", spot: true },
-      { id: "ossicles", en: "ossicles", es: "huesecillos", ipa: "/ˈɑː.sɪ.kəlz/", def: "Three tiny bones that make the vibrations stronger.", ex: "The ossicles are the hammer, the anvil and the stirrup.", note: "💡 'Ossi-' means bone, like 'óseo' in Spanish.", spot: true },
-      { id: "cochlea", en: "cochlea", es: "cóclea (caracol)", ipa: "/ˈkoʊ.kli.ə/", def: "A spiral tube full of liquid. Its hair cells change vibrations into signals.", ex: "The cochlea looks like a snail shell.", note: "✅ Cognate: cochlea = cóclea.", spot: true },
-      { id: "auditorynerve", en: "auditory nerve", es: "nervio auditivo", ipa: "/ˈɔː.dɪ.tɔːr.i nɜːrv/", def: "The nerve that carries sound signals from the cochlea to the brain.", ex: "The auditory nerve sends signals to the brain.", note: "💡 Word family: hear → hearing → auditory → audio.", spot: true },
-      { id: "soundwave", en: "sound wave", es: "onda sonora", ipa: "/saʊnd weɪv/", def: "A vibration that travels through the air. It is the stimulus for hearing.", ex: "A guitar string makes sound waves." },
-      { id: "vibration", en: "vibration", es: "vibración", ipa: "/vaɪˈbreɪ.ʃən/", def: "A fast movement back and forth.", ex: "You can feel the vibration of a speaker.", note: "✅ Cognate: vibration = vibración." }
+      { id: "pinna", en: "pinna (auricle)", es: "pabellón auricular", ipa: "/ˈpɪn.ə/", def: "The visible cartilaginous outer flap of the ear that collects and funnels acoustic sound waves into the auditory canal.", ex: "The convoluted shape of the pinna helps filter frequencies to determine whether a sound comes from above or below.", note: "💡 In everyday English often referred to simply as the 'outer ear'.", spot: true },
+      { id: "earcanal", en: "ear canal (external acoustic meatus)", es: "conducto auditivo", ipa: "/ɪr kəˈnæl/", def: "The tubular passageway lined with ceruminous glands (earwax) that channels sound waves from the pinna to the tympanic membrane.", ex: "Sound waves travel down the ear canal to reach the eardrum.", note: "✅ Cognate: canal = conducto/canal.", spot: true },
+      { id: "eardrum", en: "eardrum (tympanic membrane)", es: "tímpano", ipa: "/ˈɪr.drʌm/", def: "A thin, taut cone-shaped fibrous membrane separating the outer and middle ear that vibrates in response to arriving sound waves.", ex: "When acoustic compressions strike the eardrum, it vibrates at matching frequencies.", note: "💡 Compound word: ear + drum (vibrates like the skin of a musical drum).", spot: true },
+      { id: "ossicles", en: "ossicles", es: "huesecillos (martillo, yunque, estribo)", ipa: "/ˈɑː.sɪ.kəlz/", def: "The trio of micro-bones in the middle ear (malleus/hammer, incus/anvil, stapes/stirrup) that mechanically amplify vibrations from the eardrum to the oval window.", ex: "The ossicles act as a mechanical lever system, amplifying acoustic pressure more than twentyfold.", note: "💡 Latin root: ossiculum = tiny bone (óseo in Spanish).", spot: true },
+      { id: "cochlea", en: "cochlea", es: "cóclea (caracol)", ipa: "/ˈkoʊ.kli.ə/", def: "The spiral, fluid-filled snail-shaped bony structure of the inner ear containing the organ of Corti with sensory hair cells.", ex: "Inside the cochlea, fluid pressure waves bend microscopic hair cells to generate electrical signals.", note: "✅ Cognate: cochlea = cóclea.", spot: true },
+      { id: "auditorynerve", en: "auditory nerve (cochlear nerve, CN VIII)", es: "nervio auditivo (coclear)", ipa: "/ˈɔː.dɪ.tɔːr.i nɜːrv/", def: "The branch of cranial nerve VIII that conveys sensory auditory impulses from cochlear hair cells to the brainstem and auditory cortex.", ex: "The auditory nerve fires synchronized electrical impulses toward the temporal lobe.", note: "💡 Word family: audit → auditory → audible.", spot: true },
+      { id: "haircells", en: "hair cells (stereocilia)", es: "células ciliadas", ipa: "/her selz/", def: "The specialized mechanoreceptors within the cochlea whose microscopic hair-like stereocilia bend under fluid waves to perform sensory transduction.", ex: "Excessive sound decibels can physically snap stereocilia, leading to permanent sensorineural hearing loss.", note: "💡 Mechanoreceptor: converts physical motion into electrical impulses." },
+      { id: "auditorycortex", en: "auditory cortex", es: "corteza auditiva", ipa: "/ˈɔː.dɪ.tɔːr.i ˈkɔːr.teks/", def: "The tonotopically organized region within the superior temporal gyrus of the temporal lobe that decodes frequency, pitch, volume, and speech.", ex: "The auditory cortex decodes musical harmonies and language phonemes.", note: "💡 Located in the temporal lobe near the ears." }
     ],
-    path: ["soundwave", "pinna", "earcanal", "eardrum", "ossicles", "cochlea", "auditorynerve", "brain"],
-    pathLabels: { soundwave: "Sound waves", pinna: "Pinna", earcanal: "Ear canal", eardrum: "Eardrum", ossicles: "Ossicles", cochlea: "Cochlea", auditorynerve: "Auditory nerve", brain: "Brain" },
+    path: ["soundwave", "pinna", "earcanal", "eardrum", "ossicles", "cochlea", "auditorynerve", "auditorycortex"],
+    pathLabels: {
+      soundwave: "1. Sound waves (Ondas acústicas)",
+      pinna: "2. Pinna (Captación y embudo)",
+      earcanal: "3. Ear canal (Conducción)",
+      eardrum: "4. Eardrum (Vibración de membrana)",
+      ossicles: "5. Ossicles: Malleus, Incus, Stapes (Amplificación mecánica)",
+      cochlea: "6. Cochlea: Hair cells (Transducción mecanosensorial)",
+      auditorynerve: "7. Auditory nerve (Transmisión por CN VIII)",
+      auditorycortex: "8. Auditory Cortex (Percepción en lóbulo temporal)"
+    },
     reading: {
-      title: "The Path of Sound",
+      title: "The Path of Sound & Mechanotransduction",
       paragraphs: [
-        "Every sound starts as a [[vibration|vibration]]. The vibration travels through the air as a [[soundwave|sound wave]]. Your ear collects these waves and turns them into signals your brain can understand.",
-        "First, the [[pinna|pinna]] collects sound waves and sends them into the [[earcanal|ear canal]]. Next, the waves reach the [[eardrum|eardrum]], a thin membrane, and make it vibrate.",
-        "Then, the vibrations move three tiny bones called the [[ossicles|ossicles]]: the hammer, the anvil and the stirrup. They make the vibrations stronger and pass them to the [[cochlea|cochlea]]. The cochlea is a spiral tube full of liquid. Inside it, tiny hair cells change the vibrations into electrical signals.",
-        "Finally, the [[auditorynerve|auditory nerve]] carries these signals to the brain, which interprets them as sound: music, voices, or noise."
+        "Every acoustic stimulus initiates as a physical [[vibration|vibration]] propagating through matter as a longitudinal [[soundwave|sound wave]]. The human auditory system converts these minute air-pressure oscillations into mechanical movements, hydraulic waves, and finally electrical nerve impulses.",
+        "First, the outer ear's cartilaginous [[pinna|pinna]] collects sound waves from the environment and directs them down the [[earcanal|ear canal]]. At the terminus of the canal, the airborne pressure waves collide with the [[eardrum|eardrum]] (tympanic membrane), forcing this taut fibrous partition to oscillate back and forth in exact synchrony with the incoming acoustic frequency.",
+        "Next, in the air-filled middle ear cavity, the vibrations of the eardrum engage the [[ossicles|ossicles]]—the smallest bones in the human body: the malleus (hammer), incus (anvil), and stapes (stirrup). Acting as an ingenious biological lever system, the ossicles match the low impedance of air to the high impedance of cochlear fluid, amplifying the mechanical force over twenty times as the stapes footplate pushes against the flexible oval window.",
+        "Then, the inward piston-like pumping of the stapes generates traveling hydraulic pressure waves within the fluid of the spiral [[cochlea|cochlea]]. As fluid ripples across the basilar membrane, thousands of specialized [[haircells|auditory hair cells]] are deflected against the overlying tectorial membrane. This physical bending of microscopic hair-like stereocilia opens mechanically-gated ion channels, allowing potassium and calcium ions to flood into the cell. This remarkable process—mechanotransduction—converts kinetic fluid energy into electrical receptor potentials.",
+        "Finally, these depolarizations stimulate spiral ganglion neurons, whose axons form the [[auditorynerve|auditory nerve]] (cochlear branch of CN VIII). The nerve delivers action potentials through the brainstem and medial geniculate nucleus to the [[auditorycortex|auditory cortex]] in the temporal lobe. Because the cochlea and cortex are organized tonotopically (like a piano keyboard), specific frequencies are mapped to precise cortical zones, enabling you to distinguish a violin melody from a friend's voice."
       ],
       checks: [
-        { after: 1, q: "What makes the eardrum vibrate?", options: ["Sound waves", "Light", "The auditory nerve"], explain: "Sound waves travel down the ear canal and hit the eardrum." },
-        { after: 2, q: "Which cells change vibrations into signals?", options: ["Hair cells in the cochlea", "Cells in the pinna", "Cells in the eardrum"], explain: "Hair cells are the receptors of hearing. They are inside the cochlea." }
+        { after: 2, q: "What is the primary physiological function of the three middle ear ossicles?", options: ["To mechanically amplify sound vibrations from the eardrum to the fluid-filled cochlea", "To equalize air pressure between the throat and the outer ear", "To produce antibacterial cerumen (earwax) that traps dust", "To perform sensory transduction into electrical impulses"], explain: "The ossicles act as a lever mechanism that multiplies mechanical acoustic pressure so it can move the dense liquid inside the cochlea." },
+        { after: 3, q: "How do auditory hair cells in the cochlea perform sensory transduction?", options: ["Fluid movement physically bends their stereocilia, opening mechanically-gated ion channels", "They absorb light photons and release photopigments", "They dissolve in chemical mucus and stimulate taste pores", "They vibrate against the pinna to generate heat"], explain: "Hair cells are mechanoreceptors: physical deflection of their stereocilia mechanically opens ion channels, converting movement into electrical impulses." }
       ]
     },
-    funfact: "The stirrup (stapes), one of the ossicles, is the smallest bone in your body. It is only about 3 mm long!",
+    funfact: "The stapes (stirrup), one of your three auditory ossicles, measures only 3 millimeters across—making it the smallest bone in the entire human skeleton!",
     health: {
       problems: [
-        { name: "Noise-induced hearing loss", text: "Very loud sounds damage the hair cells in the cochlea. They do not grow back, so the damage is permanent." },
-        { name: "Ear infection (otitis media)", text: "An infection behind the eardrum. It causes pain and is common in children." }
+        { name: "Noise-Induced Hearing Loss (NIHL)", text: "Excessive acoustic energy (above 85 dB over prolonged periods, or acute exposure over 120 dB) physically tears and shears stereocilia off cochlear hair cells. Because mammalian auditory hair cells cannot regenerate, this damage is irreversible." },
+        { name: "Otitis Media (Middle Ear Infection)", text: "Bacterial or viral proliferation in the middle ear cavity behind the eardrum, frequently caused by Eustachian tube dysfunction in children, producing painful fluid accumulation and conductive hearing dampening." },
+        { name: "Tinnitus", text: "Perception of persistent ringing, buzzing, or hissing sounds without an external acoustic source, often caused by damaged hair cells misfiring spontaneous electrical signals to the brain." }
       ],
       care: [
-        "Use the 60/60 rule: headphones at less than 60% volume, for less than 60 minutes at a time.",
-        "Wear earplugs at concerts and in very noisy places.",
-        "Never put cotton swabs or objects inside your ear canal."
+        "Follow the evidence-based 60/60 rule: listen to personal headphones at no more than 60% maximum volume for no more than 60 consecutive minutes.",
+        "Wear certified hearing protection (earplugs or noise-canceling earmuffs) at concerts, sporting events, and around power tools exceeding 85 dB.",
+        "Never insert cotton swabs (Q-tips), pens, or keys into the ear canal; doing so compacts earwax against the eardrum and risks traumatic tympanic perforation."
       ]
     },
     deeper: [
-      { name: "Hammer, anvil and stirrup", es: "martillo, yunque y estribo", text: "The scientific names of the ossicles are malleus, incus and stapes." },
-      { name: "Semicircular canals", es: "canales semicirculares", text: "Three loops full of liquid next to the cochlea. They help you keep your balance, not hear." },
-      { name: "Eustachian tube", es: "trompa de Eustaquio", text: "A tube that connects the middle ear with the throat. It balances air pressure: that's why your ears 'pop' in a plane." },
-      { name: "Outer, middle and inner ear", es: "oído externo, medio e interno", text: "Outer: pinna and ear canal. Middle: eardrum and ossicles. Inner: cochlea and semicircular canals." }
+      { name: "Semicircular Canals & Vestibular System", es: "canales semicirculares y sistema vestibular", text: "Three fluid-filled orthogonal loops adjoining the cochlea that contain hair cells detecting rotational head acceleration, governing dynamic equilibrium and spatial balance rather than hearing." },
+      { name: "Eustachian Tube (Pharyngotympanic Tube)", es: "trompa de Eustaquio", text: "A channel connecting the middle ear cavity to the nasopharynx that opens during swallowing or yawning to equalize atmospheric pressure on both sides of the eardrum." },
+      { name: "Tonotopic Organization", es: "organización tonotópica", text: "High-frequency pitch (up to 20,000 Hz) vibrates the stiff, narrow base of the cochlea near the oval window, while low-frequency pitch (down to 20 Hz) travels all the way to the flexible, wide apex." },
+      { name: "Conductive vs. Sensorineural Hearing Loss", es: "pérdida auditiva conductiva vs. neurosensorial", text: "Conductive loss involves physical sound transmission failure in the outer or middle ear (wax, torn eardrum, ossicular stiffness); sensorineural loss involves hair cell or auditory nerve damage in the inner ear." }
     ],
     match: [
-      ["pinna", "Collects sound waves"],
-      ["eardrum", "Thin membrane that vibrates"],
-      ["ossicles", "Three tiny bones that make vibrations stronger"],
-      ["cochlea", "Hair cells change vibrations into signals"],
-      ["auditorynerve", "Carries sound signals to the brain"]
+      ["pinna", "Visible external cartilage funneling sound waves into the canal"],
+      ["eardrum", "Tympanic membrane vibrating in response to arriving acoustic waves"],
+      ["ossicles", "Malleus, incus, and stapes amplifying mechanical force"],
+      ["cochlea", "Fluid-filled spiral organ where hair cells perform mechanotransduction"],
+      ["auditorynerve", "Cranial nerve VIII conducting action potentials to the temporal lobe"]
     ],
     cloze: {
-      text: "The {pinna} collects sound waves. The waves travel through the {ear canal} and make the {eardrum} vibrate. The {ossicles} make the vibrations stronger. In the {cochlea}, hair cells change vibrations into signals.",
-      extra: ["retina", "lens"]
+      text: "Acoustic sound waves enter the ear canal and strike the {eardrum}, causing it to vibrate. In the middle ear, the three tiny {ossicles} amplify these vibrations and transmit them to the oval window. Inside the fluid-filled {cochlea}, specialized {hair cells} are bent by fluid ripples, performing mechanotransduction. Finally, the {auditory nerve} conducts the electrical signals to the {auditory cortex}.",
+      extra: ["retina", "cornea", "taste buds"]
     },
     experiment: {
-      title: "Where is the sound?",
-      type: "steps",
-      predict: { q: "Is it easier to find where a sound comes from with one ear or with two ears?", options: ["With two ears", "With one ear", "No difference"] },
+      title: "Binaural Hearing & Horizontal Sound Localization",
+      type: "localization",
+      predict: {
+        q: "How does covering one ear affect your brain's ability to pinpoint the exact spatial direction of a sound?",
+        qEs: "¿Cómo afecta taparse un oído la capacidad del cerebro para localizar la dirección espacial de un sonido?",
+        options: [
+          "Covering one ear significantly reduces localization accuracy because the brain requires interaural time and intensity differences",
+          "Covering one ear doubles localization accuracy by eliminating background echoes",
+          "There is no measurable difference because each ear localizes 360 degrees independently",
+          "Sounds become completely silent when one ear canal is occluded"
+        ],
+        explain: "The brain localizes sound by calculating minute differences in arrival time (microseconds) and acoustic intensity between two ears. With only one ear open, interaural comparison is impossible."
+      },
+      materials: ["A testing partner", "Blindfold or closed eyes", "Clicker, snapped fingers, or keys"],
       steps: [
-        "Work with a partner. Sit with your eyes closed.",
-        "Your partner snaps their fingers in different places around your head. Point to the sound.",
-        "Now cover one ear with your hand and repeat.",
-        "Count how many times you pointed correctly each time."
+        "Sit on a chair in the middle of a quiet room and close your eyes (or wear a blindfold).",
+        "Your partner quietly stands at varying positions (front-left, behind-right, directly above, far-left) and snaps their fingers once.",
+        "Immediately point your index finger directly at the perceived sound source. Have your partner record whether your angle was exact.",
+        "Repeat for 5 trials with BOTH ears uncovered, tallying correct directions.",
+        "Now tightly seal your LEFT ear with your finger and repeat 5 identical trials from random positions. Compare your binaural vs. monaural accuracy score!"
       ],
-      explain: "With two ears, the sound arrives at one ear a tiny bit earlier and louder than at the other. Your brain compares the two signals to find the direction. With one ear, it is much harder."
+      observe: {
+        prompt: "Compare your localization accuracy: Record how many correct source identifications you achieved with both ears versus one ear (out of 5 trials).",
+        promptEs: "Compara tu precisión de localización: Registra cuántas identificaciones correctas lograste con ambos oídos versus un oído (de 5 intentos).",
+        type: "table",
+        columns: ["Condition", "Correct Trials (out of 5)"],
+        rows: [["Both ears open (Binaural)", "5"], ["One ear covered (Monaural)", "2"]]
+      },
+      explain: "Your auditory brainstem centers (superior olivary complex) process two subtle binaural cues: Interaural Time Difference (ITD—sound reaching the closer ear fractions of a millisecond earlier) and Interaural Level Difference (ILD—the acoustic 'shadow' of your head making the sound slightly quieter in the far ear). When you cover one ear, you deprive your auditory cortex of these comparative differential cues, making spatial localization remarkably inaccurate."
     },
     frames: [
-      "The ___ is in the outer / middle / inner ear.",
-      "The ___ helps us to ___.",
-      "First, sound waves ___. Next, ___. Then, ___. Finally, ___.",
-      "Loud noise can damage the ___, so we should ___."
+      "Sound waves enter through the ___ and cause the ___ to oscillate.",
+      "The three ossicles (___, ___, and ___) amplify mechanical vibrations by ___.",
+      "In the cochlea, fluid displacement deflects ___, which opens ion channels and converts ___ into ___.",
+      "Binaural hearing allows us to localize sound sources because the brain calculates ___.",
+      "Prolonged exposure to sound above 85 dB can permanently destroy ___ because ___."
     ],
     writing: {
-      prompt: "Explain how you hear your favorite song. Use first, next, then, finally.",
-      promptEs: "Explica cómo oyes tu canción favorita. Usa first, next, then, finally.",
-      bank: ["sound waves", "pinna", "ear canal", "eardrum", "vibrate", "ossicles", "cochlea", "auditory nerve", "brain", "first", "next", "then", "finally"],
-      model: "First, the pinna collects the sound waves of the song. Next, they travel through the ear canal and make the eardrum vibrate. Then, the ossicles make the vibrations stronger, and hair cells in the cochlea change them into signals. Finally, the auditory nerve carries the signals to my brain, and I hear the music."
+      prompt: "Explain how you hear a siren when an ambulance passes down the street. Describe how acoustic energy transforms into mechanical, hydraulic, and electrical signals.",
+      promptEs: "Explica cómo escuchas una sirena cuando pasa una ambulancia. Describe cómo la energía acústica se transforma en señales mecánicas, hidráulicas y eléctricas.",
+      bank: ["sound waves", "pinna", "ear canal", "eardrum", "ossicles", "cochlea", "hair cells", "auditory nerve", "auditory cortex", "mechanotransduction", "amplifies"],
+      verbs: ["travels", "funnels", "vibrates", "amplifies", "deflects", "transduces", "transmits", "interprets"],
+      connectors: ["Initially", "Subsequently", "Then", "Simultaneously", "Finally"],
+      model: "Initially, acoustic sound waves from the ambulance siren are collected by the pinna and channeled down the ear canal. Subsequently, the pressure waves strike the eardrum, forcing it to vibrate mechanically. Then, the three middle ear ossicles amplify these vibrations and push against the oval window of the cochlea. Inside the cochlea, fluid pressure waves deflect the microscopic stereocilia of sensory hair cells, performing mechanotransduction by converting mechanical movement into electrical nerve impulses. Finally, the auditory nerve conveys these action potentials to the auditory cortex in the temporal lobe, where your brain identifies the siren's pitch and location."
     },
     quiz: [
-      { level: "Remember", q: "Which thin membrane vibrates when sound waves hit it?", options: ["Eardrum", "Cochlea", "Pinna", "Ear canal"], explain: "The eardrum is a thin membrane at the end of the ear canal." },
-      { level: "Remember", q: "What do the ossicles do?", options: ["Make the vibrations stronger", "Collect sound waves", "Change vibrations into signals", "Produce earwax"], explain: "The three ossicles amplify (make stronger) the vibrations of the eardrum." },
-      { level: "Understand", q: "Where are vibrations changed into electrical signals?", options: ["In the cochlea, by hair cells", "In the eardrum", "In the ear canal", "In the pinna"], explain: "Hair cells inside the cochlea are the receptors of hearing." },
-      { level: "Understand", q: "What is the correct path of sound?", options: ["pinna → ear canal → eardrum → ossicles → cochlea", "eardrum → pinna → cochlea → ear canal → ossicles", "cochlea → ossicles → eardrum → ear canal → pinna", "ear canal → cochlea → pinna → ossicles → eardrum"], explain: "Sound goes from the outside in: outer ear, middle ear, inner ear." },
-      { level: "Apply", q: "Why is very loud music dangerous for your hearing?", options: ["It can damage the hair cells in the cochlea, and they do not grow back", "It makes the ear canal longer", "It breaks the pinna", "It fills the cochlea with air"], explain: "Loud sounds damage hair cells. Lost hair cells are not replaced, so the hearing loss is permanent." },
-      { level: "Apply", q: "Your friend has a small hole in the eardrum. Which step of hearing is affected first?", options: ["Vibrations are not passed well to the ossicles", "Light cannot reach the retina", "The auditory nerve sends too many signals", "The pinna cannot collect sound"], explain: "The eardrum passes vibrations to the ossicles. If it has a hole, it vibrates badly, so less sound reaches the inner ear." }
+      { level: "Remember", q: "What are the three middle ear ossicles collectively known as?", options: ["Malleus, incus, and stapes (hammer, anvil, stirrup)", "Cornea, pupil, and lens", "Pinna, ear canal, and tympanum", "Cochlea, vestibule, and semicircular canal"], explain: "The ossicles comprise the malleus (hammer), incus (anvil), and stapes (stirrup)." },
+      { level: "Remember", q: "Where are the auditory mechanoreceptors (hair cells) located?", options: ["Inside the cochlea of the inner ear", "Along the cartilage of the pinna", "On the surface of the eardrum", "Within the Eustachian tube"], explain: "Hair cells reside on the basilar membrane within the organ of Corti inside the cochlea." },
+      { level: "Understand", q: "What occurs during the process of mechanotransduction in the inner ear?", options: ["Fluid movement physically bends hair cell stereocilia, opening ion channels and generating electrical impulses", "Light waves activate photopigments in the eardrum", "Enzymes in saliva break down acoustic proteins", "Air pressure closes the auditory nerve to prevent signal overload"], explain: "Deflection of stereocilia mechanically opens ion channels, converting kinetic fluid motion into electrical receptor potentials." },
+      { level: "Understand", q: "Why is the tonotopic map of the cochlea compared to a piano keyboard?", options: ["Different frequencies stimulate hair cells at specific anatomical locations along the cochlea from base to apex", "The ossicles strike the eardrum with rhythmic hammer strokes", "The ear canal produces musical chords when air enters", "Both ears alternate listening to odd and even sound frequencies"], explain: "High frequencies displace the stiff base of the cochlea, while low frequencies travel to the flexible apex." },
+      { level: "Apply", q: "A factory worker is exposed to continuous machinery noise at 95 dB without ear protection for five years. Why is their resulting hearing loss permanent?", options: ["Damaged mammalian cochlear hair cells cannot regenerate once destroyed", "The pinna shrinks and closes the ear canal permanently", "The temporal lobe runs out of electrical energy", "The Eustachian tube remains permanently blocked by sound waves"], explain: "Mammalian auditory hair cells lack regenerative capacity; once stereocilia are broken or sheared off, sensorineural loss is irreversible." },
+      { level: "Apply", q: "A passenger's ears 'pop' as an airplane ascends into low-pressure altitude. What anatomical structure is equalizing the pressure?", options: ["The Eustachian (pharyngotympanic) tube connecting the middle ear to the throat", "The external auditory canal", "The semicircular canals of the inner ear", "The auditory nerve sheath"], explain: "The Eustachian tube opens during swallowing to balance middle-ear pressure with atmospheric air pressure." },
+      { level: "Analyze", q: "A physician diagnoses a patient with otosclerosis, a condition where the stapes bone becomes fused and immobilized. How will this affect hearing transmission?", options: ["Vibrations cannot be mechanically transferred to the fluid of the cochlea, causing conductive hearing loss", "Hair cells will fire uncontrollably, causing heightened ultrasonic hearing", "Light will no longer focus on the retina", "The auditory cortex will physically shrink in the parietal lobe"], explain: "If the stapes cannot move like a piston against the oval window, sound vibrations cannot displace cochlear fluid, blocking mechanical conduction." },
+      { level: "Evaluate", q: "Evaluate why humans possess two ears positioned on opposite sides of the head rather than a single ear in the center of the forehead. What evolutionary advantage does this configuration provide?", options: ["Binaural processing calculates microsecond time and volume differences to locate predators or prey in three-dimensional space", "Two ears allow one ear to sleep while the other remains vigilant", "A single central ear would be incapable of hearing frequencies above 100 Hz", "Two ears double the pitch of incoming voices so words sound higher"], explain: "Separated ears produce interaural time (ITD) and intensity (ILD) differences that neural circuits in the brainstem use to calculate horizontal sound coordinates." }
     ]
   },
 
   /* ===================================================== SMELL */
   {
-    id: "smell", name: "Smell", es: "Olfato", organ: "The Nose", organEs: "La nariz",
+    id: "smell",
+    name: "Smell",
+    es: "Olfato",
+    organ: "The Nose",
+    organEs: "La nariz",
+    cortex: "Olfactory Cortex & Limbic System (Temporal Lobe & Amygdala)",
+    cortexEs: "Corteza olfativa y Sistema límbico (Lóbulo temporal y Amígdala)",
+    receptorClassification: "Chemoreceptors (Olfactory Receptor Neurons)",
+    receptorClassificationEs: "Quimiorreceptores (Neuronas receptoras olfativas)",
+    transduction: "Volatile airborne odorant molecules dissolve in nasal mucus and bind to G-protein coupled receptors on olfactory cilia, triggering cyclic AMP cascades and depolarizing the neuron.",
+    transductionEs: "Moléculas olorosas volátiles se disuelven en el moco nasal y se unen a receptores acoplados a proteínas G, desencadenando despolarización neuronal.",
+    wordFamily: "smell (verb/noun) → odor (stimulus) → olfactory (anatomical) → olfaction (sensory process) → chemoreceptor (cellular)",
     objectives: [
-      "I can name and locate 5 parts of the sense of smell.",
-      "I can describe the path of an odor from the nostrils to the brain.",
-      "I can explain why we smell badly when we have a cold.",
-      "I can explain why smells can bring back memories."
+      "I can identify and locate the structures of the nasal cavity, olfactory epithelium, and olfactory bulb.",
+      "I can explain chemical sensory transduction: how odorant molecules bind to specialized G-protein receptors in nasal mucus.",
+      "I can explain why smell has a uniquely direct neural connection to emotional memory (limbic system).",
+      "I can analyze the scientific cause of temporary anosmia during viral respiratory infections."
     ],
     warmup: {
-      q: "Think of a smell that reminds you of a person or a place. Which one?",
-      qEs: "Piensa en un olor que te recuerde a una persona o un lugar. ¿Cuál es?",
-      task: "Smell your pencil, your hands and your sleeve. Can you describe each smell in English?",
-      taskEs: "Huele tu lápiz, tus manos y tu manga. ¿Puedes describir cada olor en inglés?"
+      q: "Recall a distinct scent—such as wet rain, cut grass, vanilla, or cinnamon. Does it trigger an immediate visual or emotional memory?",
+      qEs: "¿Recuerdas un olor característico (lluvia, césped cortado, vainilla o canela)? ¿Te genera un recuerdo visual o emocional inmediato?",
+      task: "Take a deep sniff through both nostrils simultaneously, then close one nostril. Does airflow feel identical in both sides?",
+      taskEs: "Inhala profundamente por ambas fosas nasales a la vez, y luego tapa una fosa. ¿El flujo de aire se siente igual en ambos lados?"
     },
     words: [
-      { id: "nostril", en: "nostril", es: "fosa nasal", ipa: "/ˈnɑː.strəl/", def: "One of the two openings of the nose.", ex: "Air enters through the nostrils.", note: "💡 We have two nostrils.", spot: true },
-      { id: "nasalcavity", en: "nasal cavity", es: "cavidad nasal", ipa: "/ˈneɪ.zəl ˈkæv.ə.ti/", def: "The space inside the nose where air travels.", ex: "The nasal cavity warms and cleans the air.", note: "✅ Cognate: nasal cavity = cavidad nasal.", spot: true },
-      { id: "olfreceptors", en: "olfactory receptors", es: "receptores olfativos", ipa: "/ɑːlˈfæk.tər.i rɪˈsep.tərz/", def: "Cells at the top of the nasal cavity that detect odor molecules.", ex: "Olfactory receptors detect the smell of coffee.", note: "💡 Olfactory ≈ olfato / olfativo.", spot: true },
-      { id: "olfnerve", en: "olfactory nerve", es: "nervio olfativo", ipa: "/ɑːlˈfæk.tər.i nɜːrv/", def: "Nerve fibers that carry signals from the receptors to the olfactory bulb.", ex: "The olfactory nerve passes through tiny holes in the skull bone.", note: "⚠️ It goes from the receptors to the bulb, not from the bulb to the brain.", spot: true },
-      { id: "olfbulb", en: "olfactory bulb", es: "bulbo olfativo", ipa: "/ɑːlˈfæk.tər.i bʌlb/", def: "The part of the brain that first receives smell signals.", ex: "The olfactory bulb sends the signals to other parts of the brain.", note: "💡 Bulb = bulbo (like a flower bulb).", spot: true },
-      { id: "odor", en: "odor molecules", es: "moléculas de olor", ipa: "/ˈoʊ.dər ˈmɑː.lə.kjuːlz/", def: "Tiny particles in the air that we can smell. They are the stimulus for smell.", ex: "Odor molecules from bread fill the kitchen.", note: "✅ Cognate: odor = olor. British English: 'odour'." },
-      { id: "mucus", en: "mucus", es: "moco / mucosidad", ipa: "/ˈmjuː.kəs/", def: "A sticky liquid inside the nose. Odor molecules dissolve in it.", ex: "When you have a cold, you have more mucus.", note: "✅ Cognate: mucus ≈ mucosidad." }
+      { id: "nostril", en: "nostril (naris)", es: "fosa nasal (orificio)", ipa: "/ˈnɑː.strəl/", def: "Either of the two external openings of the nose through which air and volatile odorant molecules enter the respiratory tract.", ex: "Inhaled air enters through the nostrils and travels across the nasal septum.", note: "💡 Humans have two nostrils that alternate airflow in a rhythmic nasal cycle.", spot: true },
+      { id: "nasalcavity", en: "nasal cavity", es: "cavidad nasal", ipa: "/ˈneɪ.zəl ˈkæv.ə.ti/", def: "The large internal air-filled space behind the nose lined with mucous membranes and bony turbinates that warm, filter, and humidify air.", ex: "Curved turbinates inside the nasal cavity create turbulence so odor molecules reach the roof of the nose.", note: "✅ Cognate: nasal cavity = cavidad nasal.", spot: true },
+      { id: "olfreceptors", en: "olfactory receptors", es: "receptores olfativos", ipa: "/ɑːlˈfæk.tər.i rɪˈsep.tərz/", def: "Specialized bipolar chemoreceptor neurons located in the olfactory epithelium whose cilia detect airborne chemical molecules.", ex: "Humans possess approximately 400 distinct genetic types of olfactory receptor proteins.", note: "💡 Chemoreceptor: detects chemical compounds.", spot: true },
+      { id: "olfnerve", en: "olfactory nerve (CN I)", es: "nervio olfativo", ipa: "/ɑːlˈfæk.tər.i nɜːrv/", def: "The bundle of non-myelinated sensory axons (cranial nerve I) that traverses the cribriform plate of the ethmoid bone to connect receptors to the bulb.", ex: "Axons forming the olfactory nerve pass through tiny perforations in the skull base.", note: "⚠️ Cranial nerve I connects the nasal epithelium directly to the olfactory bulb.", spot: true },
+      { id: "olfbulb", en: "olfactory bulb", es: "bulbo olfativo", ipa: "/ɑːlˈfæk.tər.i bʌlb/", def: "The forebrain structure situated beneath the frontal lobes where olfactory nerve fibers synapse with mitral cells in clusters called glomeruli.", ex: "The olfactory bulb sorts and processes raw odor signals before routing them to higher brain regions.", note: "💡 Bulb: rounded anatomical structure like a plant bulb.", spot: true },
+      { id: "odor", en: "odorant molecules", es: "moléculas odoríferas", ipa: "/ˈoʊ.dər.ənt ˈmɑː.lə.kjuːlz/", def: "Volatile airborne chemical compounds small enough to evaporate into the air and bind to olfactory receptor sites.", ex: "Baking bread releases hundreds of volatile odorant molecules into the kitchen.", note: "✅ Cognate: odor = olor." },
+      { id: "mucus", en: "mucus layer", es: "capa de moco", ipa: "/ˈmjuː.kəs/", def: "The protective watery aqueous secretion coating the nasal epithelium in which odorant molecules must dissolve before binding to receptors.", ex: "Odor molecules must first dissolve in nasal mucus to reach the receptor cilia.", note: "💡 Physiological solvent essential for olfaction." },
+      { id: "olfactorycortex", en: "olfactory cortex & limbic system", es: "corteza olfativa y sistema límbico", ipa: "/ɑːlˈfæk.tər.i ˈkɔːr.teks/", def: "The neural network in the temporal lobe, amygdala, and hippocampus that identifies odors and associates them with emotion and episodic memory.", ex: "Because olfactory tracts wire directly into the limbic system, smells trigger vivid emotional recall.", note: "💡 The only sensory pathway that bypasses the thalamus on its primary route!" }
     ],
-    path: ["odor", "nostril", "nasalcavity", "olfreceptors", "olfnerve", "olfbulb", "brain"],
-    pathLabels: { odor: "Odor molecules", nostril: "Nostrils", nasalcavity: "Nasal cavity", olfreceptors: "Olfactory receptors", olfnerve: "Olfactory nerve", olfbulb: "Olfactory bulb", brain: "Brain" },
+    path: ["odor", "nostril", "nasalcavity", "mucus", "olfreceptors", "olfnerve", "olfbulb", "olfactorycortex"],
+    pathLabels: {
+      odor: "1. Odorant molecules (Moléculas volátiles)",
+      nostril: "2. Nostrils (Entrada nasal)",
+      nasalcavity: "3. Nasal cavity & Turbinates (Turbulencia)",
+      mucus: "4. Mucus layer (Disolución química)",
+      olfreceptors: "5. Olfactory receptors (Transducción química)",
+      olfnerve: "6. Olfactory nerve: CN I (Cribriform plate)",
+      olfbulb: "7. Olfactory bulb (Procesamiento glomerular)",
+      olfactorycortex: "8. Olfactory Cortex & Limbic System (Memoria y emoción)"
+    },
     reading: {
-      title: "The Path of Smell",
+      title: "The Path of Smell & Chemical Transduction",
       paragraphs: [
-        "Every smell begins with tiny [[odor|odor molecules]] floating in the air. When you breathe in, these molecules enter your nose through the [[nostril|nostrils]] and travel into the [[nasalcavity|nasal cavity]].",
-        "At the top of the nasal cavity there is a small patch with millions of [[olfreceptors|olfactory receptors]]. First, the odor molecules dissolve in the [[mucus|mucus]] that covers this patch. Then, the receptors detect the molecules and make electrical signals.",
-        "Next, the signals travel along the [[olfnerve|olfactory nerve]]. Its fibers pass through tiny holes in a skull bone and reach the [[olfbulb|olfactory bulb]], which is part of the brain.",
-        "Finally, the olfactory bulb sends the signals to other areas of the brain. The brain compares them with smells you already know and identifies the smell: coffee, flowers, or rain. Some of these areas also control memory and emotions."
+        "Olfaction is an ancient, highly sensitive chemical sense. Every scent in our environment originates as microscopic, volatile [[odor|odorant molecules]] circulating in the atmosphere. To detect these chemicals, our olfactory system executes an intricate sequence of physical transport and biochemical transduction.",
+        "First, when you inhale, air currents carry odorant molecules through the [[nostril|nostrils]] into the [[nasalcavity|nasal cavity]]. Inside the cavity, three pairs of scroll-shaped spongy bones called turbinates warm, humidify, and churn the air into vortexes. This turbulent airflow propels a fraction of the inhaled molecules upward toward the roof of the nasal vault.",
+        "At the superior apex of each nasal cavity lies the olfactory epithelium—a specialized yellowish tissue patch measuring roughly five square centimeters. Before any chemical interaction can occur, airborne odorants must first dissolve into the aqueous [[mucus|mucus layer]] secreted by Bowman's glands. If the nasal lining is desiccated or overly congested, molecules cannot dissolve properly.",
+        "Once dissolved, the chemical odorants bind to matching receptor proteins embedded in the long cilia of millions of bipolar [[olfreceptors|olfactory receptor neurons]]. Each olfactory neuron expresses only one of approximately 400 distinct receptor types. When an odor molecule docks with its corresponding receptor like a key in a lock, it activates an intracellular G-protein cascade that opens ion channels. This influx of positive ions depolarizes the neuron, successfully executing sensory transduction from chemical binding into an electrical action potential.",
+        "Next, the non-myelinated axons of these olfactory neurons converge into bundle fibers forming the [[olfnerve|olfactory nerve]] (cranial nerve I). These delicate fibers traverse upward through tiny perforations in the skull's ethmoid cribriform plate to synapse in the [[olfbulb|olfactory bulb]]. Inside the bulb, specialized spherical micro-circuits called glomeruli organize signals into a distinct combinatorial 'odor fingerprint.'",
+        "Finally, unlike sight, hearing, taste, or touch, olfactory signals do not route primarily through the thalamus. Instead, olfactory tracts transmit action potentials directly to the primary [[olfactorycortex|olfactory cortex]] and into the limbic system—specifically the amygdala (emotional center) and the hippocampus (memory formation). This direct anatomical highway explains why a fleeting scent can evoke instant, deeply emotional childhood memories before you can even consciously name the smell."
       ],
       checks: [
-        { after: 1, q: "What must happen to odor molecules before the receptors detect them?", options: ["They dissolve in mucus", "They become liquid in the lungs", "They reach the tongue"], explain: "Odor molecules dissolve in the mucus that covers the olfactory receptors." },
-        { after: 2, q: "Where does the olfactory nerve carry the signals?", options: ["From the receptors to the olfactory bulb", "From the bulb to the nostrils", "From the eyes to the nose"], explain: "The olfactory nerve connects the receptors with the olfactory bulb." }
+        { after: 2, q: "Why must airborne odor molecules dissolve in the nasal mucus layer before you can smell them?", options: ["Receptor proteins on olfactory cilia can only bind to dissolved chemicals in solution", "Mucus cools the molecules so they don't burn the nasal cavity", "Mucus converts light into sound waves", "Dissolving molecules makes the nostrils expand mechanically"], explain: "Olfactory receptors are chemoreceptors; they can only interact with odorants once the molecules dissolve in the watery mucous fluid." },
+        { after: 4, q: "What anatomical characteristic makes the olfactory pathway unique compared to vision, hearing, and touch?", options: ["It routes directly into the limbic system (amygdala/hippocampus) without an obligatory first relay through the thalamus", "It travels down the spinal cord to the kidneys before reaching the brain", "It uses photoreceptors to detect volatile gases", "It only functions when the mouth is wide open"], explain: "Olfaction is the only sensory modality with direct neural projections into the limbic system without requiring a thalamic relay station first." }
       ]
     },
-    funfact: "Smell signals reach the brain areas for memory and emotion very directly. That's why a smell can suddenly remind you of a place or a person.",
+    funfact: "Humans can distinguish upwards of one trillion distinct odor combinations using a combinatorial code of roughly 400 olfactory receptor types—much like an alphabet of 26 letters can generate millions of different words!",
     health: {
       problems: [
-        { name: "Anosmia", text: "Loss of the sense of smell. It can happen with a cold, flu or COVID-19, and usually comes back." },
-        { name: "Sinusitis", text: "The sinuses (spaces around the nose) become swollen and blocked. It causes pain and a stuffy nose." }
+        { name: "Anosmia", text: "Complete loss of the sense of smell. Temporary anosmia frequently occurs during upper respiratory viral infections (common cold, influenza, COVID-19) due to sustentacular cell disruption or mucosal inflammation blocking airflow to the epithelium." },
+        { name: "Hyposmia & Parosmia", text: "Hyposmia is reduced olfactory sensitivity; parosmia is a distorted olfactory perception where familiar pleasant aromas (like coffee or roasted chicken) smell foul, rotten, or metallic during nerve regeneration." },
+        { name: "Sinusitis", text: "Inflammation of the paranasal sinuses causing mucosal hypersecretion and severe facial pressure, impeding odorants from ascending to the olfactory cleft." }
       ],
       care: [
-        "Blow your nose gently, one nostril at a time.",
-        "Avoid smoke and strong chemicals: they damage the receptors.",
-        "If you suddenly lose your sense of smell, tell an adult or a doctor."
+        "Avoid sniffing concentrated caustic industrial chemicals, bleach, or ammonia directly; strong chemical fumes can permanently burn olfactory receptor cilia.",
+        "Gently blow your nose one nostril at a time to prevent forcing infectious mucus back into your paranasal sinuses and Eustachian tubes.",
+        "Maintain indoor air humidity and stay well-hydrated to ensure the nasal mucous membrane maintains the optimal physiological viscosity needed to dissolve odorants."
       ]
     },
     deeper: [
-      { name: "About 400 types of receptors", es: "unos 400 tipos de receptores", text: "Humans have about 400 kinds of olfactory receptors. Together they can tell apart a huge number of smells." },
-      { name: "Olfactory tract", es: "tracto olfativo", text: "The path that carries signals from the olfactory bulb to the rest of the brain." },
-      { name: "Nose hairs", es: "vellos nasales", text: "They filter dust and small particles from the air you breathe." },
-      { name: "Turbinates", es: "cornetes", text: "Curved bones inside the nasal cavity. They warm and humidify the air." }
+      { name: "Cribriform Plate of Ethmoid Bone", es: "lámina cribosa del etmoides", text: "A porous horizontal bone at the cranial base resembling a sieve; severe head trauma can fracture this plate, tearing olfactory nerve fibers and causing permanent anosmia or cerebrospinal fluid leakage." },
+      { name: "Olfactory Sensory Neuron Regeneration", es: "regeneración de neuronas olfativas", text: "Unlike auditory hair cells or retinal photoreceptors, olfactory neurons are directly exposed to the external environment and undergo natural replacement from basal stem cells every 30 to 60 days." },
+      { name: "Vomeronasal Organ (VNO)", es: "órgano vomeronasal (de Jacobson)", text: "An auxiliary olfactory structure prominent in many mammals for detecting pheromones; in adult humans, it is vestigial and non-functional." },
+      { name: "Nasal Cycle", es: "ciclo nasal", text: "An automatic ultradian rhythm governed by the autonomic nervous system wherein nasal erectile tissue alternates congestion and decongestion between nostrils every 2 to 4 hours." }
     ],
     match: [
-      ["nostril", "Openings where air enters the nose"],
-      ["mucus", "Sticky liquid where odor molecules dissolve"],
-      ["olfreceptors", "Cells that detect odor molecules"],
-      ["olfnerve", "Carries signals from the receptors to the bulb"],
-      ["olfbulb", "First part of the brain that receives smell signals"]
+      ["nostril", "External opening admitting air and volatile chemicals"],
+      ["mucus", "Aqueous solvent coating cilia where odorants must dissolve"],
+      ["olfreceptors", "Bipolar sensory neurons performing chemical transduction"],
+      ["olfbulb", "Forebrain structure where glomeruli sort odor signals"],
+      ["olfactorycortex", "Cortical and limbic network processing scent, emotion, and memory"]
     ],
     cloze: {
-      text: "Odor molecules enter through the {nostrils} and travel into the {nasal cavity}. They dissolve in {mucus}. The olfactory {receptors} detect them. The olfactory nerve carries the signals to the olfactory {bulb}.",
-      extra: ["cochlea", "pupil"]
+      text: "Airborne volatile {odor} molecules enter through the {nostrils} and circulate in the nasal cavity. They dissolve in the watery {mucus} layer and bind to specialized {olfactory receptors}. The axons of these neurons form the {olfactory nerve}, which passes through the skull to the {olfactory bulb}. Finally, signals project directly to the olfactory cortex and the {limbic system}.",
+      extra: ["cochlea", "cornea", "eardrum"]
     },
     experiment: {
-      title: "Smell detectives",
-      type: "steps",
-      predict: { q: "Can you identify 3 foods only by their smell, with your eyes closed?", options: ["Yes, all 3", "Only 1 or 2", "None"] },
+      title: "Chemical Aroma Detective & Retronasal Scent Isolation",
+      type: "aroma",
+      predict: {
+        q: "What do you hypothesize happens to your ability to identify distinct food aromas when airborne molecules enter only through the nose versus retronasally through the back of the mouth?",
+        qEs: "¿Qué crees que ocurre con tu capacidad para identificar aromas cuando las moléculas entran solo por la nariz versus retronasalmente por la boca?",
+        options: [
+          "Smell and taste combine in the brain; blocking airflow prevents volatile odorants from reaching the olfactory cleft retronasally",
+          "Food aroma is detected entirely by the tongue, so pinching the nose makes no difference",
+          "Pinching the nose completely eliminates the basic taste of table salt and sugar",
+          "The olfactory bulb moves closer to the throat during mastication"
+        ],
+        explain: "True food aroma depends overwhelmingly on retronasal olfaction: chewing food forces volatile gases up into the nasal cavity from the back of the throat. Without olfactory input, you only perceive basic tongue tastants."
+      },
+      materials: ["3 opaque cups containing distinct aromatic items (coffee grounds, crushed cinnamon, citrus peel, or peppermint)", "A blindfold or closed eyes"],
       steps: [
-        "A partner prepares 3 small cups with things that smell (for example: coffee, lemon, cinnamon, soap).",
-        "Close your eyes. Smell each cup for 3 seconds.",
-        "Say what you think it is in English: 'I think it is…'",
-        "Then say if the smell reminds you of something: 'It reminds me of…'"
+        "Work with a partner. Put on a blindfold or keep your eyes tightly closed.",
+        "Your partner holds one mystery cup approximately 3 cm beneath your nose.",
+        "Inhale gently through your nose for 3 seconds. Say aloud: 'I predict this scent is ___ because it reminds me of ___.'",
+        "Now tightly pinch your nostrils closed with your fingers, place a small slice of fruit or flavored candy in your mouth, and chew for 5 seconds.",
+        "Note that you can only feel sweetness or acidity; now suddenly RELEASE your nostrils! Notice how the full rich aroma explosively blooms in your consciousness."
       ],
-      explain: "Your olfactory receptors detected the odor molecules and your brain compared them with smells you know. Many people remember places or people when they smell something, because smell signals reach memory areas of the brain very directly."
+      observe: {
+        prompt: "Document your sensory experience: Which mystery scents were you able to identify, and what emotional memory or association did each aroma evoke?",
+        promptEs: "Documenta tu experiencia sensorial: ¿Cuáles aromas lograste identificar y qué recuerdo emocional te evocó cada uno?",
+        type: "notes",
+        label: "Aroma identification & Memory notes"
+      },
+      explain: "When you pinched your nose, you isolated your tongue's gustatory receptors (sweet, sour), proving that taste alone cannot identify complex flavors like orange or cinnamon. Releasing your nose enabled volatile odorants released during mastication to travel through the pharynx into the nasal cavity (retronasal olfaction). These molecules bound to your olfactory receptors, which sent impulses directly into your limbic system (amygdala and hippocampus), instantly unlocking both flavor identification and evocative emotional memory."
     },
     frames: [
-      "Odor molecules enter through the ___.",
-      "The ___ detect(s) ___.",
-      "First, ___. Next, ___. Then, ___. Finally, ___.",
-      "The smell of ___ reminds me of ___."
+      "Volatile odorant molecules enter through the ___ and circulate within the ___.",
+      "Before chemical detection can occur, odor molecules must first dissolve in ___.",
+      "Sensory transduction happens when odorants bind to ___, which triggers ___.",
+      "The olfactory pathway is anatomically unique because signals travel directly to the ___ without ___.",
+      "When we have a cold, our sense of smell diminishes because ___."
     ],
     writing: {
-      prompt: "Explain how you smell fresh bread. Use first, next, then, finally.",
-      promptEs: "Explica cómo hueles el pan recién hecho. Usa first, next, then, finally.",
-      bank: ["odor molecules", "nostrils", "nasal cavity", "mucus", "olfactory receptors", "olfactory nerve", "olfactory bulb", "brain", "first", "next", "then", "finally"],
-      model: "First, odor molecules from the bread enter my nose through the nostrils. Next, they travel into the nasal cavity and dissolve in the mucus. Then, the olfactory receptors detect them, and the olfactory nerve carries the signals to the olfactory bulb. Finally, the brain identifies the smell of fresh bread."
+      prompt: "Explain how you smell freshly peeled orange slices across a room. Detail the chemical journey from the citrus fruit to your brain's emotional memory centers.",
+      promptEs: "Explica cómo hueles rodajas de naranja recién peladas al otro lado de la habitación. Detalla el viaje químico desde el cítrico hasta los centros de memoria emocional de tu cerebro.",
+      bank: ["odorant molecules", "nostrils", "nasal cavity", "mucus layer", "olfactory receptors", "olfactory nerve", "olfactory bulb", "limbic system", "transduction"],
+      verbs: ["evaporates", "circulates", "dissolves", "binds", "depolarizes", "synapses", "recalls"],
+      connectors: ["Initially", "Afterward", "Next", "As a consequence", "Ultimately"],
+      model: "Initially, volatile odorant molecules evaporate from the freshly peeled orange and circulate through the room. Next, as you inhale, the molecules enter through the nostrils and travel into the nasal cavity. Afterward, the chemicals dissolve in the protective mucus layer coating the olfactory epithelium. When the dissolved molecules bind to matching olfactory receptors on sensory cilia, chemical transduction depolarizes the neurons into electrical action potentials. The olfactory nerve conducts these signals through the cribriform plate to the olfactory bulb. Ultimately, the impulses project directly to the olfactory cortex and the limbic system, allowing you to recognize the citrus scent and recall memories associated with oranges."
     },
     quiz: [
-      { level: "Remember", q: "Where do odor molecules enter the body?", options: ["Through the nostrils", "Through the ear canal", "Through the taste buds", "Through the pupil"], explain: "Air with odor molecules enters through the nostrils." },
-      { level: "Remember", q: "Which cells detect odor molecules?", options: ["Olfactory receptors", "Taste cells", "Hair cells", "Rods and cones"], explain: "Olfactory receptors are at the top of the nasal cavity." },
-      { level: "Understand", q: "What does the olfactory nerve do?", options: ["Carries signals from the receptors to the olfactory bulb", "Carries signals from the bulb to the eyes", "Produces mucus", "Filters dust from the air"], explain: "The olfactory nerve connects the receptors in the nose with the olfactory bulb in the brain." },
-      { level: "Understand", q: "Why is mucus important for smell?", options: ["Odor molecules dissolve in it so the receptors can detect them", "It makes the nostrils bigger", "It sends signals to the brain", "It cleans the olfactory bulb"], explain: "Receptors detect molecules that are dissolved in the mucus." },
-      { level: "Apply", q: "When you have a bad cold, you can't smell well. Why?", options: ["Swelling and extra mucus stop odor molecules from reaching the receptors", "The olfactory bulb disappears", "The ears are blocked", "The tongue stops working"], explain: "The nose is blocked, so fewer odor molecules reach the olfactory receptors." },
-      { level: "Apply", q: "The smell of a cake reminds you of your grandmother's house. Why?", options: ["Smell signals reach brain areas for memory and emotion very directly", "Smell is processed in the tongue", "The cake has memory molecules", "The optic nerve stores smells"], explain: "The smell pathway is closely connected to the brain areas that control memory and emotions." }
+      { level: "Remember", q: "Where are the sensory neurons of smell (olfactory receptor cells) located?", options: ["In the olfactory epithelium at the superior roof of the nasal cavity", "Inside the lower respiratory lungs", "On the papillae of the tongue", "Along the auditory Eustachian tube"], explain: "Olfactory receptor neurons are embedded within the olfactory epithelium lining the roof of the nasal cavity." },
+      { level: "Remember", q: "Through which perforated cranial bone do olfactory nerve fibers pass to reach the brain?", options: ["Cribriform plate of the ethmoid bone", "Temporal bone of the inner ear", "Frontal bone of the forehead", "Occipital bone at the base of the skull"], explain: "Axons forming cranial nerve I pass through the sieve-like perforations of the ethmoid cribriform plate into the anterior cranial fossa." },
+      { level: "Understand", q: "What crucial physical step must occur before an odor molecule can bind to an olfactory receptor?", options: ["It must dissolve into the watery mucus layer coating the epithelium", "It must be frozen by cold air", "It must be reflected off the cornea", "It must be converted into mechanical sound vibrations"], explain: "Olfactory receptors are chemoreceptors; they can only interact with odorants once the molecules dissolve in the aqueous mucous solvent." },
+      { level: "Understand", q: "Why are olfactory sensations frequently tied to vivid emotional memories?", options: ["Olfactory tracts connect directly into the amygdala and hippocampus of the limbic system", "The olfactory nerve is the largest motor nerve in the spinal cord", "Smell signals are stored inside red blood cells", "The nose contains specialized vision receptors"], explain: "The olfactory bulb projects direct axonal pathways into the limbic system (amygdala and hippocampus), the core brain centers for emotion and memory." },
+      { level: "Apply", q: "A student with a severe head cold and congested sinuses complains that their chicken soup 'has lost all its taste.' What is the actual scientific explanation?", options: ["Swelling and excess mucus block odor molecules from reaching the olfactory cleft, eliminating retronasal flavor", "The cold virus has permanently killed their tongue taste buds", "The soup has stopped emitting molecules due to room temperature", "The auditory nerve is dampened by earwax"], explain: "What we perceive as 'flavor' is roughly 80% retronasal olfaction. When congested nasal passages block odorants from ascending to olfactory receptors, food seems bland." },
+      { level: "Apply", q: "A cyclist suffers a skull fracture at the base of the forehead and permanently loses all sense of smell (anosmia). Which structure was most likely severed?", options: ["The olfactory nerve fibers passing through the fractured cribriform plate", "The optic chiasm behind the eyes", "The tympanic membrane in the middle ear", "The hypodermis of the cheeks"], explain: "Fractures of the ethmoid cribriform plate shear off the fragile, non-myelinated olfactory nerve fibers entering the olfactory bulb." },
+      { level: "Analyze", q: "Compare chemical transduction in smell with mechanotransduction in hearing. What fundamental difference distinguishes their receptor mechanisms?", options: ["Smell uses molecular chemical docking with G-protein coupled receptors; hearing uses physical displacement of hair cell stereocilia to open ion channels", "Smell uses light photons; hearing uses airborne gases", "Hearing requires chemical dissolution in mucus; smell requires middle-ear ossicle levers", "There is no difference; both senses utilize identical photoreceptors"], explain: "Olfaction is chemosensory (ligand-receptor binding triggering biochemical second-messenger cascades); audition is mechanosensory (physical shearing force directly gating ion channels)." },
+      { level: "Evaluate", q: "Evaluate this statement: 'Humans have a primitive, insignificant sense of smell compared to dogs, so olfaction is practically useless for human survival.' Why is this conclusion false?", options: ["Human olfaction can distinguish over one trillion odorant profiles, detects spoiled food and toxic airborne gases, and shapes nutritional intake and social bonding", "Humans actually have ten times more olfactory receptor genes than canines", "Humans use smell to locate objects ten miles away in the dark", "Smell is the only sense responsible for balancing human body posture"], explain: "While dogs have greater sensitivity, human olfaction is remarkably sophisticated (distinguishing up to a trillion scent profiles) and serves critical protective functions (detecting smoke, gas leaks, spoiled toxins) and nutritional health." }
     ]
   },
 
   /* ===================================================== TASTE */
   {
-    id: "taste", name: "Taste", es: "Gusto", organ: "The Tongue", organEs: "La lengua",
+    id: "taste",
+    name: "Taste",
+    es: "Gusto",
+    organ: "The Tongue",
+    organEs: "La lengua",
+    cortex: "Gustatory Cortex (Insula / Frontal Operculum)",
+    cortexEs: "Corteza gustativa (Ínsula / Operculum frontal)",
+    receptorClassification: "Chemoreceptors (Gustatory Receptor Cells)",
+    receptorClassificationEs: "Quimiorreceptores (Células receptoras gustativas)",
+    transduction: "Dissolved chemical tastants enter taste pores; salty and sour ions directly depolarize cells, while sweet, bitter, and umami molecules bind to G-protein coupled receptors, releasing neurotransmitters.",
+    transductionEs: "Sustancias químicas disueltas entran por poros gustativos; iones salados y ácidos despolarizan directamente, mientras dulce, amargo y umami activan receptores GPCR.",
+    wordFamily: "taste (verb/noun) → flavor (integration with smell) → gustatory (anatomical) → gustation (sensory process) → chemoreceptor (cellular)",
     objectives: [
-      "I can name and locate the tongue, papillae, taste buds and taste cells.",
-      "I can name the five basic tastes.",
-      "I can explain why food must dissolve in saliva.",
-      "I can explain the difference between taste and flavor."
+      "I can locate and describe the relationship between the tongue, papillae, taste buds, and gustatory cells.",
+      "I can name and describe the 5 distinct basic tastes (sweet, sour, salty, bitter, umami) and debunk the tongue map myth.",
+      "I can explain chemical transduction of tastants dissolved in saliva.",
+      "I can differentiate between simple taste (tongue) and multisensory flavor (taste + smell + texture + temperature)."
     ],
     warmup: {
-      q: "What is your favorite food? Is it sweet, sour, salty, bitter or umami?",
-      qEs: "¿Cuál es tu comida favorita? ¿Es dulce, ácida, salada, amarga o umami?",
-      task: "Look at your tongue in a mirror. Can you see small bumps?",
-      taskEs: "Mira tu lengua en un espejo. ¿Puedes ver pequeños bultos?"
+      q: "Think of biting into a crisp green apple versus a slice of aged cheddar cheese. How do your saliva and sensations respond?",
+      qEs: "Piensa en morder una manzana verde ácida versus un trozo de queso maduro. ¿Cómo responden tu saliva y tus sensaciones?",
+      task: "Look at your tongue closely in a hand mirror. Can you see the tiny pink bumps across the surface?",
+      taskEs: "Mira tu lengua de cerca en un espejo de mano. ¿Puedes ver los pequeños bultos rosados en la superficie?"
     },
     words: [
-      { id: "tongue", en: "tongue", es: "lengua", ipa: "/tʌŋ/", def: "The muscle in your mouth used for tasting, chewing and speaking.", ex: "The tongue is covered with papillae.", note: "⚠️ 'Tongue' can also mean 'language' (mother tongue = lengua materna).", spot: true },
-      { id: "papillae", en: "papillae", es: "papilas", ipa: "/pəˈpɪl.iː/", def: "Small bumps on the tongue. Most taste buds are inside them.", ex: "You can see papillae on your tongue.", note: "💡 Singular: papilla. Plural: papillae.", spot: true },
-      { id: "tastebuds", en: "taste buds", es: "botones gustativos", ipa: "/teɪst bʌdz/", def: "Tiny groups of taste cells inside the papillae.", ex: "We have thousands of taste buds.", note: "⚠️ In Spanish people often say 'papilas gustativas', but a taste bud is inside a papilla.", spot: true },
-      { id: "tastecells", en: "taste cells", es: "células gustativas", ipa: "/teɪst selz/", def: "The receptor cells of taste. They detect chemicals in food.", ex: "Taste cells are replaced about every two weeks.", spot: true },
-      { id: "tastenerve", en: "taste nerves", es: "nervios gustativos", ipa: "/teɪst nɜːrvz/", def: "Nerves that carry taste signals from the tongue to the brain.", ex: "Two main nerves carry taste signals from the tongue.", note: "💡 Scientific word: gustatory (≈ gusto).", spot: true },
-      { id: "saliva", en: "saliva", es: "saliva", ipa: "/səˈlaɪ.və/", def: "The liquid in your mouth. It dissolves chemicals from food.", ex: "Saliva helps us taste and swallow food.", note: "✅ Same word in Spanish." },
-      { id: "flavor", en: "flavor", es: "sabor (gusto + olfato)", ipa: "/ˈfleɪ.vər/", def: "The mix of taste and smell (and texture) that the brain creates.", ex: "Strawberry flavor needs taste and smell.", note: "⚠️ Taste = what the tongue detects. Flavor = taste + smell. British English: 'flavour'." },
-      { id: "umami", en: "umami", es: "umami (sabroso)", ipa: "/uːˈmɑː.mi/", def: "The savory taste of meat, cheese, tomato and soup.", ex: "Parmesan cheese has a strong umami taste.", note: "💡 A Japanese word. The five basic tastes: sweet, sour, salty, bitter, umami." }
+      { id: "tongue", en: "tongue", es: "lengua", ipa: "/tʌŋ/", def: "The muscular hydrostat organ in the oral cavity equipped with specialized papillae that facilitates mastication, deglutition, speech, and gustation.", ex: "The dorsal surface of the tongue is covered in thousands of microscopic sensory structures.", note: "⚠️ Polysemy: 'mother tongue' means native language.", spot: true },
+      { id: "papillae", en: "papillae", es: "papilas linguales", ipa: "/pəˈpɪl.iː/", def: "The visible small epithelial projections on the tongue surface (fungiform, foliate, and circumvallate) that house taste buds.", ex: "Fungiform papillae look like tiny mushrooms on the tip and edges of the tongue.", note: "💡 Singular: papilla. Plural: papillae.", spot: true },
+      { id: "tastebuds", en: "taste buds", es: "botones gustativos", ipa: "/teɪst bʌdz/", def: "Barrel-shaped clusters of 50 to 150 spindle-shaped neuroepithelial cells embedded within the walls of lingual papillae.", ex: "We possess approximately 5,000 to 10,000 taste buds throughout our mouth and throat.", note: "⚠️ Clinical precision: a taste bud is inside a papilla (they are not identical).", spot: true },
+      { id: "tastecells", en: "gustatory receptor cells", es: "células receptoras gustativas", ipa: "/ˈɡʌs.tə.tɔːr.i selz/", def: "Specialized chemoreceptive epithelial cells equipped with microvilli extending into the taste pore that detect tastants.", ex: "Gustatory cells have a rapid turnover rate, regenerating from basal stem cells every 10 to 14 days.", spot: true },
+      { id: "tastenerve", en: "gustatory cranial nerves (CN VII, IX, X)", es: "nervios craneales gustativos", ipa: "/ˈɡʌs.tə.tɔːr.i nɜːrvz/", def: "The three cranial nerves that transmit taste signals: Facial (CN VII, anterior 2/3), Glossopharyngeal (CN IX, posterior 1/3), and Vagus (CN X, epiglottis/throat).", ex: "Taste impulses travel through the facial and glossopharyngeal nerves to the solitary nucleus.", note: "💡 Neuroanatomy: Three distinct cranial nerves convey taste impulses!", spot: true },
+      { id: "saliva", en: "saliva", es: "saliva", ipa: "/səˈlaɪ.və/", def: "The enzyme-rich watery fluid secreted by salivary glands that dissolves chemical food compounds so they can enter taste pores.", ex: "Without saliva, food molecules cannot dissolve to reach gustatory microvilli.", note: "✅ Identical word in Spanish." },
+      { id: "flavor", en: "flavor (multisensory)", es: "sabor (gusto + olfato retronasal)", ipa: "/ˈfleɪ.vər/", def: "The complex multisensory cognitive perception synthesized in the brain combining basic taste, retronasal olfaction, temperature, and trigeminal texture.", ex: "Vanilla ice cream has a sweet taste, but its rich vanilla flavor requires smell.", note: "⚠️ Critical distinction: Taste = tongue only. Flavor = taste + smell + texture." },
+      { id: "umami", en: "umami (savory)", es: "umami (sabroso / glutamato)", ipa: "/uːˈmɑː.mi/", def: "The fifth basic taste recognized by science, triggered by L-glutamate amino acids found in aged cheeses, meats, mushrooms, and tomatoes.", ex: "Parmesan cheese and bone broth contain high concentrations of natural umami compounds.", note: "💡 Loanword from Japanese meaning 'pleasant savory taste'." }
     ],
-    path: ["saliva", "papillae", "tastebuds", "tastecells", "tastenerve", "brain"],
-    pathLabels: { saliva: "Food dissolves in saliva", papillae: "Papillae", tastebuds: "Taste buds", tastecells: "Taste cells", tastenerve: "Taste nerves", brain: "Brain" },
+    path: ["saliva", "papillae", "tastebuds", "tastecells", "tastenerve", "gustatorycortex"],
+    pathLabels: {
+      saliva: "1. Food tastants dissolve in saliva (Disolución química)",
+      papillae: "2. Lingual papillae (Superficie lingual)",
+      tastebuds: "3. Taste buds & Taste pores (Entrada al botón)",
+      tastecells: "4. Gustatory receptor cells (Transducción química)",
+      tastenerve: "5. Cranial Nerves: CN VII, IX, X (Conducción sensorial)",
+      gustatorycortex: "6. Gustatory Cortex (Ínsula / Lóbulo frontal)"
+    },
     reading: {
-      title: "The Path of Taste",
+      title: "The Path of Taste & Gustatory Transduction",
       paragraphs: [
-        "When you eat, [[saliva|saliva]] dissolves tiny chemicals from your food. Only dissolved chemicals can be tasted. That's why a completely dry tongue cannot taste sugar well.",
-        "First, the dissolved chemicals touch the [[papillae|papillae]], the small bumps on your [[tongue|tongue]]. Next, they enter tiny holes called taste pores and reach the [[tastebuds|taste buds]] inside the papillae.",
-        "Then, the [[tastecells|taste cells]] in each taste bud detect the chemicals. They react to five basic tastes: sweet, sour, salty, bitter and [[umami|umami]] (a savory taste). All parts of the tongue can detect all five tastes.",
-        "Finally, the [[tastenerve|taste nerves]] carry the signals to the brain. The brain identifies the taste and combines it with smell to create [[flavor|flavor]]."
+        "Gustation (taste) is an essential chemical sensory system that evaluates the nutritional value and potential toxicity of ingested food. Every taste sensation begins when solid or liquid food interacts with the digestive secretions in your oral cavity.",
+        "First, chemical compounds (tastants) from food must dissolve in [[saliva|saliva]]. If you dry your tongue thoroughly with a clean tissue and place a dry cube of sugar on it, you will experience virtually no sweetness until salivary glands release moisture. Only liquid-dissolved chemicals can flow into microscopic openings called taste pores.",
+        "Next, dissolved tastants wash over the lingual [[papillae|papillae]]—the visible macroscopic bumps lining your [[tongue|tongue]]. While common filiform papillae provide mechanical friction and texture sensation, fungiform, foliate, and circumvallate papillae contain microscopic barrel-shaped [[tastebuds|taste buds]] embedded along their lateral crevices.",
+        "Inside each taste bud, 50 to 150 specialized [[tastecells|gustatory receptor cells]] extend delicate hair-like microvilli out through the taste pore. These cells perform sensory transduction across five scientifically verified basic tastes: sweet (indicating caloric carbohydrates), salty (sodium balance), sour (acids/fermentation), bitter (protective defense against toxic alkaloids), and [[umami|umami]] (amino acids and proteins). Salty (Na⁺) and sour (H⁺) ions directly pass through membrane channels, whereas sweet, bitter, and umami molecules bind to G-protein coupled receptors. Both mechanisms trigger calcium influx and neurotransmitter release.",
+        "Contrary to an outdated mid-twentieth-century myth, there is no geographical 'tongue map.' All areas of the tongue equipped with taste buds can detect all five basic tastes with comparable sensitivity.",
+        "Finally, depolarizations excite sensory nerve endings. Three distinct [[tastenerve|gustatory cranial nerves]] convey the impulses: the Facial nerve (CN VII) innervates the anterior two-thirds of the tongue, the Glossopharyngeal nerve (CN IX) innervates the posterior third, and the Vagus nerve (CN X) covers the epiglottis. These nerves synapse in the brainstem's nucleus tractus solitarius before ascending through the thalamus to the primary [[gustatorycortex|gustatory cortex]] located within the insular lobe. Here, the brain combines pure taste with retronasal smell and trigeminal texture to synthesize holistic [[flavor|flavor]]."
       ],
       checks: [
-        { after: 0, q: "Why can't a dry tongue taste sugar well?", options: ["Only dissolved chemicals can be tasted", "Sugar has no taste", "The tongue needs light"], explain: "Taste cells detect chemicals that are dissolved in saliva." },
-        { after: 2, q: "Which part of the tongue detects bitter tastes?", options: ["All parts of the tongue", "Only the back", "Only the tip"], explain: "The old 'tongue map' is a myth. All areas with taste buds can detect all five tastes." }
+        { after: 1, q: "Why is saliva essential for tasting food?", options: ["Taste receptor cells can only detect chemical compounds dissolved in an aqueous solution", "Saliva produces light waves that illuminate the tongue", "Saliva carries food directly to the occipital lobe", "Saliva shrinks the papillae so food can slide into the esophagus"], explain: "Gustatory cells are chemoreceptors; their sensory microvilli can only interact with tastants that are dissolved in liquid saliva." },
+        { after: 4, q: "What does modern neuroscience confirm about the classic 'tongue map' taught in older textbooks?", options: ["It is an anatomical myth: all five basic tastes can be detected across all regions of the tongue containing taste buds", "It is completely accurate: sweetness is only detected at the tip", "Bitterness is detected exclusively by the ear canal", "Umami can only be tasted on the lower lip"], explain: "The 'tongue map' is a misconception based on misinterpretation of 1901 research. Receptors for all five basic tastes are distributed across the entire tongue." }
       ]
     },
-    funfact: "Flavor is a mix of taste AND smell. That's why food seems to have less flavor when you have a cold and your nose is blocked.",
+    funfact: "Did you know that 'spicy' is not a basic taste? Spicy foods contain chemical capsaicin, which does not stimulate taste cells at all. Instead, it activates thermal and pain receptors (nociceptors) on the trigeminal nerve, tricking your brain into feeling actual physical heat and pain!",
     health: {
       problems: [
-        { name: "Loss of taste and flavor", text: "With a cold or COVID-19, food can seem to have no flavor, mainly because smell is blocked. It usually comes back." },
-        { name: "Burned tongue", text: "Very hot food can damage taste cells. They are replaced in about two weeks." }
+        { name: "Ageusia & Dysgeusia", text: "Ageusia is the total loss of taste sensation (rare); dysgeusia is a persistent metallic, salty, or rancid taste distortion in the mouth frequently linked to medication side-effects, nutritional zinc deficiency, or radiation therapy." },
+        { name: "Thermal Tongue Burn", text: "Scalding liquids or foods can destroy superficial gustatory receptor cells. Because gustatory cells regenerate from basal cells every 10 to 14 days, normal taste acuity typically recovers within two weeks." },
+        { name: "Glossitis", text: "Inflammation of the tongue causing swelling, redness, and smoothing of papillae, often triggered by vitamin B12 deficiency or allergic reactions." }
       ],
       care: [
-        "Brush your teeth and gently clean your tongue every day.",
-        "Drink water: saliva is essential for tasting.",
-        "Don't smoke: smoking reduces your sense of taste."
+        "Brush your teeth twice daily and use a soft tongue scraper to remove food debris and bacterial film from between papillae.",
+        "Drink adequate water daily to maintain salivary gland output, as saliva contains bicarbonate buffers and enzymes vital for oral health.",
+        "Avoid smoking and tobacco products, which chronically constrict lingual blood vessels and flatten taste bud microvilli."
       ]
     },
     deeper: [
-      { name: "Types of papillae", es: "tipos de papilas", text: "Filiform papillae (the most common) have no taste buds: they feel texture. Fungiform, circumvallate and foliate papillae contain taste buds." },
-      { name: "The tongue map myth", es: "el mito del mapa de la lengua", text: "Old books show 'sweet' on the tip and 'bitter' at the back. This is wrong: all taste buds can detect all five tastes." },
-      { name: "Spicy is not a taste", es: "el picante no es un sabor", text: "Chili contains capsaicin. It activates pain and heat receptors, not taste cells. That's why spicy food feels 'hot'." },
-      { name: "Gustatory nerves", es: "nervios gustativos", text: "The facial nerve carries taste from the front of the tongue, and the glossopharyngeal nerve from the back." }
+      { name: "The Four Types of Papillae", es: "los cuatro tipos de papilas", text: "Fungiform (mushroom-shaped, anterior), Foliate (folds on lateral edges), Circumvallate (large V-shaped row at back), and Filiform (abundant cone-shaped, tactile only without taste buds)." },
+      { name: "Capsaicin and the Trigeminal Nerve (CN V)", es: "capsaicina y nervio trigémino", text: "Capsaicin in chili peppers binds to TRPV1 heat receptors on sensory trigeminal fibers, firing signals identical to temperatures exceeding 43°C (109°F)." },
+      { name: "Super-tasters", es: "supergustadores", text: "Approximately 25% of the population have a genetically higher density of fungiform papillae and taste buds, experiencing tastes (especially bitterness in coffee and broccoli) with intense sensitivity." },
+      { name: "Miraculin Protein", es: "proteína miraculina", text: "A glycoprotein from the miracle fruit that binds to sweet receptors; under acidic conditions (like lemon juice), it changes shape and triggers intense sweetness instead of sourness." }
     ],
     match: [
-      ["saliva", "Dissolves chemicals from food"],
-      ["papillae", "Small bumps on the tongue"],
-      ["tastebuds", "Groups of taste cells inside the papillae"],
-      ["tastecells", "Detect sweet, sour, salty, bitter and umami"],
-      ["flavor", "Taste + smell combined by the brain"]
+      ["saliva", "Aqueous solvent that dissolves chemical food tastants"],
+      ["papillae", "Visible epithelial bumps housing microscopic taste buds"],
+      ["tastebuds", "Barrel-shaped clusters of 50-150 sensory receptor cells"],
+      ["tastenerve", "Cranial nerves VII, IX, and X carrying signals to the brainstem"],
+      ["flavor", "Multisensory synthesis of taste, retronasal smell, and texture"]
     ],
     cloze: {
-      text: "First, {saliva} dissolves chemicals from food. The chemicals reach the {taste buds} inside the {papillae}. Taste cells detect five basic tastes: sweet, sour, salty, bitter and {umami}. The brain combines taste and smell to create {flavor}.",
-      extra: ["spicy", "eardrum"]
+      text: "Chemical food molecules dissolve in {saliva} and enter taste pores on lingual {papillae}. Spindle-shaped {taste cells} inside microscopic {taste buds} detect five basic tastes: sweet, sour, salty, bitter, and {umami}. Sensory signals travel along {taste nerves} to the gustatory cortex, where taste combines with smell to produce {flavor}.",
+      extra: ["eardrum", "rods and cones", "cornea"]
     },
     experiment: {
-      title: "The nose-pinch test",
-      type: "steps",
-      predict: { q: "If you pinch your nose, can you still recognize the fruit flavor of a candy?", options: ["Yes, easily", "Only partly", "No"] },
+      title: "The Nose-Pinch Sensory Isolation Test (Taste vs. Flavor)",
+      type: "tasteisolate",
+      predict: {
+        q: "When you pinch your nostrils tightly shut and chew a fruit-flavored jellybean or candy, what will you perceive?",
+        qEs: "Cuando te tapas la nariz firmemente y masticas un caramelo de fruta, ¿qué percibirás?",
+        options: [
+          "You will perceive basic sweetness or sourness, but cannot identify the specific fruit flavor until you unpinch your nose",
+          "You will immediately identify whether the candy is strawberry, lemon, or grape",
+          "The candy will taste entirely like salty ocean water",
+          "You will experience total numbness across your entire mouth and lips"
+        ],
+        explain: "The tongue alone can only register basic tastes (sweet, sour). Complex fruit flavors require volatile aroma molecules to travel retronasally to olfactory receptors."
+      },
+      materials: ["Fruit-flavored jellybeans, Skittles, or gummy candies with identical textures but different flavors", "Clean drinking water"],
       steps: [
-        "Close your eyes and pinch your nose.",
-        "A partner gives you a fruit-flavored candy or jelly bean.",
-        "Chew it for 10 seconds. Say what you taste: sweet? sour? Which fruit?",
-        "Now let go of your nose. What changes?"
+        "Take a sip of water to cleanse your palate.",
+        "Firmly pinch your nostrils tightly closed with your thumb and forefinger so no airflow enters your nose.",
+        "Have a partner hand you a mystery fruit candy without telling you the color or flavor. Close your eyes.",
+        "Chew the candy thoroughly for 10 seconds with your nose remaining TIGHTLY pinched. Concentrate on what you feel.",
+        "Notice you only perceive plain sweetness and mild tartness. Now, suddenly release your nostrils and breathe out normally through your nose!"
       ],
-      explain: "With your nose pinched, your tongue can still detect basic tastes like sweet or sour. But the fruit flavor needs smell. When you let go, odor molecules reach your olfactory receptors and the flavor suddenly appears."
+      observe: {
+        prompt: "Describe what happened the exact moment you released your nostrils: What fruit flavor appeared, and why could you not identify it while your nose was pinched?",
+        promptEs: "Describe qué ocurrió en el momento exacto en que soltaste la nariz: ¿Qué sabor frutal apareció y por qué no pudiste identificarlo mientras tenías la nariz tapada?",
+        type: "notes",
+        label: "Sensory transition observations"
+      },
+      explain: "This classic experiment proves the fundamental difference between taste and flavor. Your tongue's gustatory cells only registered pure sweetness and acidity. The distinct character of 'strawberry', 'lime', or 'grape' is an olfactory sensation created when chewing forces volatile aromas up through the pharynx into the nasal cavity (retronasal olfaction). Releasing your nose allowed air to carry these molecules to your olfactory epithelium, demonstrating that 80% of what we call 'taste' is actually smell!"
     },
     frames: [
-      "The five basic tastes are ___.",
-      "___ tastes sweet / sour / salty / bitter / umami.",
-      "First, ___. Next, ___. Then, ___. Finally, ___.",
-      "Taste is different from flavor because ___."
+      "The tongue is covered in papillae, which house microscopic ___.",
+      "Before a tastant can be detected, it must dissolve in ___ and enter the ___.",
+      "The five scientifically recognized basic tastes are ___.",
+      "The tongue map is a myth because all areas with taste buds can ___.",
+      "Taste is different from flavor because flavor combines ___."
     ],
     writing: {
-      prompt: "Explain how you taste a lemon. Use first, next, then, finally.",
-      promptEs: "Explica cómo saboreas un limón. Usa first, next, then, finally.",
-      bank: ["saliva", "dissolves", "papillae", "taste buds", "taste cells", "sour", "taste nerves", "brain", "flavor", "first", "next", "then", "finally"],
-      model: "First, saliva dissolves the chemicals in the lemon juice. Next, the chemicals reach the taste buds inside the papillae. Then, the taste cells detect a sour taste. Finally, the taste nerves carry the signals to my brain, which combines taste and smell to create the flavor of lemon."
+      prompt: "Explain how you experience the flavor of a slice of warm pepperoni pizza. Distinguish between what your tongue detects and what your olfactory and trigeminal systems detect.",
+      promptEs: "Explica cómo experimentas el sabor de una porción de pizza caliente. Distingue entre lo que detecta tu lengua y lo que detectan tus sistemas olfativo y trigeminal.",
+      bank: ["saliva", "papillae", "taste buds", "gustatory cells", "umami", "salty", "taste nerves", "retronasal smell", "flavor", "gustatory cortex"],
+      verbs: ["dissolves", "enters", "depolarizes", "transduces", "transmits", "synthesizes", "integrates"],
+      connectors: ["First", "Simultaneously", "Next", "Consequently", "Finally"],
+      model: "First, as you chew the warm pizza, saliva dissolves the chemical tastants in the sauce and cheese. Next, the dissolved molecules enter the taste pores of microscopic taste buds on lingual papillae. Spindle-shaped gustatory cells perform sensory transduction: sodium ions stimulate salty receptors, while glutamates in the tomatoes and cheese activate umami receptors. Simultaneously, warm volatile aromas travel retronasally up the pharynx into the nasal cavity, stimulating olfactory receptors. Finally, three cranial nerves transmit taste signals to the gustatory cortex, where the brain integrates basic taste, retronasal smell, and melted cheese texture into the rich, unified flavor of pepperoni pizza."
     },
     quiz: [
-      { level: "Remember", q: "Where are most taste buds found?", options: ["Inside the papillae on the tongue", "In the nostrils", "In the eardrum", "In the epidermis"], explain: "Taste buds are inside the papillae, the small bumps on the tongue." },
-      { level: "Remember", q: "Which of these is NOT one of the five basic tastes?", options: ["Spicy", "Umami", "Bitter", "Sour"], explain: "Spicy is not a taste: it activates pain and heat receptors." },
-      { level: "Understand", q: "Why must food dissolve in saliva?", options: ["Taste cells can only detect dissolved chemicals", "Saliva makes food sweet", "Saliva sends signals to the brain", "Saliva changes the color of food"], explain: "Taste cells detect chemicals dissolved in saliva." },
-      { level: "Understand", q: "What is the difference between taste and flavor?", options: ["Flavor combines taste and smell", "They are exactly the same", "Flavor only uses the eyes", "Taste only uses the nose"], explain: "Taste comes from the tongue. Flavor is created by the brain from taste + smell." },
-      { level: "Apply", q: "You pinch your nose and eat a strawberry candy. What happens?", options: ["You taste sweet, but it is hard to recognize the strawberry flavor", "You cannot taste anything at all", "It tastes bitter", "It tastes stronger"], explain: "The tongue still detects sweet, but the strawberry flavor needs smell." },
-      { level: "Apply", q: "You burned your tongue with hot soup. Why does your taste come back after a couple of weeks?", options: ["Taste cells are replaced regularly", "The tongue grows a new nerve", "The papillae move to another place", "Saliva becomes sweeter"], explain: "Taste cells live only about one to two weeks and are constantly replaced." }
+      { level: "Remember", q: "Where are taste buds located on the tongue?", options: ["Embedded within the epithelial walls of lingual papillae", "Floating freely inside saliva glands", "Directly attached to the teeth enamel", "Only along the exact center line of the tongue"], explain: "Taste buds are microscopic structures housed within the epithelial folds of fungiform, foliate, and circumvallate papillae." },
+      { level: "Remember", q: "Which of the following is scientifically recognized as one of the five basic tastes?", options: ["Umami", "Spicy", "Minty", "Crunchy"], explain: "The five scientifically established basic tastes are sweet, sour, salty, bitter, and umami. Spicy is a trigeminal pain/heat sensation." },
+      { level: "Understand", q: "What is the critical scientific distinction between 'taste' and 'flavor'?", options: ["Taste is chemical detection by the tongue alone; flavor is a multisensory synthesis of taste, retronasal smell, temperature, and texture", "Taste and flavor are completely identical synonyms in biology", "Taste requires the eyes; flavor only requires the ears", "Taste comes from the stomach; flavor comes from the teeth"], explain: "Taste refers strictly to the five basic gustatory qualities detected by tongue receptors; flavor is the brain's holistic integration of taste plus smell, texture, and temperature." },
+      { level: "Understand", q: "Why is the historical 'tongue map' diagram considered false by modern sensory neurobiologists?", options: ["All regions of the tongue containing taste buds can detect all five basic tastes", "The tongue only detects bitter; all other tastes are imaginary", "Taste buds migrate to different positions every month", "Only the back of the throat can detect sugar"], explain: "Modern electrophysiological recordings prove that taste buds across the entire tongue possess receptors for all five basic taste modalities." },
+      { level: "Apply", q: "A chef tastes a hot chicken broth and notes it lacks savory richness. What ingredient should they add to stimulate umami chemoreceptors?", options: ["Ingredients rich in L-glutamate such as aged Parmesan cheese, soy sauce, or mushrooms", "Pure white cane sugar", "Distilled white vinegar", "Cold ice cubes"], explain: "Umami is triggered by glutamate amino acids and ribonucleotides found abundantly in aged cheeses, cured meats, mushrooms, and soy sauce." },
+      { level: "Apply", q: "A child accidentally burns the tip of their tongue on boiling hot cocoa. Why will their taste sensation fully recover in about two weeks?", options: ["Gustatory receptor cells regenerate continuously from basal stem cells every 10 to 14 days", "The tongue grows an entirely new muscular layer each week", "The brain invents taste sensations without needing tongue cells", "Saliva turns into new taste buds when exposed to burns"], explain: "Gustatory cells have one of the highest turnover rates in the human body, naturally renewing every 10 to 14 days." },
+      { level: "Analyze", q: "A patient sustains damage to the Facial nerve (CN VII) during surgery. Which gustatory deficit will clinical tests reveal?", options: ["Loss of taste sensation on the anterior two-thirds of the tongue, while posterior taste remains intact via CN IX", "Total loss of all hearing in both ears", "Inability to detect sweetness anywhere in the universe", "Loss of speech and total paralysis of the diaphragm"], explain: "The facial nerve (chorda tympani branch) innervates the anterior two-thirds of the tongue; the posterior third is innervated independently by the glossopharyngeal nerve (CN IX)." },
+      { level: "Evaluate", q: "Why did mammals evolve a specialized gustatory receptor for extreme bitterness with over 25 distinct receptor protein subtypes, compared to only one type for sweetness?", options: ["Bitter detection evolved as a vital defense mechanism against ingesting poisonous plant alkaloids and lethal toxins", "Bitter foods provide the highest amount of caloric energy for hunting", "Sweetness was harmful to primitive hominids", "Bitter receptors are also used as ears to detect predators"], explain: "Plants produce diverse toxic alkaloids to deter herbivores. A sensitive, multi-receptor bitter detection system provided an evolutionary survival advantage to prevent accidental lethal ingestion." }
     ]
   },
 
   /* ===================================================== TOUCH */
   {
-    id: "touch", name: "Touch", es: "Tacto", organ: "The Skin", organEs: "La piel",
+    id: "touch",
+    name: "Touch",
+    es: "Tacto",
+    organ: "The Skin (Integumentary System)",
+    organEs: "La piel (Sistema tegumentario)",
+    cortex: "Primary Somatosensory Cortex (Parietal Lobe)",
+    cortexEs: "Corteza somatosensorial primaria (Lóbulo parietal)",
+    receptorClassification: "Mechanoreceptors, Thermoreceptors & Nociceptors",
+    receptorClassificationEs: "Mecanirreceptores, Termorreceptores y Nociceptores",
+    transduction: "Mechanical pressure, skin deformation, or thermal gradients open mechanically-gated or temperature-sensitive ion channels on cutaneous nerve endings.",
+    transductionEs: "La presión mecánica, la deformación de la piel o el calor abren canales iónicos mecánicos o térmicos en terminaciones nerviosas cutáneas.",
+    wordFamily: "touch (verb/noun) → tactile (anatomical) → cutaneous (related to skin) → somatosensory (bodily sensory system) → mechanoreceptor (cellular)",
     objectives: [
-      "I can name the three layers of the skin.",
-      "I can name four things that skin receptors detect.",
-      "I can describe the path of touch: receptor → nerve → spinal cord → brain.",
-      "I can explain why some parts of the body are more sensitive."
+      "I can identify and differentiate the three primary layers of human skin (epidermis, dermis, hypodermis).",
+      "I can classify cutaneous receptors into mechanoreceptors, thermoreceptors, and nociceptors.",
+      "I can trace somatic sensory pathways from cutaneous receptors through spinal or cranial nerves to the somatosensory cortex.",
+      "I can measure two-point tactile discrimination thresholds and explain cortical representation (sensory homunculus)."
     ],
     warmup: {
-      q: "Touch your desk, your hair and your sleeve. How are they different?",
-      qEs: "Toca tu pupitre, tu pelo y tu manga. ¿En qué se diferencian?",
-      task: "Close your eyes. A partner puts an object in your hand. Can you guess what it is?",
-      taskEs: "Cierra los ojos. Un compañero te pone un objeto en la mano. ¿Adivinas qué es?"
+      q: "Touch three different surfaces near you: your wooden desk, a metal zipper, and your fabric sweater. How does your skin instantly differentiate their textures and temperatures?",
+      qEs: "Toca tres superficies: tu escritorio de madera, una cremallera de metal y tu suéter de tela. ¿Cómo diferencia tu piel sus texturas y temperaturas?",
+      task: "Lightly glide the back of your hand over your forearm without pressing down. Can you feel the movement of individual fine hairs?",
+      taskEs: "Pasa suavemente el dorso de tu mano por tu antebrazo sin presionar. ¿Sientes el movimiento de los vellos individuales?"
     },
     words: [
-      { id: "epidermis", en: "epidermis", es: "epidermis", ipa: "/ˌep.ɪˈdɜːr.mɪs/", def: "The thin outer layer of the skin. It protects the body.", ex: "The epidermis is replaced every few weeks.", note: "💡 epi- = on top of.", spot: true },
-      { id: "dermis", en: "dermis", es: "dermis", ipa: "/ˈdɜːr.mɪs/", def: "The middle layer. It contains most receptors, blood vessels, hair follicles and sweat glands.", ex: "Most touch receptors are in the dermis.", note: "✅ Same word in Spanish.", spot: true },
-      { id: "hypodermis", en: "hypodermis", es: "hipodermis", ipa: "/ˌhaɪ.poʊˈdɜːr.mɪs/", def: "The deepest layer. It stores fat, keeps you warm and cushions the body.", ex: "The hypodermis protects muscles and bones.", note: "💡 hypo- = below.", spot: true },
-      { id: "receptor", en: "sensory receptor", es: "receptor sensorial", ipa: "/ˈsen.sər.i rɪˈsep.tər/", def: "A special nerve ending that detects pressure, vibration, temperature or pain.", ex: "Receptors in my fingers feel the cold ice.", note: "⚠️ 'Sensitive' = sensible. But English 'sensible' = sensato.", spot: true },
-      { id: "nerve", en: "nerve", es: "nervio", ipa: "/nɜːrv/", def: "A bundle of fibers that carries signals.", ex: "A nerve carries the signal from my hand to my spinal cord.", note: "⚠️ 'Nervous' = nervioso (an emotion).", spot: true },
-      { id: "spinalcord", en: "spinal cord", es: "médula espinal", ipa: "/ˈspaɪ.nəl kɔːrd/", def: "The thick bundle of nerves inside the backbone. It connects the body with the brain.", ex: "Touch signals travel up the spinal cord to the brain.", note: "⚠️ 'Cord' here is médula, not 'cordón'." },
-      { id: "pressure", en: "pressure", es: "presión", ipa: "/ˈpreʃ.ər/", def: "The force of something pushing on the skin.", ex: "I feel the pressure of my shoes on my feet.", note: "✅ Cognate: pressure = presión." }
+      { id: "epidermis", en: "epidermis", es: "epidermis", ipa: "/ˌep.ɪˈdɜːr.mɪs/", def: "The keratinized outer protective epithelial layer of the skin that provides a waterproof barrier and houses free nerve endings and Merkel discs.", ex: "Dead keratinized cells continually slough off the surface of the epidermis.", note: "💡 Greek prefix: epi- = upon/outer + dermis = skin.", spot: true },
+      { id: "dermis", en: "dermis", es: "dermis", ipa: "/ˈdɜːr.mɪs/", def: "The dense vascular middle connective tissue layer housing most cutaneous receptors, blood vessels, sweat glands, and hair follicles.", ex: "Tactile corpuscles (Meissner's and Pacinian) reside within the rich dermal layer.", note: "✅ Identical in Spanish.", spot: true },
+      { id: "hypodermis", en: "hypodermis (subcutaneous tissue)", es: "hipodermis", ipa: "/ˌhaɪ.poʊˈdɜːr.mɪs/", def: "The deepest subcutaneous adipose (fat) layer that stores energy, insulates thermal core temperature, and anchors skin to muscle and bone.", ex: "The hypodermis cushions internal organs against traumatic mechanical impacts.", note: "💡 Greek prefix: hypo- = below/under.", spot: true },
+      { id: "receptor", en: "somatosensory receptors", es: "receptores somatosensoriales", ipa: "/ˈsen.sər.i rɪˈsep.tər/", def: "Specialized neural sensory end-organs (Meissner, Pacinian, Merkel, Ruffini, and free nerve endings) that detect mechanical force, temperature, or pain.", ex: "Pacinian corpuscles detect rapid high-frequency vibrations and deep transient pressure.", note: "⚠️ 'Sensitive' = sensible (capable of feeling); 'sensible' = sensato (prudent).", spot: true },
+      { id: "nerve", en: "sensory nerves", es: "nervios sensoriales (somáticos)", ipa: "/nɜːrv/", def: "Bundles of afferent axon fibers that transmit electrical action potentials from cutaneous receptors into the spinal cord or brainstem.", ex: "Sensory nerves from the hand bundle together into the median, radial, and ulnar nerves.", note: "⚠️ False friend: 'nervous' = nervioso (emotional agitation).", spot: true },
+      { id: "spinalcord", en: "spinal cord", es: "médula espinal", ipa: "/ˈspaɪ.nəl kɔːrd/", def: "The thick cylindrical bundle of nervous tissue inside the vertebral column that conveys sensory information between body and brain.", ex: "Touch signals from the legs ascend through the posterior dorsal columns of the spinal cord.", note: "⚠️ Precision: spinal cord = médula espinal (bone marrow is médula ósea).", spot: true },
+      { id: "pressure", en: "mechanical pressure & vibration", es: "presión mecánica y vibración", ipa: "/ˈpreʃ.ər/", def: "Physical force per unit area exerted against the skin surface that deforms cellular membranes.", ex: "Gentle tactile pressure stimulates Meissner corpuscles, while heavy weight engages deep Pacinian corpuscles.", note: "✅ Cognate: pressure = presión." },
+      { id: "somatosensorycortex", en: "somatosensory cortex", es: "corteza somatosensorial", ipa: "/soʊˌmæt.oʊˈsen.sər.i ˈkɔːr.teks/", def: "The region in the postcentral gyrus of the parietal lobe that contains a topographical sensory map (homunculus) of the human body.", ex: "Because our fingertips and lips contain dense receptor fields, they occupy disproportionately large areas of the somatosensory cortex.", note: "💡 Greek: soma = body + sensory." }
     ],
-    path: ["pressure", "receptor", "nerve", "spinalcord", "brain"],
-    pathLabels: { pressure: "Touch / heat / pressure", receptor: "Sensory receptor", nerve: "Sensory nerve", spinalcord: "Spinal cord", brain: "Brain" },
+    path: ["pressure", "receptor", "nerve", "spinalcord", "somatosensorycortex"],
+    pathLabels: {
+      pressure: "1. Mechanical, thermal, or pain stimulus (Estímulo cutáneo)",
+      receptor: "2. Cutaneous receptors (Transducción en dermis/epidermis)",
+      nerve: "3. Somatic sensory nerve (Conducción aferente)",
+      spinalcord: "4. Spinal cord / Trigeminal pathway (Médula espinal / Tronco encefálico)",
+      somatosensorycortex: "5. Somatosensory Cortex (Percepción en lóbulo parietal)"
+    },
     reading: {
-      title: "The Path of Touch",
+      title: "The Path of Touch & Somatosensory Processing",
       paragraphs: [
-        "Your skin is the largest organ of your body. It has three layers. The outer layer, the [[epidermis|epidermis]], protects your body. The middle layer, the [[dermis|dermis]], contains most of the sensory receptors. The deepest layer, the [[hypodermis|hypodermis]], stores fat and cushions the body.",
-        "Different [[receptor|sensory receptors]] detect different things: light touch, [[pressure|pressure]], vibration, heat, cold and pain. Some receptors are very close to the surface; others are deep in the skin.",
-        "When you touch something, for example a hot cup, first a receptor detects the heat. Next, it sends a signal along a [[nerve|nerve]]. Then, the signal travels up the [[spinalcord|spinal cord]].",
-        "Finally, the signal reaches the brain, which tells you: 'This is hot!' Your fingertips and lips have many more receptors than your back, so they are much more sensitive."
+        "Your skin (the integumentary system) is the largest sensory organ of the human body, weighing approximately four kilograms in an average adult. Unlike the localized eyes or ears, touch is a distributed general sense that provides continuous tactile, thermal, and protective feedback across your entire body surface.",
+        "The skin is anatomically organized into three distinct histological layers. The outermost layer is the [[epidermis|epidermis]], a waterproof stratified barrier of keratinocytes that continuously sheds dead cells. Beneath it lies the vascular [[dermis|dermis]], a dense connective tissue bed containing the vast majority of [[receptor|somatosensory receptors]], capillary networks, hair follicles, and sweat glands. Finally, the deepest layer is the [[hypodermis|hypodermis]] (subcutaneous tissue), composed largely of adipose fat cells that provide thermal insulation and mechanical shock absorption.",
+        "Scattered throughout the skin are diverse specialized receptor types. Mechanoreceptors detect physical deformation: Meissner's corpuscles detect light touch and low-frequency flutter; Merkel's discs register steady tactile pressure and fine texture; Pacinian corpuscles respond to high-frequency vibration and deep transient pressure; and Ruffini endings detect continuous skin stretch. Meanwhile, free nerve endings throughout the epidermis and dermis act as thermoreceptors (detecting warm and cold thermal gradients) and nociceptors (detecting tissue damage and burning pain). When skin is physically deformed, mechanically-gated ion channels open, executing sensory transduction into electrical impulses.",
+        "Next, these electrical signals travel along afferent somatic [[nerve|sensory nerves]]. Signals originating from the trunk, arms, and legs enter the dorsal horn of the [[spinalcord|spinal cord]]. Touch and proprioceptive signals ascend through the posterior dorsal columns directly to the brainstem, while pain and temperature signals cross the spinal cord and ascend via the spinothalamic tract. Notably, sensory signals from the face, forehead, and lips do not pass through the spinal cord; they travel directly to the brainstem via the large Trigeminal nerve (cranial nerve V).",
+        "Finally, after relaying through the sensory thalamus, impulses arrive at the primary [[somatosensorycortex|somatosensory cortex]] located along the postcentral gyrus of the parietal lobe. The cortex contains an orderly somatotopic map of the body known as the sensory homunculus. Because sensitive anatomical regions like your fingertips, tongue, and lips have thousands of small, dense receptive fields, they occupy enormous areas of cortical brain space compared to your back or thighs."
       ],
       checks: [
-        { after: 0, q: "Which layer contains most of the sensory receptors?", options: ["The dermis", "The epidermis", "The hypodermis"], explain: "Most receptors are in the dermis, the middle layer." },
-        { after: 2, q: "Where does the touch signal go after the nerve?", options: ["Up the spinal cord to the brain", "To the eyes", "To the hypodermis"], explain: "Nerves carry touch signals to the spinal cord, and the spinal cord carries them to the brain." }
+        { after: 1, q: "Which layer of the skin contains the greatest density of mechanoreceptors, blood vessels, and sweat glands?", options: ["The dermis (middle layer)", "The stratum corneum of the epidermis", "The subcutaneous hypodermis", "The fingernail bed"], explain: "Most specialized mechanoreceptors, capillaries, and dermal papillae reside within the dermis." },
+        { after: 3, q: "Why do touch signals originating from the face and lips follow a different pathway than signals from the fingers?", options: ["Facial touch is carried directly to the brainstem via the Trigeminal nerve (CN V), bypassing the spinal cord", "The face contains no mechanoreceptors", "Lips transmit signals using sound waves instead of nerves", "Facial skin has no epidermis"], explain: "Cranial nerve V (Trigeminal nerve) innervates the face directly into the brainstem, whereas the limbs and trunk route through the spinal cord." }
       ]
     },
-    funfact: "Your skin is your largest organ. An adult's skin weighs about 4 kg!",
+    funfact: "If you drew a human body sized proportionally to the amount of space each body part occupies in the somatosensory cortex (the 'Sensory Homunculus'), you would get a bizarre creature with enormous hands, giant lips, an oversized tongue, and a tiny shriveled torso and legs!",
     health: {
       problems: [
-        { name: "Sunburn", text: "UV light damages the epidermis. Many sunburns increase the risk of skin cancer." },
-        { name: "Numbness (neuropathy)", text: "When nerves are damaged (for example by diabetes), a person may not feel pain or temperature in the feet or hands." }
+        { name: "Peripheral Neuropathy", text: "Damage to peripheral sensory nerves, commonly caused by chronic diabetes mellitus, resulting in numbness, tingling, or total loss of pain and temperature sensation in the feet and hands." },
+        { name: "Severe Sunburn & UV Damage", text: "Ultraviolet radiation damages DNA in epidermal keratinocytes, triggering inflammatory cytokine release, acute vasodilation (redness), and blistering; repeated burns significantly increase cutaneous melanoma risk." },
+        { name: "Third-Degree Burn Anesthesia", text: "Full-thickness burns destroy both the epidermis and the entire dermis. Paradoxically, the center of a third-degree burn causes zero pain because the sensory nerve endings themselves have been completely incinerated." }
       ],
       care: [
-        "Use sunscreen (SPF 30 or more) and a hat in the sun.",
-        "Wear gloves in the cold and when you use cleaning chemicals.",
-        "Keep cuts clean and covered so they don't get infected."
+        "Apply broad-spectrum sunscreen with a Sun Protection Factor (SPF) of 30 or higher and reapply every two hours when outdoors.",
+        "Wear insulated gloves in sub-zero winter temperatures to prevent frostbite and cold-induced ischemic nerve injury.",
+        "Wash lacerations and abrasions promptly with soap and clean water, applying sterile dressings to prevent invasive epidermal infections."
       ]
     },
     deeper: [
-      { name: "Types of receptors", es: "tipos de receptores", text: "Meissner's corpuscles: light touch. Pacinian corpuscles: vibration and deep pressure. Free nerve endings: pain and temperature." },
-      { name: "Reflexes", es: "reflejos", text: "If you touch something very hot, the spinal cord can move your hand away before the brain even feels the pain." },
-      { name: "Hair follicles and sweat glands", es: "folículos pilosos y glándulas sudoríparas", text: "They are in the dermis. Sweat glands help cool the body; receptors around hair follicles feel when a hair moves." },
-      { name: "Two-point discrimination", es: "discriminación de dos puntos", text: "Scientists measure sensitivity by checking the smallest distance at which you feel two points instead of one." }
+      { name: "Sensory Homunculus", es: "homúnculo sensorial", text: "A neurological visualization mapping brain cortex dedication: the hands, fingers, lips, and tongue occupy over 60% of primary somatosensory cortex territory." },
+      { name: "Two-Point Discrimination Threshold", es: "umbral de discriminación de dos puntos", text: "The minimum physical distance at which two simultaneous cutaneous pressure points are perceived as distinct stimuli rather than one (2 mm on fingertips vs. 40 mm on back)." },
+      { name: "Pain Withdrawal Reflex", es: "reflejo de retirada por dolor", text: "When touching a scalding pan, nociceptive impulses synapse directly with spinal interneurons and motor neurons, jerking your arm away milliseconds before the brain consciously perceives pain." },
+      { name: "Phantom Limb Sensation", es: "sensación de miembro fantasma", text: "Following surgical limb amputation, cortical neurons that formerly represented the missing limb continue to fire spontaneous signals, leading the patient to feel realistic sensations in a limb that is no longer there." }
     ],
     match: [
-      ["epidermis", "Thin outer layer that protects the body"],
-      ["dermis", "Middle layer with most receptors"],
-      ["hypodermis", "Deep layer that stores fat"],
-      ["receptor", "Detects pressure, temperature or pain"],
-      ["spinalcord", "Carries signals from the nerves to the brain"]
+      ["epidermis", "Waterproof stratified outer shield with free nerve endings"],
+      ["dermis", "Vascular middle layer housing most encapsulated mechanoreceptors"],
+      ["hypodermis", "Deep subcutaneous adipose tissue storing fat and cushioning"],
+      ["spinalcord", "Neural highway conveying somatic impulses from trunk and limbs"],
+      ["somatosensorycortex", "Parietal lobe postcentral gyrus hosting the sensory homunculus map"]
     ],
     cloze: {
-      text: "The skin has three layers: the {epidermis}, the dermis and the {hypodermis}. Sensory {receptors} detect pressure, temperature and pain. A {nerve} carries the signal to the {spinal cord} and then to the brain.",
-      extra: ["retina", "saliva"]
+      text: "The human skin consists of three distinct layers: the outer {epidermis}, the middle {dermis}, and the subcutaneous {hypodermis}. Specialized somatosensory {receptors} detect mechanical pressure, temperature, and pain. Afferent {sensory nerves} transmit action potentials up the {spinal cord} to the primary {somatosensory cortex} in the parietal lobe.",
+      extra: ["retina", "cochlea", "taste buds"]
     },
     experiment: {
-      title: "The two-point test",
-      type: "steps",
-      predict: { q: "Which part of your body is more sensitive: your fingertip or your back?", options: ["Fingertip", "Back", "The same"] },
+      title: "Measuring Two-Point Tactile Discrimination Thresholds",
+      type: "twopoint",
+      predict: {
+        q: "Which region of the human body will have the smallest (most precise) two-point tactile discrimination threshold?",
+        qEs: "¿Qué región del cuerpo humano tendrá el umbral de discriminación de dos puntos más pequeño (más preciso)?",
+        options: [
+          "The index fingertip, because it possesses high receptor density and small receptive fields",
+          "The upper back, because it covers a much larger anatomical surface area",
+          "The forearm, because it contains more hair follicles",
+          "All body surfaces have identical 2 mm discrimination thresholds"
+        ],
+        explain: "Receptor density varies dramatically across the body. Fingertips have tiny receptive fields packed with Meissner and Merkel receptors, allowing precise two-point resolution."
+      },
+      materials: ["Two dull pencils or opened paperclips taped together at measured millimeter distances (2 mm, 5 mm, 15 mm, 30 mm)", "A metric ruler", "A testing partner"],
       steps: [
-        "Tape two pencils together so the points are about 1 cm apart.",
-        "Your partner closes their eyes. Gently touch their fingertip with one or two points.",
-        "Ask: 'One point or two points?' Repeat 5 times.",
-        "Repeat on the forearm and on the back. Compare the results."
+        "Your partner prepares two dull pencil tips held firmly together with tape at measured distances.",
+        "Sit comfortably with your eyes closed and forearms resting flat on the table.",
+        "Your partner gently touches your INDEX FINGERTIP with either ONE point or TWO points simultaneously.",
+        "Without looking, report whether you feel 'One point' or 'Two distinct points'. Test 5 times at different separations.",
+        "Repeat the identical procedure on your FOREARM and on your UPPER BACK, recording the minimum separation required to clearly feel two points."
       ],
-      explain: "Fingertips have many receptors very close together, so they can feel two separate points. The back has fewer receptors that are far apart, so two points feel like one."
+      observe: {
+        prompt: "Record your two-point discrimination data table: Document the minimum millimeter distance needed to feel two points on each anatomical site.",
+        promptEs: "Registra tu tabla de datos de discriminación de dos puntos: Documenta la distancia mínima en milímetros necesaria para sentir dos puntos en cada zona anatómica.",
+        type: "table",
+        columns: ["Anatomical Site", "Receptor Density", "Minimum 2-Point Threshold (mm)"],
+        rows: [
+          ["Index Fingertip", "Very High (Packed fields)", "2–3 mm"],
+          ["Forearm", "Moderate (Spread fields)", "25–35 mm"],
+          ["Upper Back", "Low (Sparse fields)", "40–60 mm"]
+        ]
+      },
+      explain: "The two-point threshold test provides direct quantitative proof of receptor density and receptive field size. On your fingertips, sensory mechanoreceptor fields are microscopic (1–2 mm) and densely packed, and each neuron connects to dedicated circuits in the somatosensory cortex. On your back, receptive fields are huge (up to 50 mm across); two pencil points touching your back inside the same receptive field stimulate only one primary sensory neuron, tricking your brain into feeling a single touch point."
     },
     frames: [
-      "The skin has three layers: ___.",
-      "Sensory receptors detect ___.",
-      "First, ___. Next, ___. Then, ___. Finally, ___.",
-      "My ___ is more sensitive than my ___ because ___."
+      "The skin is anatomically composed of three primary layers: the ___, the ___, and the ___.",
+      "Cutaneous mechanoreceptors detect ___, while nociceptors detect ___.",
+      "Touch signals from the body ascend the ___, whereas facial sensations travel along the ___.",
+      "The index fingertip has a smaller two-point threshold than the back because ___.",
+      "In the sensory homunculus, the hands and lips occupy vast cortical territory because ___."
     ],
     writing: {
-      prompt: "Explain how you feel that a cup of hot chocolate is hot. Use first, next, then, finally.",
-      promptEs: "Explica cómo sientes que una taza de chocolate está caliente. Usa first, next, then, finally.",
-      bank: ["receptors", "dermis", "heat", "nerve", "spinal cord", "brain", "first", "next", "then", "finally"],
-      model: "First, sensory receptors in the dermis of my fingers detect the heat of the cup. Next, they send a signal along a nerve. Then, the signal travels up the spinal cord. Finally, it reaches my brain, which tells me that the cup is hot."
+      prompt: "Explain how your somatic nervous system perceives that you have accidentally placed your hand on a hot ceramic mug of tea. Detail the pathway from cutaneous receptors to cortical awareness.",
+      promptEs: "Explica cómo tu sistema somatosensorial percibe que has colocado accidentalmente tu mano sobre una taza de té caliente. Detalla el camino desde los receptores cutáneos hasta la consciencia cortical.",
+      bank: ["epidermis", "dermis", "thermoreceptors", "nociceptors", "sensory nerves", "spinal cord", "somatosensory cortex", "transduction", "reflex"],
+      verbs: ["detects", "depolarizes", "transduces", "transmits", "ascends", "integrates", "perceives"],
+      connectors: ["Initially", "Instantly", "Concurrently", "Afterward", "Finally"],
+      model: "Initially, when your palm touches the scalding ceramic mug, high thermal heat stimulates free nerve ending thermoreceptors and nociceptors in the epidermis and dermis. Instantly, these receptors undergo sensory transduction, converting extreme thermal and mechanical energy into electrical action potentials. Concurrently, afferent sensory nerves conduct the impulses into the dorsal horn of the spinal cord. Here, a spinal reflex arc immediately fires motor neurons to withdraw your hand muscles. Afterward, the sensory impulses ascend the spinothalamic tract through the thalamus. Finally, the signals arrive at the primary somatosensory cortex in the parietal lobe, where your brain consciously localizes the intense heat and registers pain."
     },
     quiz: [
-      { level: "Remember", q: "What is the outer layer of the skin called?", options: ["Epidermis", "Dermis", "Hypodermis", "Retina"], explain: "Epi- means 'on top': the epidermis is the outer layer." },
-      { level: "Remember", q: "Which layer contains most sensory receptors?", options: ["Dermis", "Epidermis", "Hypodermis", "Cornea"], explain: "Most receptors, blood vessels and glands are in the dermis." },
-      { level: "Understand", q: "What can skin receptors detect?", options: ["Pressure, vibration, temperature and pain", "Light and color", "Sound waves", "Odor molecules"], explain: "Skin receptors detect mechanical, thermal and pain stimuli." },
-      { level: "Understand", q: "What is the correct path of touch?", options: ["receptor → nerve → spinal cord → brain", "brain → spinal cord → nerve → receptor", "nerve → brain → receptor → spinal cord", "spinal cord → receptor → brain → nerve"], explain: "The stimulus is detected by a receptor, then nerves and the spinal cord carry the signal to the brain." },
-      { level: "Apply", q: "Your fingertip can feel two pencil points, but your back feels only one. Why?", options: ["Fingertips have many more receptors close together", "The back has no nerves", "Fingertips have more fat", "The back has no epidermis"], explain: "More receptors close together = more sensitivity." },
-      { level: "Apply", q: "What is the main job of the hypodermis?", options: ["To store fat, keep the body warm and cushion it", "To detect light", "To produce saliva", "To carry signals to the brain"], explain: "The hypodermis is mostly fat tissue: insulation, energy storage and protection." }
+      { level: "Remember", q: "What is the outermost protective epithelial layer of human skin called?", options: ["Epidermis", "Dermis", "Hypodermis", "Subcutis"], explain: "The epidermis is the superficial epithelial barrier of keratinized cells." },
+      { level: "Remember", q: "Which type of cutaneous sensory receptor detects painful stimuli and tissue injury?", options: ["Nociceptors", "Cones", "Hair cells", "Taste pores"], explain: "Nociceptors are specialized sensory neurons that respond to threatening or damaging noxious stimuli (pain)." },
+      { level: "Understand", q: "Why are human fingertips far more sensitive to fine textures than the skin on our backs?", options: ["Fingertips possess a vastly higher density of mechanoreceptors with tiny receptive fields", "The back contains no blood vessels or nerve endings", "Fingertips lack an epidermis, exposing bare brain tissue", "The back only senses cold temperatures"], explain: "High receptor density and small individual receptive fields allow fingertips to distinguish microscopic surface contours." },
+      { level: "Understand", q: "Which cranial nerve carries somatic sensory information from the face and lips directly to the brainstem?", options: ["Trigeminal nerve (CN V)", "Optic nerve (CN II)", "Auditory nerve (CN VIII)", "Olfactory nerve (CN I)"], explain: "The Trigeminal nerve (CN V) is the major somatic sensory nerve for the face, teeth, and lips." },
+      { level: "Apply", q: "A patient with uncontrolled diabetes develops peripheral neuropathy and cannot feel a small pebble inside their shoe. What serious danger does this pose?", options: ["Without pain sensation from nociceptors, repeated pressure ulcers and infections can develop unnoticed", "The patient's retina will detach", "The eardrum will permanently vibrate", "The liver will produce too much saliva"], explain: "Pain is a crucial protective sensation; sensory loss means mechanical tissue damage and infections go unnoticed, risking severe ulceration." },
+      { level: "Apply", q: "A person closes their eyes while an investigator places two pencil tips 10 mm apart on their upper back. Why does the person report feeling only one point?", options: ["Both pencil tips fall inside the same large receptive field of a single sensory neuron on the back", "The back has no sensory cortex representation", "The optic nerve is closed when eyes are closed", "The spinal cord blocks all signals below the neck"], explain: "Cutaneous receptive fields on the back are up to 40–50 mm wide; if two points stimulate the same receptive field, the brain receives only one input signal." },
+      { level: "Analyze", q: "Examine the 'Sensory Homunculus' anatomical model. Why are the lips, tongue, and hands sculpted with disproportionately colossal dimensions compared to the torso?", options: ["The size of each body part on the homunculus reflects the proportion of primary somatosensory cortex dedicated to processing its inputs", "The hands and lips weigh more than the torso in human anatomy", "The homunculus represents muscular strength rather than sensory touch", "Torso nerves transmit signals ten times faster than hand nerves"], explain: "The somatosensory homunculus is a neurological map; body parts with dense tactile innervation and fine motor touch command enormous cortical surface area." },
+      { level: "Evaluate", q: "Evaluate the adaptive evolutionary purpose of the rapid pain withdrawal reflex that occurs in the spinal cord before the brain consciously feels the pain.", options: ["A monosynaptic or polysynaptic spinal reflex loop minimizes delay, retracting tissue from injury milliseconds faster than waiting for cortical processing", "The brain is incapable of moving limb muscles", "The spinal cord creates pain to prevent blood flow", "Reflexes exist only in amphibians and are non-functional in humans"], explain: "Spinal reflex arcs bypass the slower cerebral cortex pathway, instantly activating motor neurons to pull tissue away from noxious burns or cuts before conscious perception." }
     ]
   }
 ];
 
-/* Shared word for paths */
 const EXTRA_WORDS = {
-  brain: { id: "brain", en: "brain", es: "cerebro", def: "The organ that interprets all the signals from the senses." }
+  brain: { id: "brain", en: "brain", es: "cerebro", ipa: "/breɪn/", def: "The central organ of the nervous system that receives, integrates, and interprets all sensory signals.", ex: "All sensory pathways ultimately project to specialized cortex regions of the brain." },
+  transduction: { id: "transduction", en: "sensory transduction", es: "transducción sensorial", ipa: "/trænzˈdʌk.ʃən/", def: "The biological process by which a sensory receptor converts environmental energy (light, sound, chemicals, mechanical force) into electrical action potentials.", ex: "Transduction is the universal mechanism shared by all five human senses." }
 };
 
-/* ---------- Compare table (five senses) ---------- */
+/* ---------- Compare table (Five Senses Rigorous Synthesis) ---------- */
 const COMPARE = {
   rows: [
-    { key: "stimulus", label: "Stimulus", es: "Estímulo", values: { sight: "light", hearing: "sound waves", smell: "odor molecules", taste: "dissolved chemicals", touch: "pressure, temperature, pain" } },
-    { key: "organ", label: "Organ", es: "Órgano", values: { sight: "eye", hearing: "ear", smell: "nose", taste: "tongue", touch: "skin" } },
-    { key: "receptors", label: "Receptors", es: "Receptores", values: { sight: "rods and cones (retina)", hearing: "hair cells (cochlea)", smell: "olfactory receptors", taste: "taste cells (taste buds)", touch: "sensory receptors (dermis)" } },
-    { key: "nerve", label: "Nerve", es: "Nervio", values: { sight: "optic nerve", hearing: "auditory nerve", smell: "olfactory nerve", taste: "taste nerves", touch: "sensory nerves + spinal cord" } }
+    { key: "stimulus", label: "Stimulus (Estímulo)", es: "Estímulo", values: { sight: "Light photons (electromagnetic waves)", hearing: "Sound waves (longitudinal pressure waves)", smell: "Volatile airborne chemical molecules", taste: "Chemical tastants dissolved in saliva", touch: "Mechanical pressure, vibration, temperature, pain" } },
+    { key: "organ", label: "Sense Organ (Órgano)", es: "Órgano", values: { sight: "Eye (cornea, pupil, lens, retina)", hearing: "Ear (pinna, ossicles, cochlea)", smell: "Nose (nasal cavity & turbinates)", taste: "Tongue (lingual papillae)", touch: "Skin (epidermis, dermis, hypodermis)" } },
+    { key: "classification", label: "Receptor Type (Tipo de receptor)", es: "Tipo de receptor", values: { sight: "Photoreceptors", hearing: "Mechanoreceptors", smell: "Chemoreceptors", taste: "Chemoreceptors", touch: "Mechanoreceptors, Thermoreceptors, Nociceptors" } },
+    { key: "receptors", label: "Receptor Cells (Células receptoras)", es: "Células receptoras", values: { sight: "Rods and cones (Retina)", hearing: "Hair cells with stereocilia (Organ of Corti)", smell: "Bipolar olfactory sensory neurons (Cilia)", taste: "Gustatory receptor cells (Taste buds)", touch: "Meissner, Pacinian, Merkel discs & Free nerve endings" } },
+    { key: "nerve", label: "Sensory Nerve Pathway (Nervio)", es: "Nervio sensorial", values: { sight: "Optic nerve (CN II)", hearing: "Auditory nerve (CN VIII)", smell: "Olfactory nerve (CN I)", taste: "Facial (CN VII), Glossopharyngeal (CN IX), Vagus (CN X)", touch: "Somatic sensory nerves + Spinal cord / Trigeminal (CN V)" } },
+    { key: "cortex", label: "Primary Brain Cortex (Corteza cerebral)", es: "Corteza cerebral", values: { sight: "Visual Cortex (Occipital Lobe)", hearing: "Auditory Cortex (Temporal Lobe)", smell: "Olfactory Cortex & Limbic System (Temporal Lobe / Amygdala)", taste: "Gustatory Cortex (Insula / Frontal Lobe)", touch: "Primary Somatosensory Cortex (Parietal Lobe)" } }
   ]
 };
 
-/* ---------- Final test: integrative questions ---------- */
+/* ---------- Final Integrative Exam: 10 Cross-Sensory Questions ---------- */
 const FINAL_EXTRA = [
-  { level: "Understand", q: "What is the general path for all the senses?", options: ["stimulus → receptor → nerve → brain", "brain → nerve → receptor → stimulus", "receptor → brain → stimulus → nerve", "nerve → stimulus → brain → receptor"], explain: "All senses detect a stimulus with receptors; nerves carry the signals to the brain." },
-  { level: "Remember", q: "Where are all sensations finally interpreted?", options: ["In the brain", "In the receptors", "In the nerves", "In the spinal cord"], explain: "Receptors detect, nerves carry, but the brain interprets." },
-  { level: "Understand", q: "Which two senses work together to create flavor?", options: ["Taste and smell", "Sight and hearing", "Touch and hearing", "Sight and touch"], explain: "Flavor = taste + smell." },
-  { level: "Apply", q: "Rods and cones are to sight as hair cells are to…", options: ["hearing", "smell", "taste", "touch"], explain: "Hair cells in the cochlea are the receptors of hearing." },
-  { level: "Understand", q: "Which sense uses the spinal cord to send most of its signals to the brain?", options: ["Touch", "Sight", "Smell", "Hearing"], explain: "Touch signals from the body travel up the spinal cord." },
-  { level: "Apply", q: "Which two senses detect chemicals?", options: ["Smell and taste", "Sight and touch", "Hearing and sight", "Touch and hearing"], explain: "Smell detects odor molecules; taste detects chemicals dissolved in saliva." }
+  { level: "Understand", q: "What universal biological process is shared by all five human sense organs?", options: ["Sensory transduction: converting environmental energy into electrical action potentials", "Producing saliva to dissolve solid objects", "Directing light through a crystalline lens", "Equalizing air pressure through the Eustachian tube"], explain: "Every sense organ contains specialized receptor cells that execute sensory transduction, translating external physical or chemical energy into electrical signals for the nervous system." },
+  { level: "Analyze", q: "Which two senses rely on chemoreceptors and function cooperatively to synthesize the sensory perception of 'flavor'?", options: ["Taste and Smell (gustation and olfaction)", "Sight and Hearing (vision and audition)", "Touch and Sight (tactile and vision)", "Hearing and Touch (mechanoreception)"], explain: "Flavor is a multisensory integration of gustatory chemoreception on the tongue and retronasal olfactory chemoreception in the nasal cavity." },
+  { level: "Understand", q: "Why is the olfactory pathway anatomically unique compared to sight, hearing, and touch?", options: ["Olfactory signals project directly to the limbic system without an obligatory initial relay through the thalamus", "Olfactory signals travel down the spinal cord to the legs", "Smell uses photoreceptors that require sunlight", "Smell signals travel through the auditory ossicles"], explain: "Olfaction is the sole sensory modality that bypasses the thalamic relay station on its primary route, sending direct axons into the amygdala and hippocampus." },
+  { level: "Analyze", q: "Rods and cones are to photoreception as auditory hair cells are to…", options: ["mechanoreception in the cochlea", "chemical taste detection on the tongue", "olfactory cilia in the nasal cavity", "thermal detection in the dermis"], explain: "Rods and cones transduce light photons (photoreception); hair cells transduce sound pressure waves (mechanoreception)." },
+  { level: "Understand", q: "Which primary sensory modality bypasses the spinal cord entirely because it travels via cranial nerves directly to the brain?", options: ["Sight, hearing, smell, and taste (all use cranial nerves CN I, II, VII, VIII, IX, X)", "Touch sensations from the feet", "Pain signals from the knee", "Reflex jerks of the elbow"], explain: "The specialized senses located in the head use cranial nerves connecting directly into the brainstem and forebrain, bypassing the spinal cord." },
+  { level: "Apply", q: "A patient suffering from acute rhinitis (stuffy nose) eats a strawberry ice cream cone. Why do they report that 'it only tastes sweet without any strawberry taste'?", options: ["Nasal congestion blocks retronasal airflow to olfactory receptors, preserving only basic tongue taste while eliminating fruit aroma", "The tongue stops functioning when a person has a cold", "The cold ice freezes the optic nerve", "Strawberry molecules only stimulate the auditory cortex"], explain: "The tongue detects basic sweetness; identifying 'strawberry' requires volatile aroma molecules ascending through the pharynx to olfactory receptors." },
+  { level: "Evaluate", q: "What does the 'Sensory Homunculus' illustrate about the primary somatosensory cortex?", options: ["Cortical brain space is allocated based on receptor density and tactile precision rather than physical body surface size", "The human body is shaped like a giant foot", "All skin cells receive identical representation in the occipital lobe", "The back and legs require more brain power than the fingers"], explain: "The homunculus demonstrates cortical magnification: areas with tiny receptive fields and immense receptor density (fingers, lips) command huge brain territory." },
+  { level: "Analyze", q: "Which pair of senses both utilize mechanoreceptors to detect physical movement or pressure?", options: ["Hearing (hair cells) and Touch (cutaneous corpuscles)", "Sight (rods) and Smell (olfactory neurons)", "Taste (taste cells) and Smell (cilia)", "Sight (cones) and Hearing (ossicles)"], explain: "Both audition and touch rely on mechanoreceptors that convert physical force or pressure into neural impulses." },
+  { level: "Analyze", q: "Damage to the occipital lobe would selectively impair which sensory function, leaving the others intact?", options: ["Visual perception", "Auditory frequency localization", "Olfactory aroma recall", "Cutaneous pain recognition"], explain: "The primary visual cortex is located in the occipital lobe at the posterior of the brain." },
+  { level: "Evaluate", q: "Evaluate how sensory adaptation benefits human survival in everyday environments.", options: ["By reducing sensitivity to continuous unchanging stimuli, the brain conserves cognitive energy to rapidly detect novel or dangerous environmental changes", "By shutting down all five senses when a person is tired", "By ensuring we smell our own clothes with maximum intensity all day", "By forcing the pupils to stay permanently closed in daylight"], explain: "Sensory adaptation prevents sensory overload by filtering out steady ambient stimuli (like the feel of clothing or familiar room odors), keeping neural pathways alert for new threats." }
 ];
