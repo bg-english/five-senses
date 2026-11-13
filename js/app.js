@@ -34,6 +34,11 @@
     uidCounter += 1;
     return `${prefix}_${uidCounter}`;
   }
+  function purgePrivateAnswersByPrefix(prefix) {
+    for (const k of Array.from(PRIVATE_ANSWERS.keys())) {
+      if (k.startsWith(prefix)) PRIVATE_ANSWERS.delete(k);
+    }
+  }
 
   function escapeHTML(str) {
     if (str === null || str === undefined) return '';
@@ -153,21 +158,35 @@
     currentProfileId = clean;
     try { localStorage.setItem(ACTIVE_PROFILE_KEY, currentProfileId); } catch (e) {}
     loadProfileState(currentProfileId);
+    const stuInput = document.getElementById('student-name');
+    if (stuInput) stuInput.value = '';
+    const finalRes = document.getElementById('final-exam-result');
+    if (finalRes) finalRes.innerHTML = '';
+    catState = null;
+    standardExamSubmitted = false;
     reinitializeFullWorkspace();
   }
 
   function endStudentTurn() {
     if (!confirm(`Clear all station data for "${currentProfileId}" and reset for the next student?`)) return;
+    const prevProfile = currentProfileId;
     try {
-      localStorage.removeItem(PROFILE_KEY_PREFIX + currentProfileId);
-      // Also clean any biblical_senses reflections for this profile
+      localStorage.removeItem(PROFILE_KEY_PREFIX + prevProfile);
+      localStorage.removeItem(ACTIVE_PROFILE_KEY);
+      // Clean biblical_senses reflections for previous profile and reset active profile
       Object.keys(localStorage).forEach(k => {
-        if (k.startsWith('spiritual_senses_' + currentProfileId + '_') || k.startsWith('spiritual_senses_journal-')) {
+        if (k.startsWith('spiritual_senses_' + prevProfile + '_') || k.startsWith('spiritual_senses_journal-')) {
           localStorage.removeItem(k);
         }
       });
     } catch (e) {}
+    currentProfileId = 'Scholar-1';
+    try { localStorage.setItem(ACTIVE_PROFILE_KEY, currentProfileId); } catch (e) {}
     appState = defaultAppState();
+    catState = null;
+    standardExamSubmitted = false;
+    const profInput = document.getElementById('profile-switch-input');
+    if (profInput) profInput.value = '';
     const stuInput = document.getElementById('student-name');
     if (stuInput) stuInput.value = '';
     const finalRes = document.getElementById('final-exam-result');
@@ -192,8 +211,98 @@
     URL.revokeObjectURL(url);
   }
 
+  const MAX_PORTFOLIO_BYTES = 256 * 1024;
+  const VALID_SENSE_IDS = new Set(['sight', 'hearing', 'smell', 'taste', 'touch']);
+
+  function sanitizeStateObject(raw) {
+    const safe = defaultAppState();
+    if (!raw || typeof raw !== 'object') return safe;
+
+    if (raw.scaffolding === 'guided' || raw.scaffolding === 'immersion') {
+      safe.scaffolding = raw.scaffolding;
+    }
+    if ([0.75, 0.9, 1.0].includes(Number(raw.audioSpeed))) {
+      safe.audioSpeed = Number(raw.audioSpeed);
+    }
+    if (raw.activeStages && typeof raw.activeStages === 'object') {
+      VALID_SENSE_IDS.forEach(id => {
+        const st = Number(raw.activeStages[id]);
+        if (Number.isInteger(st) && st >= 1 && st <= 4) safe.activeStages[id] = st;
+      });
+    }
+    if (raw.scores && typeof raw.scores === 'object') {
+      VALID_SENSE_IDS.forEach(id => {
+        const val = Number(raw.scores[id]);
+        if (Number.isFinite(val) && val >= 0 && val <= 10) safe.scores[id] = val;
+      });
+    }
+    if (raw.writtenText && typeof raw.writtenText === 'object') {
+      VALID_SENSE_IDS.forEach(id => {
+        if (typeof raw.writtenText[id] === 'string') {
+          safe.writtenText[id] = raw.writtenText[id].slice(0, 2000);
+        }
+      });
+    }
+    if (raw.poeObs && typeof raw.poeObs === 'object') {
+      VALID_SENSE_IDS.forEach(id => {
+        if (typeof raw.poeObs[id] === 'string') {
+          safe.poeObs[id] = raw.poeObs[id].slice(0, 2000);
+        }
+      });
+    }
+    if (raw.ican && typeof raw.ican === 'object') {
+      Object.keys(raw.ican).forEach(k => {
+        if (/^(sight|hearing|smell|taste|touch)_\d{1,2}$/.test(k) && typeof raw.ican[k] === 'boolean') {
+          safe.ican[k] = raw.ican[k];
+        }
+      });
+    }
+    if (raw.sm2 && typeof raw.sm2 === 'object') {
+      Object.keys(raw.sm2).slice(0, 80).forEach(wordId => {
+        if (/^[a-z0-9_-]{1,40}$/i.test(wordId)) {
+          const rec = raw.sm2[wordId];
+          if (rec && typeof rec === 'object') {
+            safe.sm2[wordId] = {
+              repetitions: Math.max(0, Math.min(100, Math.trunc(Number(rec.repetitions) || 0))),
+              interval: Math.max(0, Math.min(3650, Number(rec.interval) || 0)),
+              easeFactor: Math.max(1.3, Math.min(3.5, Number(rec.easeFactor) || 2.5)),
+              nextReview: Number.isFinite(Number(rec.nextReview)) ? Number(rec.nextReview) : 0
+            };
+          }
+        }
+      });
+    }
+    if (raw.gamification && typeof raw.gamification === 'object') {
+      const g = raw.gamification;
+      safe.gamification.xp = Math.max(0, Math.min(100000, Math.trunc(Number(g.xp) || 0)));
+      safe.gamification.streak = Math.max(0, Math.min(3650, Math.trunc(Number(g.streak) || 0)));
+      safe.gamification.bestStreak = Math.max(0, Math.min(3650, Math.trunc(Number(g.bestStreak) || 0)));
+      if (typeof g.lastDate === 'string' && g.lastDate.length <= 32) {
+        safe.gamification.lastDate = g.lastDate;
+      }
+      if (Array.isArray(g.completedEvents)) {
+        safe.gamification.completedEvents = g.completedEvents
+          .filter(ev => typeof ev === 'string' && ev.length <= 64)
+          .slice(0, 500);
+      }
+      if (Array.isArray(g.solvedCases)) {
+        safe.gamification.solvedCases = g.solvedCases
+          .filter(c => typeof c === 'string' && c.length <= 64)
+          .slice(0, 50);
+      }
+      if (typeof g.sfxEnabled === 'boolean') {
+        safe.gamification.sfxEnabled = g.sfxEnabled;
+      }
+    }
+    return safe;
+  }
+
   function importPortfolioJSON(file) {
     if (!file) return;
+    if (file.size > MAX_PORTFOLIO_BYTES) {
+      alert('Portfolio JSON exceeds maximum safe size (256 KB).');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = function (ev) {
       try {
@@ -201,15 +310,7 @@
         if (!parsed || parsed.schema !== 'five-senses-clil-v4' || !parsed.state || typeof parsed.state !== 'object') {
           throw new Error('Invalid portfolio schema.');
         }
-        const safe = defaultAppState();
-        if (parsed.state.scores && typeof parsed.state.scores === 'object') safe.scores = parsed.state.scores;
-        if (parsed.state.writtenText && typeof parsed.state.writtenText === 'object') safe.writtenText = parsed.state.writtenText;
-        if (parsed.state.poeObs && typeof parsed.state.poeObs === 'object') safe.poeObs = parsed.state.poeObs;
-        if (parsed.state.sm2 && typeof parsed.state.sm2 === 'object') safe.sm2 = parsed.state.sm2;
-        if (parsed.state.gamification && typeof parsed.state.gamification === 'object') {
-          safe.gamification = Object.assign(safe.gamification, parsed.state.gamification);
-        }
-        appState = safe;
+        appState = sanitizeStateObject(parsed.state);
         saveState();
         reinitializeFullWorkspace();
         alert(`Portfolio restored cleanly for profile "${currentProfileId}".`);
@@ -224,8 +325,12 @@
      3. Gamification Engine & Procedural Web Audio SFX
   ------------------------------------------------------------------ */
   let audioCtx = null;
+  let lastSfxAt = 0;
   function playGameSfx(type) {
     if (!appState.gamification.sfxEnabled) return;
+    const nowMs = Date.now();
+    if (nowMs - lastSfxAt < 65) return;
+    lastSfxAt = nowMs;
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return;
@@ -242,6 +347,9 @@
         gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
+        osc.onended = () => {
+          try { osc.disconnect(); gain.disconnect(); } catch (e) {}
+        };
         osc.start(now + delay);
         osc.stop(now + delay + dur);
       };
@@ -402,8 +510,41 @@
     window.speechSynthesis.onvoiceschanged = getBestEnglishVoice;
   }
 
+  let currentSpeakingEl = null;
+  let activeKaraokeSense = null;
+  let activeRecognition = null;
+  let activeRecTimer = null;
+  let activeRecBtn = null;
+
+  function clearKaraokeState() {
+    activeKaraokeSense = null;
+    if (currentSpeakingEl) {
+      currentSpeakingEl.classList.remove('speaking');
+      currentSpeakingEl = null;
+    }
+    document.querySelectorAll('[id^="read-aloud-btn-"]').forEach(b => {
+      b.textContent = '🔊 Read Passage Aloud';
+    });
+  }
+
+  function stopActiveRecognition() {
+    if (activeRecTimer) {
+      clearTimeout(activeRecTimer);
+      activeRecTimer = null;
+    }
+    if (activeRecognition) {
+      try { activeRecognition.stop(); } catch (e) {}
+      activeRecognition = null;
+    }
+    if (activeRecBtn) {
+      activeRecBtn.classList.remove('recording');
+      activeRecBtn = null;
+    }
+  }
+
   function speakText(rawText, customRate, onEndCallback) {
     if (!('speechSynthesis' in window)) return;
+    clearKaraokeState();
     window.speechSynthesis.cancel();
     const cleaned = cleanSpokenText(rawText);
     if (!cleaned) return;
@@ -417,24 +558,18 @@
   }
 
   // Karaoke Sentence-by-Sentence Passage Reader
-  let activeKaraokeSense = null;
   function toggleReadPassage(senseId) {
     if (!('speechSynthesis' in window)) return;
     const btn = document.getElementById('read-aloud-btn-' + senseId);
-    const clearHighlights = () => {
-      document.querySelectorAll('.tts-sentence.speaking').forEach(el => el.classList.remove('speaking'));
-    };
 
     if (activeKaraokeSense === senseId && window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
-      activeKaraokeSense = null;
-      clearHighlights();
-      if (btn) btn.textContent = '🔊 Read Passage Aloud';
+      clearKaraokeState();
       return;
     }
 
     window.speechSynthesis.cancel();
-    clearHighlights();
+    clearKaraokeState();
     activeKaraokeSense = senseId;
     if (btn) btn.textContent = '⏹ Stop Audio';
 
@@ -442,13 +577,16 @@
     let idx = 0;
 
     function speakNextSentence() {
-      clearHighlights();
+      if (currentSpeakingEl) {
+        currentSpeakingEl.classList.remove('speaking');
+        currentSpeakingEl = null;
+      }
       if (activeKaraokeSense !== senseId || idx >= sentenceEls.length) {
-        activeKaraokeSense = null;
-        if (btn) btn.textContent = '🔊 Read Passage Aloud';
+        clearKaraokeState();
         return;
       }
       const el = sentenceEls[idx];
+      currentSpeakingEl = el;
       el.classList.add('speaking');
       el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -462,9 +600,7 @@
         speakNextSentence();
       };
       utter.onerror = () => {
-        activeKaraokeSense = null;
-        clearHighlights();
-        if (btn) btn.textContent = '🔊 Read Passage Aloud';
+        clearKaraokeState();
       };
       window.speechSynthesis.speak(utter);
     }
@@ -480,10 +616,10 @@
     saveState();
   }
 
-  // Exact Levenshtein Distance Similarity (0.0 to 1.0)
+  // Exact Levenshtein Distance Similarity (0.0 to 1.0), bounded at 64 chars
   function levenshteinSimilarity(a, b) {
-    const s1 = a.toLowerCase().replace(/[^a-z]/g, '');
-    const s2 = b.toLowerCase().replace(/[^a-z]/g, '');
+    const s1 = a.toLowerCase().replace(/[^a-z]/g, '').slice(0, 64);
+    const s2 = b.toLowerCase().replace(/[^a-z]/g, '').slice(0, 64);
     if (!s1 && !s2) return 1;
     if (!s1 || !s2) return 0;
     const len1 = s1.length, len2 = s2.length;
@@ -501,18 +637,20 @@
   }
 
   function practicePronunciation(targetText, btnEl, feedbackId, isParagraph = false) {
+    stopActiveRecognition();
     const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
     const fb = document.getElementById(feedbackId);
     if (!SpeechRec) {
       if (fb) {
-        fb.style.display = 'block';
-        fb.style.color = '#9A3412';
+        fb.className = 'fb-msg visible warn';
         fb.textContent = '⚠️ Microphone speech recognition requires Chrome or Edge desktop/mobile.';
       }
       return;
     }
 
     const recognition = new SpeechRec();
+    activeRecognition = recognition;
+    activeRecBtn = btnEl;
     recognition.lang = 'en-US';
     recognition.interimResults = false;
     recognition.maxAlternatives = 3;
@@ -520,8 +658,7 @@
 
     btnEl.classList.add('recording');
     if (fb) {
-      fb.style.display = 'block';
-      fb.style.color = 'var(--ink-light)';
+      fb.className = 'fb-msg visible';
       fb.textContent = isParagraph ? '🎙️ Reading paragraph... Speak steadily now.' : `🎙️ Listening... Say "${targetText}"`;
     }
 
@@ -531,7 +668,7 @@
     const evaluateSpeech = (alternatives) => {
       if (finished) return;
       finished = true;
-      btnEl.classList.remove('recording');
+      stopActiveRecognition();
       if (!fb) return;
 
       const bestSpoken = alternatives[0] || '';
@@ -545,11 +682,11 @@
         });
         const pct = Math.round((matchedCount / targetWords.length) * 100);
         if (pct >= 65) {
-          fb.style.color = 'var(--correct)';
+          fb.className = 'fb-msg visible ok';
           fb.textContent = `🌟 Great Shadowing! Word-level acoustic match: ${pct}% (${matchedCount}/${targetWords.length} words detected).`;
           awardXP(30, 'speak_para_' + feedbackId, btnEl, true);
         } else {
-          fb.style.color = '#B45309';
+          fb.className = 'fb-msg visible warn';
           fb.textContent = `🔄 Detected ${pct}% (${matchedCount}/${targetWords.length} words). Heard: "${bestSpoken}". Read more slowly and clearly.`;
         }
         return;
@@ -576,20 +713,20 @@
 
       const pct = Math.round(maxSim * 100);
       if (pct >= 82) {
-        fb.style.color = 'var(--correct)';
+        fb.className = 'fb-msg visible ok';
         fb.textContent = `🌟 Excellent (${pct}% match)! Heard: "${bestSpoken}"`;
         awardXP(15, 'speak_' + targetKey, btnEl, true);
       } else if (pct >= 60) {
-        fb.style.color = '#B45309';
+        fb.className = 'fb-msg visible warn';
         fb.textContent = `⚡ Close (${pct}% match)! Heard: "${bestSpoken}". Listen to 🔊 and emphasize the stressed syllable.`;
       } else {
-        fb.style.color = 'var(--incorrect)';
+        fb.className = 'fb-msg visible err';
         fb.textContent = `🔄 Heard "${bestSpoken}" (${pct}%). Play 🔊 audio, check the syllable stress guide, and try again.`;
       }
     };
 
     if (isParagraph) {
-      setTimeout(() => { try { recognition.stop(); } catch (e) {} }, 12000);
+      activeRecTimer = setTimeout(() => { try { recognition.stop(); } catch (e) {} }, 12000);
     }
 
     recognition.onresult = (event) => {
@@ -607,18 +744,18 @@
     };
 
     recognition.onerror = () => {
-      btnEl.classList.remove('recording');
+      stopActiveRecognition();
       if (fb) {
-        fb.style.display = 'block';
-        fb.style.color = 'var(--incorrect)';
+        fb.className = 'fb-msg visible err';
         fb.textContent = '⚠️ Could not hear clearly. Check microphone permission and speak close to mic.';
       }
     };
 
     recognition.onend = () => {
-      btnEl.classList.remove('recording');
       if (isParagraph && finalTranscript.trim() && !finished) {
         evaluateSpeech([finalTranscript.trim()]);
+      } else {
+        stopActiveRecognition();
       }
     };
 
@@ -643,19 +780,19 @@
 
     modalTitle.textContent = w.en;
     modalBody.innerHTML = `
-      <div style="display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+      <div class="vocab-phonology">
         <span class="vocab-ipa">${escapeHTML(w.ipa || '')}</span>
         ${w.syllables ? `<span class="syllable-pill">${escapeHTML(w.syllables)}</span>` : ''}
-        <span class="vocab-es" style="margin:0;">${escapeHTML(w.es)}</span>
+        <span class="vocab-es">${escapeHTML(w.es)}</span>
         <button class="audio-btn" data-action="speak-word" data-word="${escapeHTML(w.en)}">🔊 Listen</button>
         <button class="mic-btn" data-action="mic-modal" data-word="${escapeHTML(w.en)}" title="Practice speaking">🎤</button>
       </div>
-      <div id="modal-mic-fb" style="display:none; font-size:0.86rem; font-weight:700; margin-bottom:10px;"></div>
-      <p style="font-size:1.02rem; margin-bottom:10px;"><strong>Definition:</strong> ${escapeHTML(w.def)}</p>
-      <p style="font-style:italic; color:var(--ink-light); background:var(--paper-tint); padding:10px 14px; border-radius:8px;">"${escapeHTML(w.ex)}"</p>
+      <div class="fb-msg" id="modal-mic-fb"></div>
+      <p class="vocab-def"><strong>Definition:</strong> ${escapeHTML(w.def)}</p>
+      <p class="vocab-ex">"${escapeHTML(w.ex)}"</p>
       ${w.pronTipEs ? `<div class="l1-tip-box es-sub">${escapeHTML(w.pronTipEs)}</div>` : ''}
-      ${w.mnemonic ? `<div class="mnemonic-badge">🧠 Memory Hook: ${escapeHTML(w.mnemonic)}</div>` : ''}
-      ${w.note ? `<p style="margin-top:10px; font-size:0.88rem; color:var(--sight); font-weight:600;">${escapeHTML(w.note)}</p>` : ''}
+      ${w.mnemonic ? `<div class="mnemonic-badge es-sub">🧠 Memory Hook: ${escapeHTML(w.mnemonic)}</div>` : ''}
+      ${w.note ? `<div class="vocab-note">${escapeHTML(w.note)}</div>` : ''}
     `;
     modalOverlay.classList.add('open');
     modalClose.focus();
@@ -663,6 +800,7 @@
 
   function closeModal() {
     modalOverlay.classList.remove('open');
+    stopActiveRecognition();
     if (lastFocusedTrigger && typeof lastFocusedTrigger.focus === 'function') {
       lastFocusedTrigger.focus();
     }
@@ -694,6 +832,8 @@
 
   function switchTab(targetId) {
     currentSenseId = targetId;
+    clearKaraokeState();
+    stopActiveRecognition();
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     pauseVideosOutside(targetId);
 
@@ -800,9 +940,9 @@
     // Graded A2 Executive Summary (Prominent in Guided A2 mode)
     if (sense.reading.a2Summary) {
       html += `
-        <div class="es-sub" style="background:var(--tint); border-left:4px solid var(--accent); padding:14px 16px; border-radius:0 10px 10px 0; margin-bottom:16px;">
-          <strong style="color:var(--accent); display:block; margin-bottom:4px;">🟢 Guided A2 Core Summary (Simplified Input):</strong>
-          <p style="margin:0; font-size:0.95rem;">${escapeHTML(sense.reading.a2Summary)}</p>
+        <div class="es-sub a2-summary-box">
+          <strong>🟢 Guided A2 Core Summary (Simplified Input):</strong>
+          <p>${escapeHTML(sense.reading.a2Summary)}</p>
         </div>
       `;
     }
@@ -834,7 +974,7 @@
             <div class="inline-options">
               ${shuffled.map(opt => `<button class="inline-opt" data-action="check-inline-q" data-uid="${uid}" data-opt="${escapeHTML(opt)}">${escapeHTML(opt)}</button>`).join('')}
             </div>
-            <div class="inline-feedback" id="fb-${uid}" style="display:none; margin-top:8px; font-size:0.9rem; font-weight:600;"></div>
+            <div class="fb-msg" id="fb-${uid}"></div>
           </div>
         `;
       }
@@ -842,10 +982,10 @@
 
     if (sense.reading.collocations) {
       html += `
-        <div style="margin-top:14px; background:#F8FAFC; padding:12px 14px; border-radius:10px; border:1px solid var(--line);">
-          <strong style="font-size:0.82rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.06em;">📘 Academic Collocations (OPAL / TOEFL Junior):</strong>
-          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">
-            ${sense.reading.collocations.map(col => `<span class="coach-chip" data-action="speak-word" data-word="${escapeHTML(col)}" title="Click to hear academic phrase">🔊 ${escapeHTML(col)}</span>`).join('')}
+        <div class="opal-collocations-box">
+          <strong>📘 Academic Collocations (OPAL / TOEFL Junior):</strong>
+          <div class="chip-tray">
+            ${sense.reading.collocations.map(col => `<button class="coach-chip" data-action="speak-word" data-word="${escapeHTML(col)}" title="Click to hear academic phrase">🔊 ${escapeHTML(col)}</button>`).join('')}
           </div>
         </div>
       `;
@@ -866,11 +1006,11 @@
     panel.innerHTML = `
       <div class="sense-header">
         <span class="sense-badge">${escapeHTML(sense.receptorClassification)} <span class="es-sub">· ${escapeHTML(sense.receptorClassificationEs)}</span></span>
-        <h2 class="sense-title">${escapeHTML(sense.name)} — ${escapeHTML(sense.organ)} <span class="es-sub" style="font-size:0.65em; font-weight:500;">(${escapeHTML(sense.es)} · ${escapeHTML(sense.organEs)})</span></h2>
-        <p style="font-size:0.92rem; color:var(--ink-light); margin-top:6px;">
-          <strong>Word Family:</strong> ${escapeHTML(sense.wordFamily)} &nbsp;|&nbsp;
-          <strong>Target Cortex:</strong> ${escapeHTML(sense.cortex)}
-        </p>
+        <h2 class="sense-title">${escapeHTML(sense.name)} — ${escapeHTML(sense.organ)} <span class="es-sub">(${escapeHTML(sense.es)} · ${escapeHTML(sense.organEs)})</span></h2>
+        <div class="sense-header-meta">
+          <span class="cortex-tag">🧠 Target Cortex: ${escapeHTML(sense.cortex)}</span>
+          <span class="family-hint"><strong>Word Family:</strong> ${escapeHTML(sense.wordFamily)}</span>
+        </div>
       </div>
 
       <!-- 4-Stage Stepper Sub-Navigation (WAI-ARIA Tablist) -->
@@ -927,11 +1067,11 @@
                 <button class="mode-btn" id="btn-test-${sense.id}" data-action="diagram-mode" data-sense="${sense.id}" data-mode="test">🎯 Test Me 2.0 (Challenge)</button>
                 <button class="mode-btn" data-action="animate-signal" data-sense="${sense.id}">⚡ Animate Neural Signal</button>
               </div>
-              <div id="diagram-status-${sense.id}" style="font-size:0.88rem; font-weight:700; color:var(--accent);">Click any numbered tissue or pin to inspect.</div>
+              <div class="diagram-status-text" id="diagram-status-${sense.id}">Click any numbered tissue or pin to inspect.</div>
             </div>
 
             <div class="diagram-stage" id="diagram-stage-${sense.id}">
-              <svg viewBox="0 0 800 450" role="img" aria-label="${escapeHTML(DIAGRAMS[sense.id].title)}">
+              <svg class="diagram-svg" viewBox="0 0 800 450" role="img" aria-label="${escapeHTML(DIAGRAMS[sense.id].title)}">
                 ${DIAGRAMS[sense.id].svg}
                 <g class="natgeo-callouts" id="callouts-${sense.id}"></g>
               </svg>
@@ -959,17 +1099,22 @@
                     <button class="mic-btn" data-action="mic-word" data-word="${escapeHTML(w.en)}" data-fb="mic-fb-${sense.id}-${idx}" title="Test Pronunciation">🎤</button>
                   </div>
                 </div>
-                <div>
+                <div class="vocab-phonology">
                   <span class="vocab-ipa">${escapeHTML(w.ipa || '')}</span>
                   ${w.syllables ? `<span class="syllable-pill">${escapeHTML(w.syllables)}</span>` : ''}
                   <span class="vocab-es">${escapeHTML(w.es)}</span>
                 </div>
                 <p class="vocab-def">${escapeHTML(w.def)}</p>
                 <p class="vocab-ex">"${escapeHTML(w.ex)}"</p>
-                ${w.pronTipEs ? `<div class="l1-tip-box es-sub">${escapeHTML(w.pronTipEs)}</div>` : ''}
-                ${w.mnemonic ? `<div class="mnemonic-badge">🧠 ${escapeHTML(w.mnemonic)}</div>` : ''}
-                ${w.note ? `<div class="vocab-note">${escapeHTML(w.note)}</div>` : ''}
-                <div id="mic-fb-${sense.id}-${idx}" style="display:none; font-size:0.82rem; font-weight:700; margin-top:6px;"></div>
+                ${(w.pronTipEs || w.mnemonic || w.note) ? `
+                  <details class="vocab-meta-drawer">
+                    <summary>Notes &amp; Memory Hints</summary>
+                    ${w.pronTipEs ? `<div class="l1-tip-box es-sub">${escapeHTML(w.pronTipEs)}</div>` : ''}
+                    ${w.mnemonic ? `<div class="mnemonic-badge es-sub">🧠 ${escapeHTML(w.mnemonic)}</div>` : ''}
+                    ${w.note ? `<div class="vocab-note">${escapeHTML(w.note)}</div>` : ''}
+                  </details>
+                ` : ''}
+                <div class="fb-msg" id="mic-fb-${sense.id}-${idx}"></div>
               </div>
             `).join('')}
           </div>
@@ -990,7 +1135,7 @@
           </div>
 
           <div class="reading-controls-row">
-            <button class="action-btn" id="read-aloud-btn-${sense.id}" data-action="toggle-read-aloud" data-sense="${sense.id}" style="padding:8px 16px; font-size:0.88rem;">🔊 Read Passage Aloud</button>
+            <button class="action-btn btn-compact" id="read-aloud-btn-${sense.id}" data-action="toggle-read-aloud" data-sense="${sense.id}">🔊 Read Passage Aloud</button>
             <div class="speed-toggle-pill" role="group" aria-label="Audio speech speed">
               <button class="speed-btn ${appState.audioSpeed === 0.75 ? 'active' : ''}" data-action="set-speed" data-speed="0.75">0.75× Slow A2</button>
               <button class="speed-btn ${appState.audioSpeed === 0.9 ? 'active' : ''}" data-action="set-speed" data-speed="0.9">0.9× Guided</button>
@@ -999,9 +1144,9 @@
           </div>
 
           ${sense.id === 'sight' ? `
-            <div style="margin-bottom:18px; border-radius:12px; overflow:hidden; border:1.5px solid var(--line); background:#0F172A;">
-              <video id="sight-video-el" controls playsinline preload="none" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320'%3E%3Crect width='800' height='320' fill='%230F172A'/%3E%3Ctext x='400' y='165' text-anchor='middle' fill='%23E0E7FF' font-family='sans-serif' font-size='22' font-weight='700'%3E▶ Video: The Path of Light (Click Play to Load)%3C/text%3E%3C/svg%3E" style="width:100%; max-height:360px; display:block;"></video>
-              <div style="padding:8px 14px; font-size:0.82rem; color:#CBD5E1; background:#1E293B;">🎬 Visual Animation: Follow photons through cornea, lens, retina, and CN II.</div>
+            <div class="video-card">
+              <video id="sight-video-el" controls playsinline preload="none" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320'%3E%3Crect width='800' height='320' fill='%230F172A'/%3E%3Ctext x='400' y='165' text-anchor='middle' fill='%23E0E7FF' font-family='sans-serif' font-size='22' font-weight='700'%3E▶ Video: The Path of Light (Click Play to Load)%3C/text%3E%3C/svg%3E"></video>
+              <div class="video-caption">🎬 Visual Animation: Follow photons through cornea, lens, retina, and CN II.</div>
             </div>
           ` : ''}
 
@@ -1017,7 +1162,7 @@
               <div class="bio-item">
                 <strong>Ion Channels &amp; Molecular Detectors</strong>
                 ${escapeHTML(bio.ionChannel)}
-                <div class="es-sub" style="color:#94A3B8; margin-top:4px; font-size:0.78rem;">${escapeHTML(bio.ionChannelEs)}</div>
+                <div class="es-sub bio-es-note">${escapeHTML(bio.ionChannelEs)}</div>
               </div>
               <div class="bio-item">
                 <strong>Receptor Potential &amp; Transduction</strong>
@@ -1045,11 +1190,11 @@
           </div>
           <div class="health-grid">
             <div class="health-card">
-              <h4 style="color:#DC2626; margin-bottom:10px;">⚠️ Sensory Disorders</h4>
+              <h4 class="health-title-warn">⚠️ Sensory Disorders</h4>
               <ul>${sense.health.problems.map(pr => `<li><strong>${escapeHTML(pr.name)}:</strong> ${escapeHTML(pr.text)}</li>`).join('')}</ul>
             </div>
             <div class="health-card">
-              <h4 style="color:#15803D; margin-bottom:10px;">🛡️ Evidence-Based Prevention</h4>
+              <h4 class="health-title-care">🛡️ Evidence-Based Prevention</h4>
               <ul>${sense.health.care.map(cr => `<li>${escapeHTML(cr)}</li>`).join('')}</ul>
             </div>
           </div>
@@ -1057,11 +1202,11 @@
           <!-- Interactive Neuro-Sensory Doctor Simulator for this sense -->
           ${senseCases.map(cs => renderClinicalCaseHTML(cs)).join('')}
 
-          <details style="margin-top:16px; background:var(--paper-tint); border-radius:12px; padding:12px 16px; border:1px solid var(--line);">
-            <summary style="cursor:pointer; font-weight:700; color:var(--accent);">🔬 Go Deeper: Advanced Cortical &amp; Cellular Phenomena</summary>
-            <div style="margin-top:12px; display:grid; gap:10px;">
+          <details class="go-deeper-box">
+            <summary class="go-deeper-summary">🔬 Go Deeper: Advanced Cortical &amp; Cellular Phenomena</summary>
+            <div class="go-deeper-content">
               ${sense.deeper.map(dp => `
-                <div style="background:#FFF; padding:10px 14px; border-radius:8px; border:1px solid var(--line);">
+                <div class="go-deeper-card">
                   <strong>${escapeHTML(dp.name)}</strong> <span class="es-sub">(${escapeHTML(dp.es)})</span>: ${escapeHTML(dp.text)}
                 </div>
               `).join('')}
@@ -1070,7 +1215,7 @@
         </div>
 
         <div class="stage-footer">
-          <button class="action-btn" style="background:var(--muted);" data-action="go-stage" data-sense="${sense.id}" data-stage="1">← Back to Stage 1</button>
+          <button class="action-btn btn-muted" data-action="go-stage" data-sense="${sense.id}" data-stage="1">← Back to Stage 1</button>
           <button class="action-btn" data-action="go-stage" data-sense="${sense.id}" data-stage="3">Next: Practice &amp; POE Lab →</button>
         </div>
       </div>
@@ -1083,25 +1228,25 @@
             <h3 class="step-title">Active Mastery: Sequence, Match &amp; Audio-Cloze</h3>
           </div>
 
-          <h4 style="margin-bottom:8px;">A. Trace the 5-Step Sensory Pathway (Click chips in correct order)</h4>
+          <h4>A. Trace the ${(sense.path || []).length}-Step Sensory Pathway (Click chips in correct order)</h4>
           <div class="activity-box">
             <div class="path-slots" id="path-slots-${sense.id}"></div>
             <div class="path-chips" id="path-chips-${sense.id}"></div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <button class="action-btn" data-action="check-path" data-sense="${sense.id}" style="padding:7px 14px; font-size:0.86rem;">Check Sequence</button>
-              <button class="action-btn" data-action="reset-path" data-sense="${sense.id}" style="padding:7px 14px; font-size:0.86rem; background:var(--muted);">Reset</button>
+            <div class="compare-mode-bar">
+              <button class="action-btn btn-compact" data-action="check-path" data-sense="${sense.id}">Check Sequence</button>
+              <button class="action-btn btn-compact btn-muted" data-action="reset-path" data-sense="${sense.id}">Reset</button>
             </div>
-            <div id="path-fb-${sense.id}" style="margin-top:10px; font-weight:700;"></div>
+            <div class="fb-msg" id="path-fb-${sense.id}"></div>
           </div>
 
-          <h4 style="margin:22px 0 8px;">B. Match Anatomical Structures to Functions (Combo Multiplier Active ⚡)</h4>
+          <h4>B. Match Anatomical Structures to Functions (Combo Multiplier Active ⚡)</h4>
           <div class="activity-box">
             <div class="match-container" id="match-box-${sense.id}"></div>
-            <button class="action-btn" data-action="reset-match" data-sense="${sense.id}" style="padding:7px 14px; font-size:0.86rem; background:var(--muted); margin-top:10px;">Shuffle Pairs</button>
-            <div id="match-fb-${sense.id}" style="margin-top:10px; font-weight:700;"></div>
+            <button class="action-btn btn-compact btn-muted" data-action="reset-match" data-sense="${sense.id}">Shuffle Pairs</button>
+            <div class="fb-msg" id="match-fb-${sense.id}"></div>
           </div>
 
-          <h4 style="margin:22px 0 8px;">C. Scientific Cloze &amp; Dictation Mode (Tap chips or listen to fill)</h4>
+          <h4>C. Scientific Cloze &amp; Dictation Mode (Tap chips or listen to fill)</h4>
           <div class="activity-box" id="cloze-box-${sense.id}"></div>
         </div>
 
@@ -1113,8 +1258,8 @@
           <div class="experiment-card">
             <div class="poe-box">
               <span class="poe-badge">Phase 1: Formulate Hypothesis (Predict)</span>
-              <p style="font-weight:700; font-size:0.95rem; margin:8px 0 6px;">${escapeHTML(sense.experiment.predict.q)}</p>
-              <p class="es-sub" style="margin-bottom:10px;">${escapeHTML(sense.experiment.predict.qEs)}</p>
+              <p>${escapeHTML(sense.experiment.predict.q)}</p>
+              <p class="es-sub">${escapeHTML(sense.experiment.predict.qEs)}</p>
               <div class="poe-options">
                 ${sense.experiment.predict.options.map((opt, oIdx) => `
                   <label class="poe-opt-label">
@@ -1123,13 +1268,13 @@
                   </label>
                 `).join('')}
               </div>
-              <div id="poe-predict-fb-${sense.id}" style="display:none; font-size:0.88rem; font-weight:700; margin-top:8px;"></div>
+              <div class="fb-msg" id="poe-predict-fb-${sense.id}"></div>
             </div>
 
-            <div class="poe-box" style="background:#FFF;">
-              <span class="poe-badge" style="background:var(--gold);">Phase 2: Conduct &amp; Observe</span>
-              <p style="margin:8px 0 6px;"><strong>Required Materials:</strong> ${escapeHTML(sense.experiment.materials.join(', '))}</p>
-              <ol style="margin-left:20px; margin-bottom:14px;">
+            <div class="poe-box">
+              <span class="poe-badge">Phase 2: Conduct &amp; Observe</span>
+              <p><strong>Required Materials:</strong> ${escapeHTML(sense.experiment.materials.join(', '))}</p>
+              <ol>
                 ${sense.experiment.steps.map(st => `<li>${escapeHTML(st)}</li>`).join('')}
               </ol>
 
@@ -1146,25 +1291,25 @@
               ` : ''}
 
               ${sense.experiment.type === 'twopoint' && sense.experiment.observe.rows ? `
-                <div style="overflow-x:auto; margin-bottom:12px;">
-                  <table class="compare-table" style="font-size:0.86rem;">
+                <div class="compare-table-wrap">
+                  <table class="compare-table">
                     <thead><tr>${sense.experiment.observe.columns.map(c => `<th>${escapeHTML(c)}</th>`).join('')}</tr></thead>
                     <tbody>${sense.experiment.observe.rows.map(r => `<tr>${r.map(cell => `<td>${escapeHTML(cell)}</td>`).join('')}</tr>`).join('')}</tbody>
                   </table>
                 </div>
               ` : ''}
 
-              <label for="obs-${sense.id}" style="font-weight:700; font-size:0.9rem; display:block; margin-bottom:4px;">${escapeHTML(sense.experiment.observe.prompt)}</label>
-              <p class="es-sub" style="margin-bottom:6px;">${escapeHTML(sense.experiment.observe.promptEs || '')}</p>
-              <textarea id="obs-${sense.id}" rows="2" class="poe-obs-area" data-action="save-poe-obs" data-sense="${sense.id}" style="width:100%; border:1.5px solid var(--line); border-radius:8px; padding:10px; font-family:inherit;" placeholder="Record your scientific observation here (auto-saved)..."></textarea>
+              <label for="obs-${sense.id}"><strong>${escapeHTML(sense.experiment.observe.prompt)}</strong></label>
+              <p class="es-sub">${escapeHTML(sense.experiment.observe.promptEs || '')}</p>
+              <textarea id="obs-${sense.id}" rows="2" maxlength="2000" class="poe-obs-area" data-action="save-poe-obs" data-sense="${sense.id}" placeholder="Record your scientific observation here (auto-saved)..."></textarea>
             </div>
 
             <div class="poe-box">
-              <span class="poe-badge" style="background:var(--correct);">Phase 3: Explain with Evidence (CER)</span>
-              <div style="margin-top:8px;">
-                <button class="action-btn" data-action="reveal-explain" data-sense="${sense.id}" style="padding:8px 16px; font-size:0.88rem;">🔬 Reveal Scientific Explanation</button>
+              <span class="poe-badge">Phase 3: Explain with Evidence (CER)</span>
+              <div>
+                <button class="action-btn btn-compact" data-action="reveal-explain" data-sense="${sense.id}">🔬 Reveal Scientific Explanation</button>
               </div>
-              <div id="poe-explain-box-${sense.id}" style="display:none; background:var(--paper-tint); border-left:4px solid var(--correct); padding:12px 16px; border-radius:8px; margin-top:12px;">
+              <div class="quiz-explain" id="poe-explain-box-${sense.id}">
                 <strong>Scientific Explanation:</strong> ${escapeHTML(sense.experiment.explain)}
               </div>
             </div>
@@ -1172,7 +1317,7 @@
         </div>
 
         <div class="stage-footer">
-          <button class="action-btn" style="background:var(--muted);" data-action="go-stage" data-sense="${sense.id}" data-stage="2">← Back to Stage 2</button>
+          <button class="action-btn btn-muted" data-action="go-stage" data-sense="${sense.id}" data-stage="2">← Back to Stage 2</button>
           <button class="action-btn" data-action="go-stage" data-sense="${sense.id}" data-stage="4">Next: Writing Coach &amp; Quiz →</button>
         </div>
       </div>
@@ -1185,17 +1330,19 @@
             <h3 class="step-title">Express It in English (Morpho-Syntactic Writing Coach)</h3>
           </div>
 
-          <details style="margin-bottom:16px; background:var(--paper-tint); padding:12px 16px; border-radius:10px; border:1px solid var(--line);">
-            <summary style="cursor:pointer; font-weight:700;">📝 Sentence Frames (Guided CLIL Scaffolding)</summary>
-            <ul style="margin:10px 0 0 20px; font-size:0.9rem;">
-              ${sense.frames.map(f => `<li style="margin-bottom:5px;">${escapeHTML(f)}</li>`).join('')}
-            </ul>
-            ${sense.writing.b1ChallengeFrame ? `<div style="margin-top:10px; font-size:0.86rem; color:var(--sight); font-weight:700;">🔵 B1 Immersion Challenge: ${escapeHTML(sense.writing.b1ChallengeFrame)}</div>` : ''}
+          <details class="go-deeper-box">
+            <summary class="go-deeper-summary">📝 Sentence Frames (Guided CLIL Scaffolding)</summary>
+            <div class="go-deeper-content">
+              <ul>
+                ${sense.frames.map(f => `<li>${escapeHTML(f)}</li>`).join('')}
+              </ul>
+              ${sense.writing.b1ChallengeFrame ? `<div class="go-deeper-card">🔵 B1 Immersion Challenge: ${escapeHTML(sense.writing.b1ChallengeFrame)}</div>` : ''}
+            </div>
           </details>
 
           <div class="writing-coach-box">
-            <p style="font-weight:700; margin-bottom:4px;">${escapeHTML(sense.writing.prompt)}</p>
-            <p class="es-sub" style="margin-bottom:12px;">${escapeHTML(sense.writing.promptEs)}</p>
+            <p><strong>${escapeHTML(sense.writing.prompt)}</strong></p>
+            <p class="es-sub">${escapeHTML(sense.writing.promptEs)}</p>
 
             <div class="coach-section">
               <h5>1. Required Anatomical Word Bank (Click to insert):</h5>
@@ -1221,38 +1368,42 @@
               </div>
             </div>
 
-            <textarea class="writing-textarea" id="write-${sense.id}" data-action="writing-input" data-sense="${sense.id}" placeholder="Explain the biological pathway step by step in full English sentences..."></textarea>
+            <textarea class="writing-textarea" id="write-${sense.id}" maxlength="2000" data-action="writing-input" data-sense="${sense.id}" placeholder="Explain the biological pathway step by step in full English sentences..."></textarea>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:10px;">
-              <span id="write-count-${sense.id}" style="font-size:0.84rem; font-weight:700; color:var(--ink-light);">Words: 0 | Anatomical terms: 0/4</span>
-              <div style="display:flex; gap:8px;">
-                <button class="action-btn" data-action="validate-writing" data-sense="${sense.id}" style="padding:8px 16px; font-size:0.88rem;">✅ Analyze Grammar &amp; Pathway</button>
+            <div class="writing-meta-bar">
+              <span id="write-count-${sense.id}" class="family-hint">Words: 0 | Anatomical terms: 0/4+</span>
+              <div class="vocab-actions">
+                <button class="action-btn btn-compact" data-action="validate-writing" data-sense="${sense.id}">✅ Analyze Grammar &amp; Pathway</button>
                 <button class="mic-btn" data-action="mic-writing" data-sense="${sense.id}" title="Read your paragraph aloud (Continuous Shadowing)">🎙️ Read Aloud</button>
               </div>
             </div>
 
-            <div id="write-feedback-${sense.id}" style="display:none; margin-top:12px; padding:12px; border-radius:8px; font-size:0.88rem; font-weight:600;"></div>
-            <div id="write-mic-fb-${sense.id}" style="display:none; margin-top:8px; font-size:0.86rem; font-weight:700;"></div>
+            <div class="writing-fb-box" id="write-feedback-${sense.id}"></div>
+            <div class="fb-msg" id="write-mic-fb-${sense.id}"></div>
 
-            <details id="model-answer-details-${sense.id}" style="margin-top:14px;">
-              <summary style="cursor:pointer; font-weight:700; font-size:0.88rem; color:var(--muted);">🔒 Expert Model Answer (Locked until ≥25 words &amp; valid sequence)</summary>
-              <div style="margin-top:10px; background:var(--paper-tint); padding:12px 14px; border-radius:8px; font-size:0.9rem; line-height:1.55;">
-                ${escapeHTML(sense.writing.model)}
-                <div style="margin-top:8px;">
-                  <button class="audio-btn" data-action="speak-model" data-sense="${sense.id}">🔊 Listen to Expert Model</button>
+            <details class="go-deeper-box" id="model-answer-details-${sense.id}">
+              <summary class="go-deeper-summary">🔒 Expert Model Answer (Locked until ≥25 words &amp; valid sequence)</summary>
+              <div class="go-deeper-content">
+                <div class="go-deeper-card">
+                  ${escapeHTML(sense.writing.model)}
+                  <div>
+                    <button class="audio-btn" data-action="speak-model" data-sense="${sense.id}">🔊 Listen to Expert Model</button>
+                  </div>
                 </div>
               </div>
             </details>
           </div>
 
           <div class="ican-box">
-            <h4 style="margin-bottom:8px;">✅ Self-Evaluation Checklist (Can-Do Statements):</h4>
-            ${sense.objectives.map((obj, idx) => `
-              <label style="display:flex; align-items:center; gap:8px; margin-bottom:6px; cursor:pointer; font-size:0.9rem;">
-                <input type="checkbox" id="ican-${sense.id}-${idx}" data-action="record-ican" data-sense="${sense.id}" data-idx="${idx}">
-                <span>${escapeHTML(obj)}</span>
-              </label>
-            `).join('')}
+            <h4>✅ Self-Evaluation Checklist (Can-Do Statements):</h4>
+            <div class="ican-list">
+              ${sense.objectives.map((obj, idx) => `
+                <label class="ican-row">
+                  <input type="checkbox" id="ican-${sense.id}-${idx}" data-action="record-ican" data-sense="${sense.id}" data-idx="${idx}">
+                  <span>${escapeHTML(obj)}</span>
+                </label>
+              `).join('')}
+            </div>
           </div>
         </div>
 
@@ -1264,15 +1415,15 @@
           <div id="quiz-box-${sense.id}">
             ${sense.quiz.map((qObj, qIdx) => renderQuestionHTML(sense.id, qObj, qIdx)).join('')}
           </div>
-          <div style="margin-top:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <div class="compare-mode-bar exam-actions-bar">
             <button class="action-btn" data-action="check-quiz" data-sense="${sense.id}">Submit ${escapeHTML(sense.name)} Check</button>
-            <div id="quiz-result-${sense.id}" style="font-weight:800; font-size:1rem;"></div>
+            <div class="fb-msg" id="quiz-result-${sense.id}"></div>
           </div>
         </div>
 
         <div class="stage-footer">
-          <button class="action-btn" style="background:var(--muted);" data-action="go-stage" data-sense="${sense.id}" data-stage="3">← Back to Stage 3</button>
-          <span style="font-weight:700; color:var(--correct);">🎉 End of ${escapeHTML(sense.name)} Unit</span>
+          <button class="action-btn btn-muted" data-action="go-stage" data-sense="${sense.id}" data-stage="3">← Back to Stage 3</button>
+          <span class="fb-msg visible ok">🎉 End of ${escapeHTML(sense.name)} Unit</span>
         </div>
       </div>
     `;
@@ -1303,7 +1454,7 @@
             </label>
           `).join('')}
         </div>
-        <div class="quiz-explain" id="q-exp-${uid}" style="display:none; margin-top:8px; font-size:0.86rem; background:var(--paper-tint); padding:8px 12px; border-radius:8px;"></div>
+        <div class="quiz-explain" id="q-exp-${uid}"></div>
       </div>
     `;
   }
@@ -1320,11 +1471,16 @@
     const data = DIAGRAMS[sense.id];
     if (!stage || !data) return;
 
+    if (calloutsGroup) calloutsGroup.innerHTML = '';
+    stage.querySelectorAll('.diagram-hotspot, .diagram-label-pin').forEach(el => el.remove());
+    if (dock) dock.innerHTML = '';
+
     const svgNS = 'http://www.w3.org/2000/svg';
 
     data.hotspots.forEach((hs, idx) => {
       const w = sense.words.find(item => item.id === hs.id);
-      const labelText = w ? w.en : hs.id;
+      const rawLabel = w ? w.en : hs.id;
+      const labelText = rawLabel.replace(/\s*\([^)]*\)/g, '').trim();
 
       // 1. Draw Orthogonal NatGeo Callout Line inside SVG
       if (calloutsGroup) {
@@ -1364,7 +1520,6 @@
       pin.style.left = (hs.lx / 8) + '%';
       pin.style.top = (hs.ly / 4.5) + '%';
       pin.dataset.id = hs.id;
-      pin.style.cursor = 'pointer';
       pin.addEventListener('click', () => handleHotspotClick(sense, hs, btn));
       pin.addEventListener('mouseenter', () => setPairedHighlight(sense.id, hs.id, true));
       pin.addEventListener('mouseleave', () => setPairedHighlight(sense.id, hs.id, false));
@@ -1381,7 +1536,7 @@
       }
     });
 
-    diagramChallengeState[sense.id] = { mode: 'explore', queue: [], currentTarget: null, hits: 0, attempts: 0 };
+    diagramChallengeState[sense.id] = { mode: 'explore', queue: [], currentTarget: null, hits: 0, attempts: 0, busy: false };
   }
 
   function setPairedHighlight(senseId, hsId, on) {
@@ -1400,6 +1555,7 @@
     if (!st || !sense || !stage) return;
 
     st.mode = mode;
+    st.busy = false;
     document.getElementById('btn-explore-' + senseId).classList.toggle('active', mode === 'explore');
     document.getElementById('btn-test-' + senseId).classList.toggle('active', mode === 'test');
 
@@ -1414,6 +1570,7 @@
       st.attempts = 0;
       pickNextDiagramTarget(sense);
     } else {
+      st.currentTarget = null;
       status.textContent = 'Click any numbered tissue or pin to inspect.';
       info.innerHTML = `<strong>${escapeHTML(sense.organ)}:</strong> Click any numbered hotspot to hear its pronunciation and explore its role.`;
     }
@@ -1424,6 +1581,8 @@
     const status = document.getElementById('diagram-status-' + sense.id);
     const info = document.getElementById('diagram-info-' + sense.id);
     if (st.queue.length === 0) {
+      st.currentTarget = null;
+      st.busy = false;
       const total = DIAGRAMS[sense.id].hotspots.length;
       const pct = Math.round((st.hits / Math.max(1, st.attempts)) * 100);
       status.innerHTML = `🏆 Challenge Complete! Accuracy: ${pct}% (${st.hits}/${st.attempts})`;
@@ -1437,7 +1596,7 @@
     const label = w ? w.en : nextId;
     const total = DIAGRAMS[sense.id].hotspots.length;
     const done = total - st.queue.length;
-    status.innerHTML = `🎯 Locate (${done}/${total}): <span style="background:var(--accent); color:#FFF; padding:2px 8px; border-radius:6px;">${escapeHTML(label)}</span>`;
+    status.innerHTML = `🎯 Locate (${done}/${total}): <span class="sense-badge">${escapeHTML(label)}</span>`;
     info.innerHTML = `<em>Click the exact numbered target on the anatomy cutaway corresponding to <strong>${escapeHTML(label)}</strong>.</em>`;
     speakText(label);
   }
@@ -1453,58 +1612,77 @@
       btnEl.classList.add('active');
       if (w) {
         info.innerHTML = `
-          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;">
-            <strong style="font-size:1.05rem; color:var(--accent);">${escapeHTML(w.en)}</strong>
+          <div class="vocab-phonology">
+            <strong class="vocab-word">${escapeHTML(w.en)}</strong>
             <span class="vocab-ipa">${escapeHTML(w.ipa || '')}</span>
             ${w.syllables ? `<span class="syllable-pill">${escapeHTML(w.syllables)}</span>` : ''}
             <span class="vocab-es">${escapeHTML(w.es)}</span>
             <button class="audio-btn" data-action="speak-word" data-word="${escapeHTML(w.en)}">🔊</button>
           </div>
-          <p style="margin:0; font-size:0.92rem;">${escapeHTML(w.def)}</p>
+          <p class="vocab-def">${escapeHTML(w.def)}</p>
         `;
         speakText(w.en);
         awardXP(5, 'diag_exp_' + sense.id + '_' + w.id, btnEl, true);
       }
-    } else if (st.currentTarget) {
+    } else if (st.currentTarget && !st.busy) {
       st.attempts += 1;
       if (hs.id === st.currentTarget) {
         st.hits += 1;
+        st.busy = true;
         btnEl.classList.add('correct-spot');
         awardXP(15, null, btnEl, true);
-        info.innerHTML = `<span style="color:var(--correct); font-weight:700;">✅ Correct! That is the ${escapeHTML(w ? w.en : hs.id)}.</span>`;
-        setTimeout(() => pickNextDiagramTarget(sense), 850);
+        info.innerHTML = `<span class="fb-msg visible ok">✅ Correct! That is the ${escapeHTML(w ? w.en : hs.id)}.</span>`;
+        setTimeout(() => { st.busy = false; pickNextDiagramTarget(sense); }, 850);
       } else {
         btnEl.classList.add('wrong-spot');
         awardXP(0, null, btnEl, false);
         setTimeout(() => btnEl.classList.remove('wrong-spot'), 450);
-        info.innerHTML = `<span style="color:var(--incorrect); font-weight:700;">❌ Incorrect. You clicked <em>${escapeHTML(w ? w.en : hs.id)}</em>. Try again!</span>`;
+        info.innerHTML = `<span class="fb-msg visible err">❌ Incorrect. You clicked <em>${escapeHTML(w ? w.en : hs.id)}</em>. Try again!</span>`;
       }
     }
   }
 
+  const signalTimers = {};
   function animateSignalPath(senseId) {
     const stage = document.getElementById('diagram-stage-' + senseId);
     if (!stage) return;
     const pulse = stage.querySelector('.signal-pulse-path');
     if (!pulse) return;
-    pulse.classList.remove('active');
+    if (signalTimers[senseId]) clearTimeout(signalTimers[senseId]);
+    pulse.classList.remove('active', 'animating');
     void pulse.offsetWidth;
-    pulse.classList.add('active');
-    setTimeout(() => pulse.classList.remove('active'), 3600);
+    pulse.classList.add('active', 'animating');
+    signalTimers[senseId] = setTimeout(() => pulse.classList.remove('active', 'animating'), 3600);
   }
 
   /* ------------------------------------------------------------------
      9. Step 6 Activities: Path Order, Combo Match Pairs & Audio-Cloze
   ------------------------------------------------------------------ */
   const pathSelections = {};
+  function getPathStepHTML(rawLabel) {
+    if (rawLabel && typeof rawLabel === 'object') {
+      return `${escapeHTML(rawLabel.en || '')}${rawLabel.es ? ` <span class="es-sub">(${escapeHTML(rawLabel.es)})</span>` : ''}`;
+    }
+    const noNum = String(rawLabel || '').replace(/^\d+\.\s*/, '').trim();
+    const trail = noNum.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+    if (trail) {
+      return `${escapeHTML(trail[1])} <span class="es-sub">(${escapeHTML(trail[2])})</span>`;
+    }
+    return escapeHTML(noNum);
+  }
+
   function initPathOrder(sense) {
     pathSelections[sense.id] = [];
     const chipsBox = document.getElementById('path-chips-' + sense.id);
     if (!chipsBox) return;
-    const items = sense.pathLabels.map((lbl, idx) => ({ idx, lbl }));
+    const keys = Array.isArray(sense.path) ? sense.path : [];
+    const items = keys.map((key, idx) => ({
+      idx,
+      label: (sense.pathLabels && sense.pathLabels[key]) ? sense.pathLabels[key] : key
+    }));
     const shuffled = shuffleArray(items);
     chipsBox.innerHTML = shuffled.map(it =>
-      `<button class="path-chip" data-action="pick-path-chip" data-sense="${sense.id}" data-step-idx="${it.idx}">${it.lbl}</button>`
+      `<button class="path-chip" data-action="pick-path-chip" data-sense="${sense.id}" data-step-idx="${it.idx}">${getPathStepHTML(it.label)}</button>`
     ).join('');
     renderPathSlots(sense.id);
   }
@@ -1513,14 +1691,17 @@
     const slotsBox = document.getElementById('path-slots-' + senseId);
     if (!slotsBox) return;
     const sense = SENSES.find(s => s.id === senseId);
+    const keys = (sense && Array.isArray(sense.path)) ? sense.path : [];
     const sel = pathSelections[senseId] || [];
     if (sel.length === 0) {
-      slotsBox.innerHTML = '<span style="color:var(--muted); font-size:0.88rem;">Click step chips below in chronological biological order (1 → 5)...</span>';
+      slotsBox.innerHTML = `<span class="family-hint">Click step chips below in chronological biological order (1 → ${keys.length || 5})...</span>`;
       return;
     }
-    slotsBox.innerHTML = sel.map((stepIdx, pos) =>
-      `<span class="path-chip in-slot" data-action="remove-path-slot" data-sense="${senseId}" data-pos="${pos}">${pos + 1}. ${sense.pathLabels[stepIdx]} &times;</span>`
-    ).join('');
+    slotsBox.innerHTML = sel.map((stepIdx, pos) => {
+      const key = keys[stepIdx];
+      const lbl = (sense && sense.pathLabels && sense.pathLabels[key]) ? sense.pathLabels[key] : (key || '');
+      return `<span class="path-chip in-slot" data-action="remove-path-slot" data-sense="${senseId}" data-pos="${pos}">${getPathStepHTML(lbl)} &times;</span>`;
+    }).join('');
   }
 
   // Match Pairs with Combo Tracking
@@ -1543,9 +1724,27 @@
 
   // Cloze with Gap Targeting, Audio Dictation Mode & Morphological Feedback
   const activeClozeGap = {};
+  function syncClozeChips(senseId) {
+    const box = document.getElementById('cloze-box-' + senseId);
+    const bank = document.getElementById('cloze-bank-' + senseId);
+    if (!box || !bank) return;
+    const usedCounts = {};
+    box.querySelectorAll('.cloze-input').forEach(inp => {
+      const val = inp.value.trim().toLowerCase();
+      if (val) usedCounts[val] = (usedCounts[val] || 0) + 1;
+    });
+    const seen = {};
+    bank.querySelectorAll('.coach-chip').forEach(chip => {
+      const w = (chip.dataset.word || '').toLowerCase();
+      seen[w] = (seen[w] || 0) + 1;
+      chip.classList.toggle('used', (usedCounts[w] || 0) >= seen[w]);
+    });
+  }
+
   function renderCloze(sense, hideBank = false) {
     const box = document.getElementById('cloze-box-' + sense.id);
     if (!box) return;
+    purgePrivateAnswersByPrefix('cloze_' + sense.id);
     const answers = [];
     const textHtml = escapeHTML(sense.cloze.text).replace(/\{([^}]+)\}/g, (m, word) => {
       const uid = nextUid('cloze_' + sense.id);
@@ -1556,31 +1755,64 @@
 
     const bankWords = shuffleArray([...answers, ...(sense.cloze.extra || [])]);
     box.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-        <span style="font-size:0.84rem; font-weight:700; color:var(--accent);">Click a word chip or type inside any blank:</span>
-        <button class="audio-btn" data-action="dictate-cloze" data-sense="${sense.id}" title="Listen to the full scientific paragraph">🎧 Dictation Mode (Listen)</button>
+      <div class="cloze-top-bar">
+        <span class="diagram-status-text">Click a word chip or type inside any blank:</span>
+        <div class="vocab-actions">
+          <button class="audio-btn" data-action="dictate-cloze" data-sense="${sense.id}" title="Listen to the full scientific paragraph">🔊 Listen Paragraph</button>
+          <button class="coach-chip" data-action="toggle-dictation" data-sense="${sense.id}">🎧 Pure Dictation Mode</button>
+        </div>
       </div>
-      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; ${hideBank ? 'display:none;' : ''}" id="cloze-bank-${sense.id}">
+      <div class="cloze-bank-row ${hideBank ? 'dictation-hidden' : ''}" id="cloze-bank-${sense.id}">
         ${bankWords.map(w => `<button class="coach-chip" data-action="fill-cloze-chip" data-sense="${sense.id}" data-word="${escapeHTML(w)}">${escapeHTML(w)}</button>`).join('')}
       </div>
-      <p style="line-height:2.2; font-size:0.96rem;">${textHtml}</p>
-      <div style="display:flex; gap:10px; margin-top:12px;">
-        <button class="action-btn" data-action="check-cloze" data-sense="${sense.id}" style="padding:7px 14px; font-size:0.86rem;">Check Blanks</button>
-        <button class="action-btn" data-action="reset-cloze" data-sense="${sense.id}" style="padding:7px 14px; font-size:0.86rem; background:var(--muted);">Clear</button>
+      <p class="cloze-para">${textHtml}</p>
+      <div class="compare-mode-bar exam-actions-bar">
+        <button class="action-btn btn-compact" data-action="check-cloze" data-sense="${sense.id}">Check Blanks</button>
+        <button class="action-btn btn-compact btn-muted" data-action="reset-cloze" data-sense="${sense.id}">Clear</button>
       </div>
-      <div id="cloze-fb-${sense.id}" style="margin-top:10px; font-weight:700;"></div>
+      <div class="fb-msg" id="cloze-fb-${sense.id}"></div>
     `;
   }
 
   /* ------------------------------------------------------------------
      10. Writing Coach Step 8: Lemmatizer, Causal Sequence & L1 Linter
   ------------------------------------------------------------------ */
+  function escapeRegex(str) {
+    return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function buildVerbRegex(stem) {
+    const clean = String(stem || '').trim().toLowerCase();
+    if (!clean) return /$^/;
+    const irr = { send: 'sends?|sending|sent', bend: 'bends?|bending|bent', bind: 'binds?|binding|bound' };
+    if (irr[clean]) return new RegExp(`\\b(?:${irr[clean]})\\b`, 'i');
+    if (/[^aeiou]y$/.test(clean)) {
+      const root = escapeRegex(clean.slice(0, -1));
+      return new RegExp(`\\b${root}(?:y|ies|ied|ying)\\b`, 'i');
+    }
+    if (/e$/.test(clean) && !/ee$/.test(clean)) {
+      const root = escapeRegex(clean.slice(0, -1));
+      return new RegExp(`\\b${root}(?:e|es|ed|ing)\\b`, 'i');
+    }
+    const esc = escapeRegex(clean);
+    const last = clean.slice(-1);
+    const dbl = /[bcdfghjklmnpqrstvwxz]/.test(last) ? escapeRegex(last) : '';
+    const suffix = dbl ? `(?:${dbl}(?:ed|ing)|s|es|ed|ing)` : `(?:s|es|ed|ing)`;
+    return new RegExp(`\\b${esc}${suffix}?\\b`, 'i');
+  }
+
+  function saveDraftOnly(senseId, text) {
+    if (!VALID_SENSE_IDS.has(senseId)) return;
+    appState.writtenText[senseId] = String(text || '').slice(0, 2000);
+    saveState();
+  }
+
   const debouncedAnalyzeWriting = debounce((senseId) => analyzeWritingLive(senseId), 180);
 
   function analyzeWritingLive(senseId) {
     const textarea = document.getElementById('write-' + senseId);
     if (!textarea) return;
-    const text = textarea.value;
+    const text = textarea.value.slice(0, 2000);
     appState.writtenText[senseId] = text;
     saveState();
 
@@ -1591,8 +1823,8 @@
     const bankTray = document.getElementById('bank-tray-' + senseId);
     if (bankTray) {
       bankTray.querySelectorAll('.coach-chip').forEach(chip => {
-        const target = chip.dataset.word;
-        const rx = new RegExp(`\\b${target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}s?\\b`, 'i');
+        const target = chip.dataset.word || '';
+        const rx = new RegExp(`\\b${escapeRegex(target)}s?\\b`, 'i');
         const hit = rx.test(lower);
         chip.classList.toggle('used', hit);
         if (hit) bankHits += 1;
@@ -1603,9 +1835,7 @@
     if (verbTray) {
       verbTray.querySelectorAll('.coach-chip').forEach(chip => {
         const stem = chip.dataset.stem || chip.dataset.chip;
-        // Accepts base, -s, -es, -ed, -ing inflections
-        const root = stem.replace(/e$/i, '');
-        const rx = new RegExp(`\\b${root}(e|es|s|ed|ing|d)?\\b`, 'i');
+        const rx = buildVerbRegex(stem);
         chip.classList.toggle('used', rx.test(lower));
       });
     }
@@ -1613,8 +1843,8 @@
     const connTray = document.getElementById('conn-tray-' + senseId);
     if (connTray) {
       connTray.querySelectorAll('.coach-chip').forEach(chip => {
-        const target = chip.dataset.word;
-        const rx = new RegExp(`\\b${target}\\b`, 'i');
+        const target = chip.dataset.word || '';
+        const rx = new RegExp(`\\b${escapeRegex(target)}\\b`, 'i');
         chip.classList.toggle('used', rx.test(lower));
       });
     }
@@ -1635,9 +1865,7 @@
     const words = text.split(/\s+/).filter(Boolean);
 
     if (words.length < 25) {
-      fb.style.display = 'block';
-      fb.style.background = 'var(--incorrect-tint)';
-      fb.style.color = '#7F1D1D';
+      fb.className = 'writing-fb-box visible warn';
       fb.innerHTML = `⚠️ Current length: <strong>${words.length} words</strong>. Expand to at least 25–30 words in complete sentences to model the full neural pathway.`;
       return;
     }
@@ -1645,18 +1873,18 @@
     // Check bank terms & sequence causal order
     let bankHits = 0;
     sense.writing.bank.forEach(w => {
-      if (new RegExp(`\\b${w.toLowerCase()}s?\\b`, 'i').test(lower)) bankHits += 1;
+      if (new RegExp(`\\b${escapeRegex(w.toLowerCase())}s?\\b`, 'i').test(lower)) bankHits += 1;
     });
 
-    // Check biological sequence ordering (organ/receptor appears before cortex)
+    // Check biological sequence ordering using lastIndexOf so intro topic mentions do not trigger false positives
     let orderError = false;
     if (sense.writing.sequenceOrder && sense.writing.sequenceOrder.length >= 3) {
       const seqPositions = sense.writing.sequenceOrder
-        .map(kw => ({ kw, pos: lower.indexOf(kw) }))
+        .map(kw => ({ kw, pos: lower.lastIndexOf(kw) }))
         .filter(item => item.pos !== -1);
       for (let i = 1; i < seqPositions.length; i++) {
         if (seqPositions[i].pos < seqPositions[i - 1].pos) {
-          orderError = `Check your biological causality: you mentioned <em>"${seqPositions[i].kw}"</em> before <em>"${seqPositions[i - 1].kw}"</em>.`;
+          orderError = `Check your biological causality: you mentioned <em>"${escapeHTML(seqPositions[i].kw)}"</em> before <em>"${escapeHTML(seqPositions[i - 1].kw)}"</em>.`;
           break;
         }
       }
@@ -1677,22 +1905,19 @@
     const hasSubordination = /\b(because|which|where|when|while|whereas|once|after|before)\b/i.test(text);
     const cefrEstimate = (bankHits >= 4 && hasSubordination && words.length >= 40) ? 'CEFR B1.2' : (bankHits >= 3 ? 'CEFR B1.1' : 'CEFR A2.2');
 
-    fb.style.display = 'block';
     if (bankHits >= 3 && !orderError) {
-      fb.style.background = 'var(--correct-tint)';
-      fb.style.color = '#14532D';
+      fb.className = 'writing-fb-box visible ok';
       let msg = `🌟 <strong>Proficient CLIL Explanation (${cefrEstimate})!</strong> Used ${bankHits} anatomical structures with valid neural sequence.`;
-      if (grammarTips.length) msg += `<br><span style="color:#9A3412;">💡 ${grammarTips.join(' ')}</span>`;
+      if (grammarTips.length) msg += `<br>💡 ${escapeHTML(grammarTips.join(' '))}`;
       msg += '<br>🔓 Model answer unlocked below!';
       fb.innerHTML = msg;
       if (details) details.open = true;
       awardXP(40, 'write_' + senseId, fb, true);
     } else {
-      fb.style.background = '#FEF3C7';
-      fb.style.color = '#78350F';
+      fb.className = 'writing-fb-box visible warn';
       let msg = `🔄 <strong>Needs Revision (${cefrEstimate}):</strong> Found ${bankHits} anatomical terms. `;
       if (orderError) msg += `<br>⚠️ ${orderError}`;
-      if (grammarTips.length) msg += `<br>💡 ${grammarTips.join(' ')}`;
+      if (grammarTips.length) msg += `<br>💡 ${escapeHTML(grammarTips.join(' '))}`;
       fb.innerHTML = msg;
     }
   }
@@ -1708,17 +1933,17 @@
     const solved = (appState.gamification.solvedCases || []).includes(cs.id);
 
     return `
-      <div class="clinical-case-card" id="case-card-${uid}">
+      <div class="clinical-case-card" id="case-card-${uid}" data-case-id="${escapeHTML(cs.id)}">
         <span class="clinical-badge">🩺 Clinical Neurology Case · CEFR ${escapeHTML(cs.cefr)} ${solved ? '· ✅ Solved' : ''}</span>
-        <p style="font-weight:700; font-size:0.96rem; margin-bottom:10px;">${escapeHTML(cs.patient)}</p>
+        <p class="quiz-q">${escapeHTML(cs.patient)}</p>
         <div class="quiz-options">
           ${shuffled.map(opt => `
-            <button class="inline-opt" data-action="solve-clinical" data-uid="${uid}" data-case="${cs.id}" data-opt="${escapeHTML(opt)}" style="text-align:left;">
+            <button class="inline-opt" data-action="solve-clinical" data-uid="${uid}" data-case="${cs.id}" data-opt="${escapeHTML(opt)}">
               ${escapeHTML(opt)}
             </button>
           `).join('')}
         </div>
-        <div id="clin-fb-${uid}" style="display:none; margin-top:10px; font-size:0.88rem; font-weight:600; padding:10px; border-radius:8px;"></div>
+        <div class="fb-msg" id="clin-fb-${uid}"></div>
       </div>
     `;
   }
@@ -1729,15 +1954,16 @@
     const pBtn = document.getElementById('btn-compare-practice');
     if (!box) return;
 
-    if (sBtn) sBtn.style.background = mode === 'study' ? 'var(--sight)' : 'var(--muted)';
-    if (pBtn) pBtn.style.background = mode === 'practice' ? 'var(--sight)' : 'var(--muted)';
+    if (sBtn) sBtn.classList.toggle('active', mode === 'study');
+    if (pBtn) pBtn.classList.toggle('active', mode === 'practice');
+    purgePrivateAnswersByPrefix('cmp_');
 
     const senses = ['sight', 'hearing', 'smell', 'taste', 'touch'];
     const headers = ['Biological Dimension', '👁️ Sight', '👂 Hearing', '👃 Smell', '👅 Taste', '✋ Touch'];
 
     let html = `<table class="compare-table"><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>`;
     COMPARE.rows.forEach(row => {
-      html += `<tr><th scope="row">${escapeHTML(row.label)}</th>`;
+      html += `<tr><th scope="row">${escapeHTML(row.label)}${row.es ? ` <span class="es-sub">(${escapeHTML(row.es)})</span>` : ''}</th>`;
       senses.forEach(sid => {
         const correctVal = row.values[sid];
         if (mode === 'study') {
@@ -1794,20 +2020,29 @@
 
     if (q < 3) {
       rec.repetitions = 0;
-      rec.interval = 0; // Immediate re-queue
-      // Re-insert card 2 spots later in active deck
+      rec.interval = 0; // Immediate re-queue without unbounded cloning
       if (flashDeck.length > 2) {
-        const clone = Object.assign({}, item);
-        flashDeck.splice(Math.min(flashDeck.length, flashIdx + 3), 0, clone);
+        const [requeued] = flashDeck.splice(flashIdx, 1);
+        flashDeck.splice(Math.min(flashDeck.length, flashIdx + 2), 0, requeued);
+        if (flashIdx >= flashDeck.length) flashIdx = 0;
+      } else {
+        flashIdx = (flashIdx + 1) % flashDeck.length;
       }
+      rec.easeFactor = Math.max(1.3, rec.easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02)));
+      rec.nextReview = Date.now();
       awardXP(0, null, document.getElementById('flashcard-stage'), false);
-    } else {
-      if (rec.repetitions === 0) rec.interval = 1;
-      else if (rec.repetitions === 1) rec.interval = 6;
-      else rec.interval = Math.round(rec.interval * rec.easeFactor);
-      rec.repetitions += 1;
-      awardXP(quality === 4 ? 20 : 12, 'sm2_' + item.id, document.getElementById('flashcard-stage'), true);
+      appState.sm2[item.id] = rec;
+      saveState();
+      flashFlipped = false;
+      updateFlashcardUI();
+      return;
     }
+
+    if (rec.repetitions === 0) rec.interval = 1;
+    else if (rec.repetitions === 1) rec.interval = 6;
+    else rec.interval = Math.round(rec.interval * rec.easeFactor);
+    rec.repetitions += 1;
+    awardXP(quality === 4 ? 20 : 12, 'sm2_' + item.id, document.getElementById('flashcard-stage'), true);
 
     rec.easeFactor = Math.max(1.3, rec.easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02)));
     rec.nextReview = Date.now() + rec.interval * 24 * 60 * 60 * 1000;
@@ -1845,10 +2080,10 @@
       <div class="srs-status-bar">
         <span id="srs-due-count"></span>
         <span id="srs-card-counter"></span>
-        <span id="srs-ef-pill" style="font-size:0.8rem; color:var(--sight);"></span>
+        <span id="srs-ef-pill" class="cortex-tag"></span>
       </div>
 
-      <div style="display:flex; justify-content:center; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
+      <div class="compare-mode-bar">
         <button class="mode-btn active" id="flash-mode-en" data-action="set-flash-mode" data-mode="en-def">Term → Definition</button>
         <button class="mode-btn" id="flash-mode-def" data-action="set-flash-mode" data-mode="def-en">Definition → Recall Term</button>
         <button class="mode-btn" data-action="smart-queue-flash">⚡ Smart Interleaved Queue</button>
@@ -1863,26 +2098,26 @@
         <button class="sm2-btn sm2-easy" data-action="grade-sm2" data-q="4">4. Easy (EF+)</button>
       </div>
 
-      <div style="display:flex; justify-content:center; gap:10px; margin-bottom:28px;">
-        <button class="action-btn" data-action="prev-flashcard" style="padding:7px 14px; background:var(--muted);">← Prev</button>
-        <button class="action-btn" data-action="flip-flashcard" style="padding:7px 16px;">🔄 Flip Card</button>
-        <button class="action-btn" data-action="next-flashcard" style="padding:7px 14px; background:var(--muted);">Next →</button>
+      <div class="compare-mode-bar">
+        <button class="action-btn btn-compact btn-muted" data-action="prev-flashcard">← Prev</button>
+        <button class="action-btn btn-compact" data-action="flip-flashcard">🔄 Flip Card</button>
+        <button class="action-btn btn-compact btn-muted" data-action="next-flashcard">Next →</button>
       </div>
 
-      <h3 style="margin-bottom:10px;">🧬 Scientific Morphology: Greek &amp; Latin Roots</h3>
+      <h3>🧬 Scientific Morphology: Greek &amp; Latin Roots</h3>
       <div class="morpho-grid">
         ${UNIT.morphologyRoots.map(r => `
           <div class="morpho-card">
-            <div class="morpho-root">${escapeHTML(r.root)} <span style="font-size:0.85rem; color:var(--ink);">(${escapeHTML(r.meaning)})</span></div>
-            <div class="es-sub" style="margin:3px 0;">${escapeHTML(r.es)}</div>
-            <p style="font-size:0.82rem; color:var(--ink-light); margin-top:4px;">${escapeHTML(r.def)}</p>
-            <div style="font-size:0.8rem; font-weight:700; margin-top:6px;">Ex: ${escapeHTML(r.examples)}</div>
+            <div class="morpho-root">${escapeHTML(r.root)} <span>(${escapeHTML(r.meaning)})</span></div>
+            <div class="es-sub">${escapeHTML(r.es)}</div>
+            <p class="vocab-def">${escapeHTML(r.def)}</p>
+            <div class="family-hint"><strong>Ex:</strong> ${escapeHTML(r.examples)}</div>
           </div>
         `).join('')}
       </div>
 
-      <h3 style="margin:26px 0 10px;">🔍 Search Complete CLIL Glossary</h3>
-      <input type="text" id="glossary-search" placeholder="Search anatomical terms, phonemes, or definitions..." style="width:100%; padding:10px 14px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:14px; font-size:0.95rem;">
+      <h3>🔍 Search Complete CLIL Glossary</h3>
+      <input type="text" id="glossary-search" class="exam-name-input" placeholder="Search anatomical terms, phonemes, or definitions...">
       <div class="vocab-grid" id="glossary-list-grid"></div>
     `;
 
@@ -1911,28 +2146,28 @@
     if (!flashFlipped) {
       if (flashMode === 'en-def') {
         stage.innerHTML = `
-          <span style="font-size:0.78rem; font-weight:700; text-transform:uppercase; color:var(--sight); margin-bottom:6px;">${escapeHTML(item.senseName)}</span>
-          <div style="font-size:1.7rem; font-weight:800; color:var(--ink);">${escapeHTML(item.en)}</div>
-          <div style="margin-top:6px;">
+          <span class="quiz-level">${escapeHTML(item.senseName)}</span>
+          <div class="sense-title">${escapeHTML(item.en)}</div>
+          <div class="vocab-phonology">
             <span class="vocab-ipa">${escapeHTML(item.ipa || '')}</span>
             ${item.syllables ? `<span class="syllable-pill">${escapeHTML(item.syllables)}</span>` : ''}
           </div>
-          <button class="audio-btn" data-action="speak-word-stop" data-word="${escapeHTML(item.en)}" style="margin-top:12px;">🔊 Hear Pronunciation</button>
-          <p style="font-size:0.8rem; color:var(--muted); margin-top:12px;">(Click card to reveal meaning &amp; rate SM-2 recall)</p>
+          <button class="audio-btn" data-action="speak-word-stop" data-word="${escapeHTML(item.en)}">🔊 Hear Pronunciation</button>
+          <p class="family-hint">(Click card to reveal meaning &amp; rate SM-2 recall)</p>
         `;
       } else {
         stage.innerHTML = `
-          <span style="font-size:0.78rem; font-weight:700; text-transform:uppercase; color:var(--sight); margin-bottom:6px;">Recall Scientific Term (${escapeHTML(item.senseName)})</span>
-          <div style="font-size:1.08rem; font-weight:600; color:var(--ink); max-width:44ch;">${escapeHTML(item.def)}</div>
-          <p style="font-size:0.8rem; color:var(--muted); margin-top:14px;">(Click card to verify term)</p>
+          <span class="quiz-level">Recall Scientific Term (${escapeHTML(item.senseName)})</span>
+          <div class="quiz-q">${escapeHTML(item.def)}</div>
+          <p class="family-hint">(Click card to verify term)</p>
         `;
       }
     } else {
       stage.innerHTML = `
-        <div style="font-size:1.3rem; font-weight:800; color:var(--sight);">${escapeHTML(item.en)} <span class="es-sub" style="font-size:0.85em;">(${escapeHTML(item.es)})</span></div>
-        <p style="margin-top:8px; font-size:0.96rem;">${escapeHTML(item.def)}</p>
-        ${item.mnemonic ? `<div class="mnemonic-badge" style="text-align:left;">🧠 ${escapeHTML(item.mnemonic)}</div>` : ''}
-        <p style="margin-top:8px; font-style:italic; font-size:0.86rem; color:var(--ink-light);">"${escapeHTML(item.ex)}"</p>
+        <div class="sense-title">${escapeHTML(item.en)} <span class="es-sub">(${escapeHTML(item.es)})</span></div>
+        <p class="vocab-def">${escapeHTML(item.def)}</p>
+        ${item.mnemonic ? `<div class="mnemonic-badge es-sub">🧠 ${escapeHTML(item.mnemonic)}</div>` : ''}
+        <p class="vocab-ex">"${escapeHTML(item.ex)}"</p>
       `;
     }
   }
@@ -1950,13 +2185,13 @@
           <span class="vocab-word">${escapeHTML(w.en)}</span>
           <button class="audio-btn" data-action="speak-word" data-word="${escapeHTML(w.en)}">🔊</button>
         </div>
-        <div>
+        <div class="vocab-phonology">
           <span class="vocab-ipa">${escapeHTML(w.ipa || '')}</span>
           ${w.syllables ? `<span class="syllable-pill">${escapeHTML(w.syllables)}</span>` : ''}
           <span class="vocab-es">${escapeHTML(w.es)}</span>
         </div>
         <p class="vocab-def">${escapeHTML(w.def)}</p>
-        ${w.mnemonic ? `<div class="mnemonic-badge">🧠 ${escapeHTML(w.mnemonic)}</div>` : ''}
+        ${w.mnemonic ? `<div class="mnemonic-badge es-sub">🧠 ${escapeHTML(w.mnemonic)}</div>` : ''}
       </div>
     `).join('');
   }
@@ -1967,15 +2202,23 @@
      13. Psychometric Engine: Standard & Adaptive Linguaskill CAT
   ------------------------------------------------------------------ */
   let catState = null;
+  let standardExamSubmitted = false;
+  let standardExamStartedAt = Date.now();
 
   function rebuildStandardExam() {
     catState = null;
+    standardExamSubmitted = false;
+    standardExamStartedAt = Date.now();
+    purgePrivateAnswersByPrefix('q_final_');
     const box = document.getElementById('final-exam-questions');
     const res = document.getElementById('final-exam-result');
     const subBar = document.getElementById('btn-submit-final');
     if (!box) return;
     if (res) res.innerHTML = '';
-    if (subBar) subBar.style.display = 'inline-flex';
+    if (subBar) {
+      subBar.style.display = 'inline-flex';
+      subBar.disabled = false;
+    }
 
     const pool = [...FINAL_EXTRA];
     SENSES.forEach(s => {
@@ -1987,18 +2230,24 @@
   }
 
   function startAdaptiveCAT() {
+    standardExamSubmitted = false;
+    purgePrivateAnswersByPrefix('cat_');
     const box = document.getElementById('final-exam-questions');
     const res = document.getElementById('final-exam-result');
     const subBar = document.getElementById('btn-submit-final');
     if (!box) return;
     if (res) res.innerHTML = '';
-    if (subBar) subBar.style.display = 'none';
+    if (subBar) {
+      subBar.style.display = 'none';
+      subBar.disabled = false;
+    }
 
     const bank = [...FINAL_CAT_BANK, ...FINAL_EXTRA.map((q, i) => Object.assign({ id: 'fe_' + i }, q))];
     catState = {
       theta: 2.0, // Starts at A2.2
       step: 0,
       maxSteps: 12,
+      startedAt: Date.now(),
       usedIds: new Set(),
       history: [], // { cefr, difficulty, skill, correct }
       bank
@@ -2029,15 +2278,15 @@
     const shuffled = shuffleArray(chosen.options.slice());
 
     box.innerHTML = `
-      <div class="clinical-case-card" style="border-color:#6D28D9;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-          <span class="clinical-badge" style="background:#6D28D9;">🎯 Adaptive CAT · Item ${catState.step}/${catState.maxSteps}</span>
-          <span style="font-size:0.82rem; font-weight:700; color:#4C1D95;">Estimated Probe: CEFR ${escapeHTML(chosen.cefr)} · Skill: ${escapeHTML(chosen.skill.replace(/_/g, ' ').toUpperCase())}</span>
+      <div class="clinical-case-card">
+        <div class="compare-mode-bar">
+          <span class="clinical-badge">🎯 Adaptive CAT · Item ${catState.step}/${catState.maxSteps}</span>
+          <span class="cortex-tag">Estimated Probe: CEFR ${escapeHTML(chosen.cefr)} · Skill: ${escapeHTML(chosen.skill.replace(/_/g, ' ').toUpperCase())}</span>
         </div>
-        <div class="quiz-q" style="font-size:1.08rem; margin-bottom:12px;">${escapeHTML(chosen.q)}</div>
+        <div class="quiz-q">${escapeHTML(chosen.q)}</div>
         <div class="quiz-options">
           ${shuffled.map(opt => `
-            <button class="inline-opt" data-action="answer-cat-item" data-uid="${uid}" data-opt="${escapeHTML(opt)}" style="text-align:left; font-size:0.95rem;">
+            <button class="inline-opt" data-action="answer-cat-item" data-uid="${uid}" data-opt="${escapeHTML(opt)}">
               ${escapeHTML(opt)}
             </button>
           `).join('')}
@@ -2051,56 +2300,57 @@
     if (!res) return;
 
     const rawName = document.getElementById('student-name')?.value.trim() || '8th Grade Science Scholar';
+    const elapsedSec = Math.max(1, Math.round(metrics.elapsedSec || 1));
     const stamp = new Date().toLocaleString();
-    const hashPayload = `${rawName}|${currentProfileId}|${metrics.band}|${metrics.cambridgeScore}|${stamp}`;
+    const hashPayload = `${rawName}|${currentProfileId}|${metrics.band}|${metrics.cambridgeScore}|${elapsedSec}|${stamp}`;
     const sealHash = await computeVerificationHash(hashPayload);
 
     // Build safely without interpolating user name directly into HTML string
     res.innerHTML = `
       <div class="cat-report-card print-student-report">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="writing-meta-bar">
           <div>
-            <div style="font-size:0.78rem; font-weight:800; color:var(--sight); text-transform:uppercase; letter-spacing:0.08em;">Official CLIL Linguaskill &amp; NGSS Diagnostic</div>
-            <h3 id="cert-student-title" style="font-size:1.4rem; margin:4px 0;"></h3>
-            <div style="font-size:0.86rem; color:var(--muted);">Station Profile: <strong id="cert-profile-id"></strong> · Mode: ${escapeHTML(metrics.modeLabel)}</div>
+            <div class="quiz-level">Official CLIL Linguaskill &amp; NGSS Diagnostic</div>
+            <h3 id="cert-student-title"></h3>
+            <div class="family-hint">Station Profile: <strong id="cert-profile-id"></strong> · Mode: ${escapeHTML(metrics.modeLabel)} · Time: ${elapsedSec}s</div>
           </div>
           <div class="cefr-band-badge">
             <span>🏅 ${escapeHTML(metrics.band)}</span>
-            <span style="font-size:0.82rem; opacity:0.9;">(Score: ${metrics.cambridgeScore}/170)</span>
+            <span>(Score: ${metrics.cambridgeScore}/170)</span>
           </div>
         </div>
 
         <div class="cefr-profile-grid">
           <div class="skill-bar-box">
-            <div style="display:flex; justify-content:space-between; font-size:0.84rem; font-weight:700;">
+            <div class="writing-meta-bar">
               <span>📖 Scientific Reading</span><span>${metrics.readingPct}%</span>
             </div>
             <div class="skill-bar-track"><div class="skill-bar-fill" style="width:${metrics.readingPct}%;"></div></div>
           </div>
           <div class="skill-bar-box">
-            <div style="display:flex; justify-content:space-between; font-size:0.84rem; font-weight:700;">
+            <div class="writing-meta-bar">
               <span>🔤 Use of Academic English</span><span>${metrics.usePct}%</span>
             </div>
             <div class="skill-bar-track"><div class="skill-bar-fill" style="width:${metrics.usePct}%; background:#0EA5E9;"></div></div>
           </div>
           <div class="skill-bar-box">
-            <div style="display:flex; justify-content:space-between; font-size:0.84rem; font-weight:700;">
+            <div class="writing-meta-bar">
               <span>🧠 NGSS Neurobiology</span><span>${metrics.bioPct}%</span>
             </div>
             <div class="skill-bar-track"><div class="skill-bar-fill" style="width:${metrics.bioPct}%; background:#16A34A;"></div></div>
           </div>
         </div>
 
-        <p style="font-size:0.9rem; background:var(--paper-tint); padding:12px 14px; border-radius:10px;">
+        <p class="a2-summary-box">
           <strong>Can-Do Diagnostic Statement:</strong> ${escapeHTML(metrics.canDo)}
         </p>
 
-        <div style="margin-top:14px;">
-          <button class="action-btn" data-action="print-cert" style="padding:8px 16px; font-size:0.88rem;">🖨️ Print / Save Official PDF Certificate</button>
+        <div class="exam-actions-bar">
+          <button class="action-btn btn-compact" data-action="print-cert">🖨️ Print / Save Official PDF Certificate</button>
         </div>
 
         <div class="integrity-seal">
-          <span>Issued: ${escapeHTML(stamp)}</span>
+          <span>Issued: ${escapeHTML(stamp)} (${elapsedSec}s)</span>
           <span>SHA-256 Integrity Seal: <strong>${sealHash}</strong></span>
         </div>
       </div>
@@ -2115,10 +2365,32 @@
 
   function computeBandFromTheta(theta, rawPct) {
     const combined = theta !== null ? theta : (1 + (rawPct / 100) * 3);
-    if (combined >= 3.4) return { band: 'CEFR B1.2 (Upper Intermediate CLIL)', score: Math.round(150 + Math.min(18, (combined - 3.4) * 20)), canDo: 'Can analyze complex neurophysiological mechanisms, interpret clinical lesions, and apply passive and conditional scientific syntax accurately.' };
-    if (combined >= 2.6) return { band: 'CEFR B1.1 (Threshold CLIL)', score: Math.round(140 + (combined - 2.6) * 12), canDo: 'Can explain multi-step sensory pathways with academic collocations, sequence connectors, and cause-effect coherence.' };
-    if (combined >= 1.8) return { band: 'CEFR A2.2 (Elementary+ CLIL)', score: Math.round(125 + (combined - 1.8) * 18), canDo: 'Can identify core sense organs, basic receptor classifications, and trace standard 5-step neural signals with guided frames.' };
-    return { band: 'CEFR A2.1 (Foundational CLIL)', score: Math.round(108 + combined * 9), canDo: 'Recognizes key anatomical nouns; recommended to review Stage 1 vocabulary flashcards and Stage 2 A2 summaries.' };
+    if (combined >= 3.4) {
+      return {
+        band: 'CEFR B1.2 (Upper Intermediate CLIL)',
+        score: Math.round(150 + ((Math.min(4.0, combined) - 3.4) / 0.6) * 20),
+        canDo: 'Can analyze complex neurophysiological mechanisms, interpret clinical lesions, and apply passive and conditional scientific syntax accurately.'
+      };
+    }
+    if (combined >= 2.6) {
+      return {
+        band: 'CEFR B1.1 (Threshold CLIL)',
+        score: Math.round(138 + ((combined - 2.6) / 0.8) * 11),
+        canDo: 'Can explain multi-step sensory pathways with academic collocations, sequence connectors, and cause-effect coherence.'
+      };
+    }
+    if (combined >= 1.8) {
+      return {
+        band: 'CEFR A2.2 (Elementary+ CLIL)',
+        score: Math.round(124 + ((combined - 1.8) / 0.8) * 13),
+        canDo: 'Can identify core sense organs, basic receptor classifications, and trace standard 5-step neural signals with guided frames.'
+      };
+    }
+    return {
+      band: 'CEFR A2.1 (Foundational CLIL)',
+      score: Math.round(110 + ((Math.max(1.0, combined) - 1.0) / 0.8) * 13),
+      canDo: 'Recognizes key anatomical nouns; recommended to review Stage 1 vocabulary flashcards and Stage 2 A2 summaries.'
+    };
   }
 
   function finalizeCATReport() {
@@ -2131,7 +2403,12 @@
       return Math.round((sub.filter(h => h.correct).length / sub.length) * 100);
     };
 
-    const meta = computeBandFromTheta(catState.theta, 0);
+    const totalCorrect = catState.history.filter(h => h.correct).length;
+    const globalPct = Math.round((totalCorrect / Math.max(1, catState.history.length)) * 100);
+    const effectiveTheta = globalPct < 75 ? Math.min(catState.theta, 3.39) : catState.theta;
+    const meta = computeBandFromTheta(effectiveTheta, 0);
+    const elapsedSec = Math.round((Date.now() - (catState.startedAt || Date.now())) / 1000);
+
     renderPsychometricCertificate({
       modeLabel: 'Adaptive Linguaskill CAT',
       band: meta.band,
@@ -2139,15 +2416,28 @@
       canDo: meta.canDo,
       readingPct: calcSkill('reading_comp'),
       usePct: calcSkill('use_of_english'),
-      bioPct: calcSkill('ngss_bio')
+      bioPct: calcSkill('ngss_bio'),
+      elapsedSec
     });
     awardXP(80, 'cat_exam_done', document.getElementById('final-exam-result'), true);
   }
 
   function checkStandardFinalExam() {
+    if (standardExamSubmitted) return;
     const box = document.getElementById('final-exam-questions');
     if (!box) return;
     const items = box.querySelectorAll('.quiz-item');
+    const firstMissing = Array.from(items).find(item => !item.querySelector('input[type="radio"]:checked'));
+    if (firstMissing) {
+      firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      alert('Please answer all 20 assessment questions before submitting your diagnostic exam.');
+      return;
+    }
+
+    standardExamSubmitted = true;
+    const submitBtn = document.getElementById('btn-submit-final');
+    if (submitBtn) submitBtn.disabled = true;
+
     let weightedSum = 0, weightedMax = 0;
     const bySkill = { reading_comp: [0, 0], use_of_english: [0, 0], ngss_bio: [0, 0] };
 
@@ -2163,6 +2453,7 @@
       const checked = item.querySelector('input[type="radio"]:checked');
       const exp = document.getElementById('q-exp-' + uid);
       item.querySelectorAll('.quiz-opt-label').forEach(l => l.classList.remove('correct', 'incorrect'));
+      item.querySelectorAll('input[type="radio"]').forEach(r => { r.disabled = true; });
 
       if (checked) {
         const isCorrect = checked.value === meta.correctTxt;
@@ -2173,13 +2464,14 @@
         }
       }
       if (exp) {
-        exp.style.display = 'block';
+        exp.classList.add('visible');
         exp.textContent = `Answer: ${meta.correctTxt} — ${meta.explain}`;
       }
     });
 
     const pct = Math.round((weightedSum / Math.max(1, weightedMax)) * 100);
     const meta = computeBandFromTheta(null, pct);
+    const elapsedSec = Math.round((Date.now() - (standardExamStartedAt || Date.now())) / 1000);
     renderPsychometricCertificate({
       modeLabel: 'Standard Summative (20 Items)',
       band: meta.band,
@@ -2187,7 +2479,8 @@
       canDo: meta.canDo,
       readingPct: bySkill.reading_comp[1] ? Math.round((bySkill.reading_comp[0] / bySkill.reading_comp[1]) * 100) : pct,
       usePct: bySkill.use_of_english[1] ? Math.round((bySkill.use_of_english[0] / bySkill.use_of_english[1]) * 100) : pct,
-      bioPct: bySkill.ngss_bio[1] ? Math.round((bySkill.ngss_bio[0] / bySkill.ngss_bio[1]) * 100) : pct
+      bioPct: bySkill.ngss_bio[1] ? Math.round((bySkill.ngss_bio[0] / bySkill.ngss_bio[1]) * 100) : pct,
+      elapsedSec
     });
     awardXP(60, 'std_exam_done', document.getElementById('final-exam-result'), true);
   }
@@ -2307,8 +2600,7 @@
         box.querySelectorAll('.inline-opt').forEach(b => b.classList.remove('correct', 'incorrect'));
         const isOk = el.dataset.opt === meta.correctTxt;
         el.classList.add(isOk ? 'correct' : 'incorrect');
-        fb.style.display = 'block';
-        fb.style.color = isOk ? 'var(--correct)' : 'var(--incorrect)';
+        fb.className = 'fb-msg visible ' + (isOk ? 'ok' : 'err');
         fb.textContent = (isOk ? '✅ Correct! ' : '❌ Not quite. ') + meta.explain;
         awardXP(15, isOk ? 'chk_' + uid : null, el, isOk);
         break;
@@ -2323,14 +2615,15 @@
         card.querySelectorAll('.inline-opt').forEach(b => b.classList.remove('correct', 'incorrect'));
         const isOk = el.dataset.opt === meta.correctTxt;
         el.classList.add(isOk ? 'correct' : 'incorrect');
-        fb.style.display = 'block';
-        fb.style.background = isOk ? 'var(--correct-tint)' : 'var(--incorrect-tint)';
-        fb.style.color = isOk ? '#14532D' : '#7F1D1D';
+        fb.className = 'writing-fb-box visible ' + (isOk ? 'ok' : 'warn');
         fb.textContent = (isOk ? '🩺 Diagnosis Confirmed! ' : '⚠️ Re-evaluate Neural Site: ') + meta.explain;
         if (isOk) {
           if (!appState.gamification.solvedCases.includes(caseId)) {
             appState.gamification.solvedCases.push(caseId);
           }
+          document.querySelectorAll(`.clinical-case-card[data-case-id="${caseId}"] .clinical-badge`).forEach(badge => {
+            if (!badge.textContent.includes('Solved')) badge.textContent += ' · ✅ Solved';
+          });
           awardXP(40, 'case_' + caseId, el, true);
         } else {
           awardXP(0, null, el, false);
@@ -2358,18 +2651,19 @@
         const sense = SENSES.find(s => s.id === senseId);
         const fb = document.getElementById('path-fb-' + senseId);
         const sel = pathSelections[senseId] || [];
-        if (sel.length < sense.pathLabels.length) {
-          fb.style.color = '#B45309';
-          fb.textContent = '⚠️ Place all 5 steps into the slots before verifying.';
+        const totalSteps = (sense && Array.isArray(sense.path)) ? sense.path.length : 5;
+        if (sel.length < totalSteps) {
+          fb.className = 'fb-msg visible warn';
+          fb.textContent = `⚠️ Place all ${totalSteps} steps into the slots before verifying.`;
           return;
         }
         const ok = sel.every((val, i) => val === i);
         if (ok) {
-          fb.style.color = 'var(--correct)';
+          fb.className = 'fb-msg visible ok';
           fb.textContent = '🌟 Exact Physiological Sequence! Stimulus → Organ → Transduction → Nerve → Cortex.';
           awardXP(25, 'path_' + senseId, fb, true);
         } else {
-          fb.style.color = 'var(--incorrect)';
+          fb.className = 'fb-msg visible err';
           fb.textContent = '❌ Out of biological order. Remember: Stimulus always enters first and Brain Cortex perceives last.';
           awardXP(0, null, fb, false);
         }
@@ -2379,7 +2673,10 @@
         const sense = SENSES.find(s => s.id === senseId);
         if (sense) initPathOrder(sense);
         const fb = document.getElementById('path-fb-' + senseId);
-        if (fb) fb.textContent = '';
+        if (fb) {
+          fb.className = 'fb-msg';
+          fb.textContent = '';
+        }
         break;
       }
       case 'match-left':
@@ -2404,7 +2701,7 @@
             if (ms.matchedCount === ms.total) {
               const fb = document.getElementById('match-fb-' + senseId);
               if (fb) {
-                fb.style.color = 'var(--correct)';
+                fb.className = 'fb-msg visible ok';
                 fb.textContent = '🌟 All Anatomical Pairs Matched!';
               }
               awardXP(25, 'match_all_' + senseId, fb, true);
@@ -2435,6 +2732,14 @@
         }
         break;
       }
+      case 'toggle-dictation': {
+        const bank = document.getElementById('cloze-bank-' + senseId);
+        if (bank) {
+          const hidden = bank.classList.toggle('dictation-hidden');
+          el.textContent = hidden ? '👁️ Show Word Bank' : '🎧 Pure Dictation Mode';
+        }
+        break;
+      }
       case 'fill-cloze-chip': {
         const box = document.getElementById('cloze-box-' + senseId);
         if (!box) return;
@@ -2444,7 +2749,7 @@
         }
         if (targetInp) {
           targetInp.value = el.dataset.word;
-          el.classList.add('used');
+          syncClozeChips(senseId);
           activeClozeGap[senseId] = null;
         }
         break;
@@ -2470,7 +2775,7 @@
             }
           }
         });
-        fb.style.color = okCount === inputs.length ? 'var(--correct)' : 'var(--incorrect)';
+        fb.className = 'fb-msg visible ' + (okCount === inputs.length ? 'ok' : 'err');
         fb.textContent = `Score: ${okCount}/${inputs.length}.${morphHint}`;
         if (okCount === inputs.length) awardXP(30, 'cloze_' + senseId, fb, true);
         break;
@@ -2483,7 +2788,7 @@
       case 'reveal-explain': {
         const box = document.getElementById('poe-explain-box-' + senseId);
         if (box) {
-          box.style.display = 'block';
+          box.classList.add('visible');
           awardXP(20, 'poe_' + senseId, box, true);
         }
         break;
@@ -2491,9 +2796,18 @@
       case 'insert-chip': {
         const ta = document.getElementById('write-' + senseId);
         if (ta) {
-          const v = el.dataset.chip;
-          ta.value = (ta.value ? ta.value.trimEnd() + ' ' : '') + v + ' ';
+          const v = el.dataset.chip || '';
+          const start = typeof ta.selectionStart === 'number' ? ta.selectionStart : ta.value.length;
+          const end = typeof ta.selectionEnd === 'number' ? ta.selectionEnd : start;
+          const before = ta.value.slice(0, start);
+          const after = ta.value.slice(end);
+          const padBefore = before && !/\s$/.test(before) ? ' ' : '';
+          const padAfter = !after || !/^\s/.test(after) ? ' ' : '';
+          const inserted = padBefore + v + padAfter;
+          ta.value = before + inserted + after;
+          const caret = start + inserted.length;
           ta.focus();
+          if (typeof ta.setSelectionRange === 'function') ta.setSelectionRange(caret, caret);
           analyzeWritingLive(senseId);
         }
         break;
@@ -2533,14 +2847,14 @@
             if (ok) correctCount += 1;
           }
           if (exp) {
-            exp.style.display = 'block';
+            exp.classList.add('visible');
             exp.textContent = `Answer: ${meta.correctTxt} — ${meta.explain}`;
           }
         });
         appState.scores[senseId] = correctCount;
         saveState();
         const pct = Math.round((correctCount / sense.quiz.length) * 100);
-        res.style.color = pct >= 70 ? 'var(--correct)' : '#B45309';
+        res.className = 'fb-msg visible ' + (pct >= 70 ? 'ok' : 'warn');
         res.textContent = `Score: ${correctCount}/${sense.quiz.length} (${pct}%)`;
         awardXP(correctCount * 10, 'quiz_' + senseId, res, pct >= 50);
         break;
@@ -2558,7 +2872,7 @@
         });
         const fb = document.getElementById('compare-fb');
         if (fb) {
-          fb.style.color = ok === total ? 'var(--correct)' : '#B45309';
+          fb.className = 'fb-msg visible ' + (ok === total ? 'ok' : 'warn');
           fb.textContent = `Matrix Accuracy: ${ok}/${total}`;
           if (ok >= total * 0.7) awardXP(50, 'compare_matrix', fb, true);
         }
@@ -2603,6 +2917,7 @@
       case 'answer-cat-item': {
         const meta = PRIVATE_ANSWERS.get(el.dataset.uid);
         if (!meta || !catState) return;
+        PRIVATE_ANSWERS.delete(el.dataset.uid);
         const ok = el.dataset.opt === meta.options[0];
         catState.history.push({ cefr: meta.cefr, difficulty: meta.difficulty, skill: meta.skill, correct: ok });
         catState.theta = ok ? Math.min(4.0, catState.theta + 0.55) : Math.max(1.0, catState.theta - 0.5);
@@ -2623,9 +2938,12 @@
   document.addEventListener('input', (e) => {
     const el = e.target;
     if (el.dataset.action === 'writing-input') {
+      saveDraftOnly(el.dataset.sense, el.value);
       debouncedAnalyzeWriting(el.dataset.sense);
+    } else if (el.classList && el.classList.contains('cloze-input')) {
+      syncClozeChips(el.dataset.sense);
     } else if (el.dataset.action === 'save-poe-obs') {
-      appState.poeObs[el.dataset.sense] = el.value;
+      appState.poeObs[el.dataset.sense] = el.value.slice(0, 2000);
       saveState();
     } else if (el.dataset.action === 'bs-calib') {
       const senseId = el.dataset.sense;
@@ -2650,8 +2968,7 @@
     if (el.dataset.action === 'poe-predict') {
       const fb = document.getElementById('poe-predict-fb-' + el.dataset.sense);
       if (fb) {
-        fb.style.display = 'block';
-        fb.style.color = 'var(--correct)';
+        fb.className = 'fb-msg visible ok';
         fb.textContent = '✅ Hypothesis locked! Proceed to Phase 2 below to test your prediction.';
       }
       awardXP(10, 'hypo_' + el.dataset.sense, el, true);
@@ -2696,6 +3013,8 @@
   }
 
   function reinitializeFullWorkspace() {
+    PRIVATE_ANSWERS.clear();
+    Object.keys(activeClozeGap).forEach(k => delete activeClozeGap[k]);
     renderedPanels.clear();
     document.querySelectorAll('.sense-panel[data-sense]').forEach(p => { p.innerHTML = ''; });
     setScaffoldingMode(appState.scaffolding || 'guided');

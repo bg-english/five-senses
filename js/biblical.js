@@ -250,9 +250,10 @@
     updateStats();
 
     let saveTimer;
-    ta.addEventListener('input', () => {
+    ta.addEventListener('input', (ev) => {
       updateStats();
       clearTimeout(saveTimer);
+      if (ev && ev.detail && ev.detail.skipSave) return;
       saveTimer = setTimeout(() => {
         try {
           localStorage.setItem(key, JSON.stringify({ text: ta.value, ts: Date.now() }));
@@ -273,8 +274,15 @@
       textareas.forEach(ta => {
         ta.value = '';
         try { localStorage.removeItem(storageKeyFor(ta.id)); } catch (e) {}
-        ta.dispatchEvent(new Event('input'));
+        ta.dispatchEvent(new CustomEvent('input', { detail: { skipSave: true } }));
       });
+    });
+  }
+
+  // Register Service Worker cleanly for offline access
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
     });
   }
 })();

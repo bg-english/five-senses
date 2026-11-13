@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; object-src 'none'; base-uri 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <title>The Five Senses — Interactive CLIL Neurophysiology &amp; English Platform (8th Grade)</title>
   <meta name="description" content="Interactive CLIL field guide to human sensory neurobiology for 8th grade: sight, hearing, smell, taste, and touch. Features Pixar/NatGeo SVG cutaways, Levenshtein pronunciation coach, SM-2 flashcards, POE labs, and adaptive Linguaskill CEFR assessment.">
   <meta property="og:title" content="The Five Senses — Interactive CLIL Field Guide">
@@ -19,80 +19,82 @@
 </head>
 <body>
 
-  <!-- Masthead Header -->
+  <!-- Compact Unified Masthead Header -->
   <header class="masthead">
     <div class="container">
-      <!-- Multi-User Classroom Session Bar (FERPA / Shared PC Safe) -->
-      <div class="session-bar" role="region" aria-label="Classroom Student Profile Manager">
-        <div class="session-left">
-          <span class="session-badge">👤 Station Profile: <span id="active-profile-label">Scholar-1</span></span>
-          <label for="profile-switch-input" class="sr-only" style="position:absolute;left:-9999px;">Student Code or Alias</label>
-          <input type="text" id="profile-switch-input" placeholder="Student ID / Alias (e.g. Ana_8A)" maxlength="24" style="padding:4px 8px; border:1px solid #CBD5E1; border-radius:6px; font-size:0.78rem; width:175px;">
-          <button class="session-btn" data-action="switch-profile">Switch / Load</button>
-        </div>
-        <div class="session-actions">
-          <button class="session-btn" data-action="export-progress" title="Download signed JSON portfolio">💾 Export JSON</button>
-          <label class="session-btn" style="cursor:pointer; margin:0;" title="Restore saved JSON portfolio">
-            📂 Import JSON
-            <input type="file" id="import-progress-file" accept=".json" style="display:none;">
-          </label>
-          <button class="session-btn danger" data-action="end-student-turn" title="Clear personal data for the next student in computer lab">🔒 End Turn / New Student</button>
-        </div>
-      </div>
-
-      <div class="masthead-top">
+      <!-- Top Utility Strip: Module Nav, CLIL Scaffolding, HUD, and Station Profile Popover -->
+      <div class="topbar-unified" role="region" aria-label="Workspace utilities and student progress">
         <nav class="sub-nav" aria-label="Module selector">
-          <a href="index.html" class="sub-nav-link active" aria-current="page">🔬 The Five Senses (Science &amp; English)</a>
-          <a href="biblical_senses.html" class="sub-nav-link">📖 Spiritual Senses — Hebrews 5:14</a>
+          <a href="index.html" class="sub-nav-link active" aria-current="page">🔬 Five Senses Lab</a>
+          <a href="biblical_senses.html" class="sub-nav-link">📖 Spiritual Senses</a>
         </nav>
 
-        <!-- Scaffolding Mode Switcher (A2 Guided vs B1 Immersion) -->
-        <div class="scaffolding-switcher" role="radiogroup" aria-label="CLIL Scaffolding Level">
-          <button class="scaffold-btn active" id="btn-scaffold-guided" data-action="set-scaffolding" data-mode="guided" aria-pressed="true" title="Shows optional Spanish translations, A2 reading summary, and phonetic guides">🟢 Guided CLIL (A2)</button>
-          <button class="scaffold-btn" id="btn-scaffold-immersion" data-action="set-scaffolding" data-mode="immersion" aria-pressed="false" title="100% English immersion without Spanish glosses">🔵 Immersion (B1)</button>
+        <div class="topbar-controls">
+          <div class="scaffolding-switcher" role="radiogroup" aria-label="CLIL Scaffolding Level">
+            <button class="scaffold-btn active" id="btn-scaffold-guided" data-action="set-scaffolding" data-mode="guided" aria-pressed="true" title="Shows optional Spanish translations, A2 reading summary, and phonetic guides">🟢 A2 Guided</button>
+            <button class="scaffold-btn" id="btn-scaffold-immersion" data-action="set-scaffolding" data-mode="immersion" aria-pressed="false" title="100% English immersion without Spanish glosses">🔵 B1 Immersion</button>
+          </div>
+
+          <!-- Compact Neuro-Lab HUD -->
+          <div class="hud-bar hud-compact" role="status" aria-label="Student Gamification Progress">
+            <span class="hud-rank-badge" id="hud-rank-badge">🩺 Sensory Intern</span>
+            <div class="hud-xp-wrap">
+              <div class="hud-xp-labels">
+                <span>XP: <strong id="hud-xp-val">0</strong></span>
+                <span id="hud-next-rank">Next: 250 XP</span>
+              </div>
+              <div class="hud-xp-track">
+                <div class="hud-xp-fill" id="hud-xp-fill"></div>
+              </div>
+            </div>
+            <span class="hud-pill" id="hud-streak-pill">🔥 0</span>
+            <span class="hud-pill" id="hud-cases-pill">🩺 0/10</span>
+            <button class="hud-sfx-btn" id="hud-sfx-toggle" data-action="toggle-sfx" aria-pressed="true" title="Toggle procedural game audio effects">🔊 SFX On</button>
+          </div>
+
+          <!-- Station Profile Popover (FERPA / Shared Lab Safe) -->
+          <details class="station-dropdown">
+            <summary class="session-badge" title="Manage student station profile &amp; JSON backup">👤 <span id="active-profile-label">Scholar-1</span> ▾</summary>
+            <div class="station-popover" role="region" aria-label="Classroom Student Profile Manager">
+              <div class="station-row">
+                <label for="profile-switch-input" class="sr-only">Student Code or Alias</label>
+                <input type="text" id="profile-switch-input" class="station-input" placeholder="Student ID (e.g. Ana_8A)" maxlength="24">
+                <button class="session-btn" data-action="switch-profile">Switch / Load</button>
+              </div>
+              <div class="station-actions">
+                <button class="session-btn" data-action="export-progress" title="Download signed JSON portfolio">💾 Export JSON</button>
+                <label class="session-btn file-upload-label" title="Restore saved JSON portfolio">
+                  📂 Import JSON
+                  <input type="file" id="import-progress-file" accept=".json" class="sr-only">
+                </label>
+                <button class="session-btn danger" data-action="end-student-turn" title="Clear personal data for the next student in computer lab">🔒 End Turn</button>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
 
-      <div class="kicker">8th Grade Science &amp; English (CLIL) · Unit: The Human Nervous System · NGSS MS-LS1-8</div>
-      <h1>The Five Senses</h1>
-      <p class="lede">An interactive neurobiology &amp; English mastery lab. Explore high-detail anatomical cutaways, train scientific pronunciation with phonetic Levenshtein coaching, solve clinical lesions, and certify your CEFR level.</p>
+      <!-- Compact Hero + Unifying Pathway -->
+      <div class="masthead-hero">
+        <div class="hero-copy">
+          <div class="kicker">8th Grade Science &amp; English (CLIL) · Unit: The Human Nervous System · NGSS MS-LS1-8</div>
+          <h1>The Five Senses</h1>
+          <p class="lede">Interactive neurobiology &amp; English mastery lab: anatomical cutaways, phonetic Levenshtein coaching, clinical lesions, and adaptive CEFR certification.</p>
+        </div>
 
-      <!-- Gamified Neuro-Lab HUD -->
-      <div class="hud-bar" role="status" aria-label="Student Gamification Progress">
-        <div class="hud-rank">
-          <span class="hud-rank-badge" id="hud-rank-badge">🩺 Sensory Intern</span>
-        </div>
-        <div class="hud-xp-wrap">
-          <div class="hud-xp-labels">
-            <span>Neural XP: <strong id="hud-xp-val">0</strong></span>
-            <span id="hud-next-rank">Next: 250 XP</span>
+        <div class="big-idea-banner" role="region" aria-label="Unifying scientific model">
+          <div class="big-idea-title">🧠 Universal Pathway:</div>
+          <div class="big-idea-flow">
+            <span class="big-idea-node">1. Stimulus <small class="es-sub">(Estímulo)</small></span>
+            <span class="big-idea-arrow" aria-hidden="true">→</span>
+            <span class="big-idea-node">2. Organ <small class="es-sub">(Órgano)</small></span>
+            <span class="big-idea-arrow" aria-hidden="true">→</span>
+            <span class="big-idea-node">3. Transduction <small class="es-sub">(Canales / GPCR)</small></span>
+            <span class="big-idea-arrow" aria-hidden="true">→</span>
+            <span class="big-idea-node">4. Nerve <small class="es-sub">(Nervio)</small></span>
+            <span class="big-idea-arrow" aria-hidden="true">→</span>
+            <span class="big-idea-node">5. Cortex <small class="es-sub">(Corteza)</small></span>
           </div>
-          <div class="hud-xp-track">
-            <div class="hud-xp-fill" id="hud-xp-fill"></div>
-          </div>
-        </div>
-        <div class="hud-metrics">
-          <span class="hud-pill" id="hud-streak-pill">🔥 Streak: 0</span>
-          <span class="hud-pill" id="hud-cases-pill">🩺 Cases: 0/10</span>
-          <button class="hud-sfx-btn" id="hud-sfx-toggle" data-action="toggle-sfx" aria-pressed="true" title="Toggle procedural game audio effects">🔊 SFX On</button>
-        </div>
-      </div>
-
-      <!-- Unifying Biological Model Banner -->
-      <div class="big-idea-banner" role="region" aria-label="Unifying scientific model">
-        <div class="big-idea-title">
-          <span>🧠 The Big Idea — Every sense follows the same universal neural path:</span>
-        </div>
-        <div class="big-idea-flow">
-          <span class="big-idea-node">1. Stimulus <small class="es-sub">(Estímulo físico/químico)</small></span>
-          <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">2. Sense Organ <small class="es-sub">(Órgano receptor)</small></span>
-          <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">3. Transduction <small class="es-sub">(Canales iónicos / GPCR)</small></span>
-          <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">4. Sensory Nerve <small class="es-sub">(Nervio craneal / espinal)</small></span>
-          <span class="big-idea-arrow" aria-hidden="true">→</span>
-          <span class="big-idea-node">5. Brain Cortex <small class="es-sub">(Tálamo → Corteza cerebral)</small></span>
         </div>
       </div>
     </div>
@@ -154,28 +156,28 @@
     <!-- Compare & Clinical Lesion Simulator Panel -->
     <section class="sense-panel" id="panel-compare" role="tabpanel" aria-labelledby="tab-compare">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Synthesis &amp; Clinical Neurophysiology</span>
+        <span class="sense-badge badge-sight-default">Synthesis &amp; Clinical Neurophysiology</span>
         <h2 class="sense-title">Compare All 5 Senses &amp; Clinical Lesion Lab</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">Compare molecular ion channels, adaptation dynamics, and thalamic relays across all five senses, then apply systemic reasoning to diagnose real clinical neurology lesions.</p>
+        <p class="panel-intro">Compare molecular ion channels, adaptation dynamics, and thalamic relays across all five senses, then apply systemic reasoning to diagnose real clinical neurology lesions.</p>
       </div>
 
-      <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
-        <button class="action-btn" id="btn-compare-study" data-action="set-compare-mode" data-mode="study" style="padding:8px 16px; font-size:0.9rem;">📖 Study Synthesis Table</button>
-        <button class="action-btn" id="btn-compare-practice" data-action="set-compare-mode" data-mode="practice" style="padding:8px 16px; font-size:0.9rem; background:var(--muted);">✏️ Interactive Practice Matrix</button>
+      <div class="compare-mode-bar">
+        <button class="action-btn btn-compact" id="btn-compare-study" data-action="set-compare-mode" data-mode="study">📖 Study Synthesis Table</button>
+        <button class="action-btn btn-compact btn-muted" id="btn-compare-practice" data-action="set-compare-mode" data-mode="practice">✏️ Interactive Practice Matrix</button>
       </div>
 
       <div class="compare-table-wrap" id="compare-table-content" aria-live="polite"></div>
 
       <!-- Clinical Simulator Container -->
-      <div id="clinical-simulator-content" style="margin-top:32px;"></div>
+      <div id="clinical-simulator-content" class="clinical-sim-wrap"></div>
     </section>
 
     <!-- Flashcards (SM-2), Roots & Glossary Panel -->
     <section class="sense-panel" id="panel-glossary" role="tabpanel" aria-labelledby="tab-glossary">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Accelerated Memory (SM-2 SRS + Dual Coding)</span>
+        <span class="sense-badge badge-sight-default">Accelerated Memory (SM-2 SRS + Dual Coding)</span>
         <h2 class="sense-title">SM-2 Flashcards, Scientific Roots &amp; Glossary</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">Consolidate vocabulary using algorithmic SuperMemo-2 spaced repetition, interleaved cross-sense decks, mnemonic hooks, and Greek/Latin roots.</p>
+        <p class="panel-intro">Consolidate vocabulary using algorithmic SuperMemo-2 spaced repetition, interleaved cross-sense decks, mnemonic hooks, and Greek/Latin roots.</p>
       </div>
       <div id="glossary-panel-content"></div>
     </section>
@@ -183,21 +185,21 @@
     <!-- Final Linguaskill Psychometric & Adaptive Exam Panel -->
     <section class="sense-panel" id="panel-final" role="tabpanel" aria-labelledby="tab-final">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">Cambridge Linguaskill Style · CEFR A2–B1.2 &amp; NGSS MS-LS1-8</span>
+        <span class="sense-badge badge-sight-default">Cambridge Linguaskill Style · CEFR A2–B1.2 &amp; NGSS MS-LS1-8</span>
         <h2 class="sense-title">Adaptive Unit Assessment &amp; CEFR Profile</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">Measure your scientific English proficiency across Reading Comprehension, Use of English, and Neurobiology. Choose Standard Summative Mode or Computerized Adaptive Test (CAT) to generate a SHA-256 verified certificate.</p>
+        <p class="panel-intro">Measure your scientific English proficiency across Reading Comprehension, Use of English, and Neurobiology. Choose Standard Summative Mode or Computerized Adaptive Test (CAT) to generate a SHA-256 verified certificate.</p>
       </div>
 
-      <div style="background:var(--paper-tint); padding:16px; border-radius:12px; margin-bottom:20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-        <label for="student-name" style="font-weight:700;">Student Full Name:</label>
-        <input type="text" id="student-name" maxlength="60" placeholder="Write your full name..." style="padding:8px 12px; border:1.5px solid var(--line); border-radius:8px; font-size:0.95rem; flex:1; min-width:200px;">
-        <button class="action-btn" id="btn-exam-standard" data-action="start-standard-exam" style="padding:8px 14px; font-size:0.86rem;">📝 Standard 20-Item Exam</button>
-        <button class="action-btn" id="btn-exam-cat" data-action="start-cat-exam" style="padding:8px 14px; font-size:0.86rem; background:#6D28D9;">🎯 Adaptive Linguaskill CAT (12 Items)</button>
+      <div class="exam-setup-bar">
+        <label for="student-name" class="exam-name-label">Student Full Name:</label>
+        <input type="text" id="student-name" class="exam-name-input" maxlength="60" placeholder="Write your full name...">
+        <button class="action-btn btn-compact" id="btn-exam-standard" data-action="start-standard-exam">📝 Standard 20-Item Exam</button>
+        <button class="action-btn btn-compact btn-cat" id="btn-exam-cat" data-action="start-cat-exam">🎯 Adaptive Linguaskill CAT (12 Items)</button>
       </div>
 
       <div id="final-exam-questions"></div>
 
-      <div style="margin-top:20px;" id="final-exam-actions-bar">
+      <div class="exam-actions-bar" id="final-exam-actions-bar">
         <button class="action-btn" id="btn-submit-final" data-action="check-final-exam">Submit Final Exam &amp; Generate CEFR Report</button>
         <div id="final-exam-result" aria-live="polite"></div>
       </div>
@@ -206,9 +208,9 @@
     <!-- Teacher Guide Panel -->
     <section class="sense-panel" id="panel-teacher" role="tabpanel" aria-labelledby="tab-teacher">
       <div class="sense-header">
-        <span class="sense-badge" style="background:var(--sight-tint); color:var(--sight);">For Educators · Guía Docente CLIL / CER / NGSS</span>
+        <span class="sense-badge badge-sight-default">For Educators · Guía Docente CLIL / CER / NGSS</span>
         <h2 class="sense-title">Teacher Guide, CER Protocol &amp; Socratic Probes</h2>
-        <p style="color:var(--ink-light); margin-top:6px;">Pedagogical sequence, Claim-Evidence-Reasoning (CER) lab protocol, Nobel neurophysiology probes, and misconception intervention guide.</p>
+        <p class="panel-intro">Pedagogical sequence, Claim-Evidence-Reasoning (CER) lab protocol, Nobel neurophysiology probes, and misconception intervention guide.</p>
       </div>
       <div id="teacher-guide-content"></div>
     </section>
@@ -218,15 +220,15 @@
   <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-window">
       <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
-      <h3 id="modal-title" style="margin-bottom:10px; font-size:1.35rem;"></h3>
+      <h3 id="modal-title" class="modal-heading"></h3>
       <div id="modal-body"></div>
     </div>
   </div>
 
   <footer>
     <div class="container">
-      <p><strong>Science &amp; English · The Five Senses (v4.0)</strong> — CLIL Neurophysiology &amp; Linguaskill Readiness Lab for 8th Grade.</p>
-      <p style="margin-top:6px; font-size:0.82rem;">🔒 Privacy-First Local Classroom Mode · ⚠️ Educational exploration only; not for clinical diagnosis.</p>
+      <p><strong>Science &amp; English · The Five Senses (v4.1)</strong> — CLIL Neurophysiology &amp; Linguaskill Readiness Lab for 8th Grade.</p>
+      <p class="footer-meta">🔒 Privacy-First Local Classroom Mode · ⚠️ Educational exploration only; not for clinical diagnosis.</p>
     </div>
   </footer>
 

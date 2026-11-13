@@ -237,12 +237,12 @@ const DIAGRAMS = {
       <path class="signal-pulse-path" d="M 30,225 L 262,225 L 352,225 L 578,225 L 690,282 L 775,290" fill="none" stroke="#818CF8" stroke-width="5" stroke-dasharray="10 8" opacity="0" filter="url(#bio-glow)"/>
     `,
     hotspots: [
-      { id: "cornea", x: 256, y: 225, lx: 155, ly: 342 },
-      { id: "iris", x: 313, y: 170, lx: 295, ly: 58 },
-      { id: "pupil", x: 313, y: 225, lx: 135, ly: 108 },
+      { id: "cornea", x: 268, y: 262, lx: 145, ly: 342 },
+      { id: "iris", x: 313, y: 170, lx: 280, ly: 52 },
+      { id: "pupil", x: 313, y: 225, lx: 140, ly: 108 },
       { id: "lens", x: 352, y: 262, lx: 385, ly: 412 },
-      { id: "retina", x: 528, y: 122, lx: 560, ly: 52 },
-      { id: "opticnerve", x: 690, y: 282, lx: 695, ly: 378 }
+      { id: "retina", x: 522, y: 118, lx: 515, ly: 44 },
+      { id: "opticnerve", x: 685, y: 282, lx: 665, ly: 385 }
     ]
   },
 
@@ -333,12 +333,12 @@ const DIAGRAMS = {
       <path class="signal-pulse-path" d="M 40,225 L 120,225 L 265,225 L 366,225 L 420,195 L 486,225 L 565,268 L 715,220 L 785,210" fill="none" stroke="#F97316" stroke-width="5" stroke-dasharray="10 8" opacity="0" filter="url(#bio-glow)"/>
     `,
     hotspots: [
-      { id: "pinna", x: 88, y: 170, lx: 95, ly: 56 },
-      { id: "earcanal", x: 265, y: 225, lx: 220, ly: 315 },
-      { id: "eardrum", x: 366, y: 255, lx: 355, ly: 356 },
+      { id: "pinna", x: 88, y: 170, lx: 105, ly: 54 },
+      { id: "earcanal", x: 265, y: 225, lx: 230, ly: 318 },
+      { id: "eardrum", x: 366, y: 255, lx: 365, ly: 372 },
       { id: "ossicles", x: 412, y: 186, lx: 418, ly: 92 },
-      { id: "cochlea", x: 565, y: 268, lx: 560, ly: 392 },
-      { id: "auditorynerve", x: 705, y: 220, lx: 710, ly: 145 }
+      { id: "cochlea", x: 565, y: 268, lx: 575, ly: 392 },
+      { id: "auditorynerve", x: 700, y: 218, lx: 690, ly: 118 }
     ]
   },
 
@@ -403,7 +403,7 @@ const DIAGRAMS = {
       </g>
 
       <!-- NatGeo Micro-Inset: Olfactory Bipolar Neurons & Cilia (x600) -->
-      <line x1="485" y1="168" x2="646" y2="300" stroke="#15803D" stroke-width="1.8" stroke-dasharray="4 3"/>
+      <line x1="500" y1="180" x2="652" y2="296" stroke="#15803D" stroke-width="1.8" stroke-dasharray="4 3"/>
       <clipPath id="smellInset"><circle cx="712" cy="348" r="68"/></clipPath>
       <g clip-path="url(#smellInset)">
         <rect x="640" y="275" width="150" height="150" fill="#064E3B"/>
@@ -425,10 +425,10 @@ const DIAGRAMS = {
       <path class="signal-pulse-path" d="M 120,350 L 178,306 L 330,280 L 430,172 L 430,135 L 440,105 L 640,96 L 775,94" fill="none" stroke="#22C55E" stroke-width="5" stroke-dasharray="10 8" opacity="0" filter="url(#bio-glow)"/>
     `,
     hotspots: [
-      { id: "nostril", x: 178, y: 306, lx: 95, ly: 395 },
-      { id: "nasalcavity", x: 330, y: 300, lx: 340, ly: 395 },
-      { id: "olfreceptors", x: 430, y: 172, lx: 640, ly: 192 },
-      { id: "olfnerve", x: 375, y: 147, lx: 240, ly: 175 },
+      { id: "nostril", x: 178, y: 306, lx: 115, ly: 388 },
+      { id: "nasalcavity", x: 330, y: 300, lx: 345, ly: 392 },
+      { id: "olfreceptors", x: 455, y: 170, lx: 640, ly: 146 },
+      { id: "olfnerve", x: 375, y: 142, lx: 215, ly: 142 },
       { id: "olfbulb", x: 440, y: 105, lx: 450, ly: 52 }
     ]
   },
@@ -503,9 +503,9 @@ const DIAGRAMS = {
     hotspots: [
       { id: "tongue", x: 220, y: 270, lx: 220, ly: 392 },
       { id: "papillae", x: 300, y: 170, lx: 300, ly: 72 },
-      { id: "tastebuds", x: 668, y: 188, lx: 585, ly: 76 },
-      { id: "tastecells", x: 714, y: 222, lx: 760, ly: 92 },
-      { id: "tastenerve", x: 700, y: 290, lx: 695, ly: 356 }
+      { id: "tastebuds", x: 662, y: 174, lx: 535, ly: 76 },
+      { id: "tastecells", x: 724, y: 218, lx: 700, ly: 76 },
+      { id: "tastenerve", x: 700, y: 292, lx: 650, ly: 382 }
     ]
   },
 
@@ -598,11 +598,11 @@ const DIAGRAMS = {
       <path class="signal-pulse-path" d="M 372,42 L 392,236 L 560,150 L 685,342 L 770,346" fill="none" stroke="#06B6D4" stroke-width="5" stroke-dasharray="10 8" opacity="0" filter="url(#bio-glow)"/>
     `,
     hotspots: [
-      { id: "epidermis", x: 190, y: 106, lx: 68, ly: 108 },
-      { id: "dermis", x: 190, y: 215, lx: 68, ly: 218 },
-      { id: "hypodermis", x: 190, y: 362, lx: 68, ly: 364 },
-      { id: "receptor", x: 560, y: 148, lx: 560, ly: 32 },
-      { id: "nerve", x: 735, y: 346, lx: 732, ly: 438 }
+      { id: "epidermis", x: 210, y: 106, lx: 78, ly: 108 },
+      { id: "dermis", x: 210, y: 215, lx: 78, ly: 218 },
+      { id: "hypodermis", x: 210, y: 358, lx: 78, ly: 360 },
+      { id: "receptor", x: 560, y: 148, lx: 555, ly: 26 },
+      { id: "nerve", x: 720, y: 346, lx: 660, ly: 424 }
     ]
   }
 };

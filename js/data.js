@@ -647,10 +647,10 @@ const SENSES = [
       "verbs": [
         "enters",
         "refracts",
+        "regulates",
         "focuses",
         "converges",
         "transduces",
-        "converts",
         "transmits",
         "interprets"
       ],
@@ -1140,14 +1140,14 @@ const SENSES = [
         "amplifies"
       ],
       "verbs": [
-        "travels",
-        "funnels",
+        "collects",
+        "channels",
         "vibrates",
         "amplifies",
         "deflects",
         "transduces",
-        "transmits",
-        "interprets"
+        "conducts",
+        "processes"
       ],
       "connectors": [
         "Initially",
@@ -1616,13 +1616,14 @@ const SENSES = [
         "transduction"
       ],
       "verbs": [
-        "evaporates",
-        "circulates",
+        "inhales",
         "dissolves",
         "binds",
         "depolarizes",
+        "passes",
         "synapses",
-        "recalls"
+        "bypasses",
+        "evokes"
       ],
       "connectors": [
         "Initially",
@@ -2088,12 +2089,13 @@ const SENSES = [
       ],
       "verbs": [
         "dissolves",
-        "enters",
-        "depolarizes",
+        "diffuses",
+        "binds",
+        "triggers",
         "transduces",
-        "transmits",
-        "synthesizes",
-        "integrates"
+        "conveys",
+        "integrates",
+        "distinguishes"
       ],
       "connectors": [
         "First",
@@ -2579,11 +2581,12 @@ const SENSES = [
       ],
       "verbs": [
         "detects",
+        "deforms",
         "depolarizes",
         "transduces",
         "transmits",
         "ascends",
-        "integrates",
+        "triggers",
         "perceives"
       ],
       "connectors": [
@@ -2756,6 +2759,38 @@ const EXTRA_WORDS = {
     "ipa": "/trænzˈdʌk.ʃən/",
     "def": "The biological process by which a sensory receptor converts environmental energy (light, sound, chemicals, mechanical force) into electrical action potentials.",
     "ex": "Transduction is the universal mechanism shared by all five human senses."
+  },
+  "light": {
+    "id": "light",
+    "en": "light photons",
+    "es": "fotones de luz",
+    "ipa": "/laɪt ˈfoʊ.tɒnz/",
+    "def": "Visible electromagnetic energy waves (400–700 nm) that stimulate retinal rods and cones.",
+    "ex": "Light passes through the transparent cornea before entering the pupil."
+  },
+  "vibration": {
+    "id": "vibration",
+    "en": "vibration",
+    "es": "vibración mecánica",
+    "ipa": "/vaɪˈbreɪ.ʃən/",
+    "def": "Rapid oscillating movement transmitted through air, eardrum membrane, ossicles, and cochlear fluid.",
+    "ex": "Mechanical vibrations travel from the tympanic membrane to the middle ear ossicles."
+  },
+  "soundwave": {
+    "id": "soundwave",
+    "en": "sound wave",
+    "es": "onda sonora",
+    "ipa": "/saʊnd weɪv/",
+    "def": "A longitudinal pressure wave traveling through a medium that causes the eardrum to vibrate.",
+    "ex": "High-frequency sound waves stimulate hair cells near the base of the cochlea."
+  },
+  "gustatorycortex": {
+    "id": "gustatorycortex",
+    "en": "gustatory cortex",
+    "es": "corteza gustativa",
+    "ipa": "/ˈɡʌs.tə.tɔːr.i ˈkɔːr.teks/",
+    "def": "The primary sensory cortex located in the insula and frontal operculum that consciously identifies basic tastes and integrates flavor.",
+    "ex": "Cranial nerves VII, IX, and X relay taste signals via the thalamus to the gustatory cortex."
   }
 };
 
@@ -2763,7 +2798,7 @@ const COMPARE = {
   "rows": [
     {
       "key": "stimulus",
-      "label": "Stimulus (Estímulo)",
+      "label": "Stimulus",
       "es": "Estímulo",
       "values": {
         "sight": "Light photons (electromagnetic waves)",
@@ -2775,7 +2810,7 @@ const COMPARE = {
     },
     {
       "key": "organ",
-      "label": "Sense Organ (Órgano)",
+      "label": "Sense Organ",
       "es": "Órgano",
       "values": {
         "sight": "Eye (cornea, pupil, lens, retina)",
@@ -2787,7 +2822,7 @@ const COMPARE = {
     },
     {
       "key": "classification",
-      "label": "Receptor Type (Tipo de receptor)",
+      "label": "Receptor Type",
       "es": "Tipo de receptor",
       "values": {
         "sight": "Photoreceptors",
@@ -2799,7 +2834,7 @@ const COMPARE = {
     },
     {
       "key": "receptors",
-      "label": "Receptor Cells (Células receptoras)",
+      "label": "Receptor Cells",
       "es": "Células receptoras",
       "values": {
         "sight": "Rods and cones (Retina)",
@@ -2811,7 +2846,7 @@ const COMPARE = {
     },
     {
       "key": "nerve",
-      "label": "Sensory Nerve Pathway (Nervio)",
+      "label": "Sensory Nerve Pathway",
       "es": "Nervio sensorial",
       "values": {
         "sight": "Optic nerve (CN II)",
@@ -2823,7 +2858,7 @@ const COMPARE = {
     },
     {
       "key": "cortex",
-      "label": "Primary Brain Cortex (Corteza cerebral)",
+      "label": "Primary Brain Cortex",
       "es": "Corteza cerebral",
       "values": {
         "sight": "Visual Cortex (Occipital Lobe)",
@@ -2835,7 +2870,7 @@ const COMPARE = {
     },
     {
       "key": "channels",
-      "label": "Molecular Channel / GPCR (Canal molecular)",
+      "label": "Molecular Channel / GPCR",
       "es": "Canal / Proteína receptora",
       "values": {
         "sight": "cGMP-gated Na⁺/Ca²⁺ channels (hyperpolarization via rhodopsin/PDE)",
@@ -2847,7 +2882,7 @@ const COMPARE = {
     },
     {
       "key": "adaptation",
-      "label": "Sensory Adaptation Profile (Adaptación)",
+      "label": "Sensory Adaptation Profile",
       "es": "Adaptación fásica vs tónica",
       "values": {
         "sight": "Dual photochemical bleaching + rapid pupillary iris scaling",
@@ -2859,7 +2894,7 @@ const COMPARE = {
     },
     {
       "key": "thalamus",
-      "label": "Thalamic Relay Station (Relevo talámico)",
+      "label": "Thalamic Relay Station",
       "es": "Relevo talámico",
       "values": {
         "sight": "Lateral Geniculate Nucleus (LGN)",
@@ -2871,7 +2906,7 @@ const COMPARE = {
     },
     {
       "key": "regeneration",
-      "label": "Cellular Regeneration (Regeneración celular)",
+      "label": "Cellular Regeneration",
       "es": "Capacidad regenerativa",
       "values": {
         "sight": "Permanent photoreceptors (non-regenerating in mammals)",
