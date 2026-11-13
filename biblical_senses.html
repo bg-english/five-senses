@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spiritual Senses — Distinguishing Good from Evil (Hebrews 5:14) | CLIL Science & Faith</title>
-<meta name="description" content="Connecting sensory neurophysiology to spiritual discernment based on Hebrews 5:14 for 8th Grade Science & Faith CLIL curriculum.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self';">
+<title>Spiritual Senses — Distinguishing Good from Evil (Hebrews 5:14) | CLIL Science &amp; Faith</title>
+<meta name="description" content="Connecting sensory neurophysiology and synaptic plasticity to spiritual discernment based on Hebrews 5:14 for 8th Grade Science & Faith CLIL.">
+<link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23855800'/%3E%3Cpath d='M16 7l-9 4.5 9 4.5 9-4.5-9-4.5zM7 20.5l9 4.5 9-4.5M7 16l9 4.5 9-4.5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #111827;
     --paper: #F9FAFB;
     --paper-2: #F3F4F6;
-    --card-bg: #FFFFFF;
-    --line: rgba(17, 24, 39, 0.12);
+    --line: rgba(17, 24, 39, 0.14);
     --gold: #855800;
     --gold-tint: #FBF5E6;
     --gold-dark: #633f00;
@@ -41,20 +42,57 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
   h1, h2, h3, h4 {
     font-family: 'Fraunces', Georgia, serif;
     margin: 0 0 0.4em 0;
     font-weight: 600;
     letter-spacing: -0.01em;
   }
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 24px;
+  .container { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+
+  /* Classroom Privacy Session Bar */
+  .session-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #F1F5F9;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 8px 14px;
+    margin-top: 18px;
+    font-size: 0.84rem;
   }
-  .masthead {
-    padding: 48px 0 20px;
+  .profile-pill {
+    background: #0F172A;
+    color: #FFF;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.78rem;
   }
+  .clear-btn {
+    background: #FFF;
+    border: 1.5px solid #CBD5E1;
+    color: var(--ink);
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .clear-btn:hover { border-color: #DC2626; color: #DC2626; background: #FEF2F2; }
+
+  .masthead { padding: 28px 0 18px; }
   .masthead .kicker {
     font-size: 13px;
     font-weight: 700;
@@ -66,25 +104,10 @@
     align-items: center;
     gap: 6px;
   }
-  .masthead h1 {
-    font-size: clamp(32px, 5vw, 46px);
-    line-height: 1.1;
-    color: var(--ink);
-  }
-  .masthead p.lede {
-    max-width: 65ch;
-    font-size: 18px;
-    color: #4b5563;
-    margin: 12px 0 0;
-  }
+  .masthead h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.1; }
+  .masthead p.lede { max-width: 68ch; font-size: 17px; color: #4b5563; margin: 10px 0 0; }
 
-  /* Page Navigation Bar */
-  .page-nav {
-    display: flex;
-    gap: 12px;
-    margin: 20px 0 28px;
-    flex-wrap: wrap;
-  }
+  .page-nav { display: flex; gap: 12px; margin: 18px 0 26px; flex-wrap: wrap; }
   .page-nav a {
     font-size: 14px;
     font-weight: 600;
@@ -94,30 +117,21 @@
     border: 1.5px solid var(--line);
     background: #fff;
     color: var(--ink);
-    transition: all 0.15s ease;
     display: inline-flex;
     align-items: center;
     gap: 6px;
   }
-  .page-nav a:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
-  .page-nav a.active {
-    background: var(--ink);
-    color: #fff;
-    border-color: var(--ink);
-  }
+  .page-nav a:hover { border-color: var(--gold); color: var(--gold); }
+  .page-nav a.active { background: var(--ink); color: #fff; border-color: var(--ink); }
 
-  /* Hebrews Verse Card */
   .verse-card {
-    background: var(--gold-tint);
+    background: radial-gradient(circle at top left, #FFFDF7 0%, var(--gold-tint) 100%);
     border: 1.5px solid #E5C378;
     border-radius: 14px;
-    padding: 32px clamp(20px, 4vw, 44px);
+    padding: 28px clamp(18px, 4vw, 42px);
     text-align: center;
-    margin-bottom: 32px;
-    box-shadow: 0 4px 16px rgba(133, 88, 0, 0.05);
+    margin-bottom: 28px;
+    box-shadow: 0 6px 20px rgba(133, 88, 0, 0.08);
   }
   .verse-card .ref {
     font-size: 13px;
@@ -125,29 +139,24 @@
     color: var(--gold);
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .verse-card blockquote {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(20px, 3.2vw, 28px);
+    font-size: clamp(20px, 3.1vw, 26px);
     font-style: italic;
-    color: var(--ink);
-    line-height: 1.35;
-    margin: 0 0 12px;
+    margin: 0 0 10px;
   }
-  .verse-card .translation {
-    font-size: 13px;
-    color: #6b7280;
-    font-weight: 500;
-  }
+  .verse-card .translation { font-size: 13px; color: #6b7280; font-weight: 500; }
 
-  /* Accessible Tabbar */
+  /* Responsive Scrollable Tabbar (Never hides text on phones!) */
   .tabbar {
     display: flex;
     gap: 6px;
-    flex-wrap: wrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
     border-bottom: 2px solid var(--line);
-    margin-bottom: 0;
+    padding-bottom: 0;
   }
   .tab {
     font-family: 'Inter', sans-serif;
@@ -157,35 +166,24 @@
     background: var(--paper-2);
     border: 1.5px solid var(--line);
     border-bottom: none;
-    padding: 12px 18px;
+    padding: 11px 16px;
+    min-height: 44px;
+    white-space: nowrap;
     border-radius: 10px 10px 0 0;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.15s ease;
-    margin-bottom: -2px;
-  }
-  .tab svg {
-    width: 18px;
-    height: 18px;
+    gap: 7px;
     flex-shrink: 0;
   }
-  .tab:hover {
-    background: #fff;
-    color: var(--ink);
-  }
-  .tab:focus-visible {
-    outline: 2px solid var(--gold);
-    outline-offset: 2px;
-  }
+  .tab svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .tab:hover { background: #fff; color: var(--ink); }
   .tab[aria-selected="true"] {
     background: #fff;
     color: var(--tab-color, var(--gold));
     border-color: var(--line);
     border-bottom: 2px solid #fff;
     font-weight: 700;
-    box-shadow: 0 -2px 6px rgba(0,0,0,0.03);
   }
   .tab[data-target="principle"] { --tab-color: var(--gold); }
   .tab[data-target="sight"] { --tab-color: var(--sight); }
@@ -194,26 +192,17 @@
   .tab[data-target="taste"] { --tab-color: var(--taste); }
   .tab[data-target="touch"] { --tab-color: var(--touch); }
 
-  /* Tab Panels */
-  .panels {
-    margin-bottom: 60px;
-  }
+  .panels { margin-bottom: 54px; }
   .panel {
     display: none;
     border: 1.5px solid var(--line);
     border-top: none;
     border-radius: 0 0 14px 14px;
-    padding: 36px clamp(18px, 4vw, 42px) 44px;
+    padding: 32px clamp(18px, 4vw, 40px) 40px;
     background: #fff;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-    animation: fadeIn 0.25s ease;
   }
   .panel.active { display: block; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   .panel[data-sense="principle"] { --accent: var(--gold); --tint: var(--gold-tint); }
   .panel[data-sense="sight"] { --accent: var(--sight); --tint: var(--sight-tint); }
   .panel[data-sense="hearing"] { --accent: var(--hearing); --tint: var(--hearing-tint); }
@@ -221,14 +210,17 @@
   .panel[data-sense="taste"] { --accent: var(--taste); --tint: var(--taste-tint); }
   .panel[data-sense="touch"] { --accent: var(--touch); --tint: var(--touch-tint); }
 
-  .panel h2 {
-    color: var(--ink);
-    font-size: clamp(24px, 3.5vw, 32px);
+  .panel-header-flex {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
   }
+  .panel h2 { font-size: clamp(23px, 3.5vw, 30px); margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .panel-badge {
     font-family: 'Inter', sans-serif;
     font-size: 12px;
@@ -241,212 +233,108 @@
     border-radius: 999px;
   }
 
-  /* Academic Reading & Scaffolding */
-  .reading {
-    margin-top: 16px;
-  }
-  .reading h3 {
-    font-size: 20px;
-    color: var(--accent);
-    margin-top: 24px;
-    margin-bottom: 8px;
-  }
-  .reading p {
-    font-size: 16px;
-    color: #374151;
-    margin: 0 0 16px;
-    line-height: 1.65;
-  }
+  .reading h3 { font-size: 19px; color: var(--accent); margin-top: 22px; margin-bottom: 8px; }
+  .reading p { font-size: 16px; color: #374151; margin: 0 0 15px; line-height: 1.65; }
 
-  /* Interactive Vocabulary Pills */
   .vocab-pill {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: var(--paper-2);
-    border: 1px solid var(--line);
-    padding: 1px 7px;
+    background: var(--tint);
+    border: 1.5px solid var(--accent);
+    padding: 2px 8px;
     border-radius: 6px;
     font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    vertical-align: baseline;
-  }
-  .vocab-pill:hover {
-    background: var(--tint);
-    border-color: var(--accent);
+    font-weight: 700;
     color: var(--accent);
+    cursor: pointer;
+    min-height: 28px;
   }
-  .vocab-pill svg {
-    width: 12px;
-    height: 12px;
-    opacity: 0.7;
-  }
+  .vocab-pill:hover { filter: brightness(0.95); transform: translateY(-1px); }
+  .vocab-pill svg { width: 13px; height: 13px; }
 
-  /* Scientific Cross-Reference Callout */
   .science-box {
-    margin: 24px 0;
-    background: #f8fafc;
-    border-left: 4px solid #3b82f6;
-    border-radius: 0 10px 10px 0;
+    margin: 22px 0;
+    background: #0F172A;
+    color: #F8FAFC;
+    border-left: 5px solid #38BDF8;
+    border-radius: 0 12px 12px 0;
     padding: 18px 22px;
   }
-  .science-box h4 {
-    color: #1e40af;
-    margin: 0 0 8px;
-    font-size: 17px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .science-box p {
-    margin: 0;
-    font-size: 15px;
-    color: #334155;
-    line-height: 1.55;
-  }
+  .science-box h4 { color: #38BDF8; margin: 0 0 8px; font-size: 17px; display: flex; align-items: center; gap: 8px; }
+  .science-box p { margin: 0; font-size: 14.8px; color: #E2E8F0; line-height: 1.6; }
 
-  /* Analogy Box */
   .analogy-box {
-    margin-top: 24px;
+    margin-top: 22px;
     background: var(--tint);
     border-left: 4px solid var(--accent);
     border-radius: 0 10px 10px 0;
-    padding: 20px 24px;
+    padding: 18px 22px;
   }
-  .analogy-box h4 {
-    color: var(--accent);
-    margin: 0 0 10px;
-    font-size: 18px;
-  }
-  .analogy-box ul {
-    margin: 0;
-    padding-left: 20px;
-  }
-  .analogy-box li {
-    margin-bottom: 10px;
-    font-size: 15px;
-    color: #1f2937;
-    line-height: 1.55;
-  }
-  .analogy-box li strong {
-    color: var(--accent);
-  }
+  .analogy-box h4 { color: var(--accent); margin: 0 0 10px; font-size: 18px; }
+  .analogy-box ul { margin: 0; padding-left: 20px; }
+  .analogy-box li { margin-bottom: 9px; font-size: 15px; color: #1f2937; }
 
-  /* Interactive Journal / Reflection Challenge */
   .challenge {
-    margin-top: 30px;
+    margin-top: 28px;
     background: var(--paper-2);
     border: 1.5px solid var(--line);
     border-radius: 12px;
-    padding: 24px;
+    padding: 22px;
   }
-  .challenge h4 {
-    color: var(--ink);
-    margin: 0 0 12px;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .challenge-intro {
-    font-size: 14.5px;
-    color: #4b5563;
-    margin-bottom: 16px;
-  }
-
-  /* Sentence Frames for Scaffolding */
+  .challenge h4 { color: var(--ink); margin: 0 0 10px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
   .sentence-frames {
     background: #fff;
     border: 1px dashed var(--line);
     border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 18px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
   }
-  .sentence-frames h5 {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6b7280;
-    margin: 0 0 8px;
-  }
-  .frames-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .sentence-frames h5 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin: 0 0 8px; }
+  .frames-list { display: flex; flex-direction: column; gap: 6px; }
   .frame-item {
     font-size: 13.5px;
     color: #374151;
     font-family: monospace;
     background: #f9fafb;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    border-radius: 6px;
     cursor: pointer;
-    border: 1px solid transparent;
+    border: 1px solid #e5e7eb;
+    text-align: left;
   }
-  .frame-item:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: #fff;
-  }
+  .frame-item:hover { border-color: var(--accent); color: var(--accent); background: #fff; }
 
-  /* Reflection Textarea */
-  .journal-input-group {
-    margin-bottom: 16px;
-  }
-  .journal-label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
+  .journal-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
   .journal-textarea {
     width: 100%;
-    min-height: 90px;
+    min-height: 96px;
     padding: 12px 14px;
     border-radius: 8px;
     border: 1.5px solid var(--line);
     background: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: inherit;
     font-size: 14.5px;
-    line-height: 1.5;
-    color: var(--ink);
     resize: vertical;
-    transition: border-color 0.15s ease;
-  }
-  .journal-textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(133, 88, 0, 0.1);
   }
   .journal-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 12px;
-    color: #6b7280;
-    margin-top: 4px;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12.5px;
+    color: #4b5563;
+    margin-top: 6px;
   }
-  .save-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    color: var(--success);
-    font-weight: 600;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+  .save-indicator { color: var(--success); font-weight: 700; opacity: 0; transition: opacity 0.25s ease; }
   .save-indicator.visible { opacity: 1; }
 
-  /* Modal for Definitions / Pronunciation */
+  /* Modal */
   .modal-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    background: rgba(15, 23, 42, 0.58);
     display: none;
     align-items: center;
     justify-content: center;
@@ -457,108 +345,68 @@
   .modal-overlay.open { display: flex; }
   .modal-box {
     background: #fff;
-    border-radius: 14px;
-    max-width: 440px;
+    border-radius: 16px;
+    max-width: 460px;
     width: 100%;
     padding: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    position: relative;
-    animation: modalPop 0.2s ease-out;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
   }
-  @keyframes modalPop {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-  .modal-word {
-    font-size: 22px;
-    font-family: 'Fraunces', Georgia, serif;
-    color: var(--gold);
-    margin: 0;
-  }
-  .modal-close {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #9ca3af;
-    padding: 0;
-    line-height: 1;
-  }
-  .modal-close:hover { color: var(--ink); }
-  .modal-phonetic {
-    font-family: monospace;
-    font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 12px;
-  }
-  .modal-def {
-    font-size: 15px;
-    color: #374151;
-    line-height: 1.5;
-    margin-bottom: 16px;
-  }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .modal-word { font-size: 22px; color: var(--gold); margin: 0; }
+  .modal-close { background: none; border: none; font-size: 26px; cursor: pointer; color: #6b7280; min-width: 40px; min-height: 40px; }
+  .modal-phonetic { font-family: monospace; font-size: 13.5px; color: #4b5563; margin-bottom: 10px; }
+  .modal-def { font-size: 15px; color: #1f2937; margin-bottom: 10px; }
+  .modal-tip { font-size: 13.5px; color: #9a3412; background: #fff7ed; border-left: 3px solid #f97316; padding: 8px 10px; border-radius: 6px; margin-bottom: 14px; }
   .modal-listen-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
+    padding: 10px 18px;
     background: var(--gold);
     color: #fff;
     border: none;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
   }
-  .modal-listen-btn:hover { background: var(--gold-dark); }
 
   footer {
     text-align: center;
-    padding: 40px 20px;
+    padding: 36px 20px;
     color: #6b7280;
     font-size: 13.5px;
     border-top: 1px solid var(--line);
-  }
-
-  @media (max-width: 680px) {
-    .tab span.tab-text { display: none; }
-    .tab { padding: 12px 14px; }
-    .panel { padding: 24px 16px 32px; }
   }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <header class="masthead">
-    <div class="kicker">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      Science &amp; Faith · CLIL Unit: The Human Body
+  <!-- Privacy-Isolated Multi-User Strip -->
+  <div class="session-strip" role="region" aria-label="Classroom journal isolation">
+    <div>
+      <span class="profile-pill">👤 Station Profile: <span id="biblical-profile-label">Scholar-1</span></span>
+      <span style="margin-left:8px; color:#475569; font-size:0.78rem;">Journals auto-expire after 90 min of inactivity.</span>
     </div>
+    <button class="clear-btn" id="btn-clear-journals">🔒 End Turn / Clear Reflections</button>
+  </div>
+
+  <header class="masthead">
+    <div class="kicker">Science &amp; Faith · CLIL Unit: Neuroplasticity &amp; Character</div>
     <h1>Spiritual Senses</h1>
-    <p class="lede">Discover how the neurophysiology of sensory perception mirrors the biblical discipline of distinguishing good from evil — training your mind to flourish and protect what matters.</p>
+    <p class="lede">How sensory neurophysiology and synaptic plasticity illuminate the biblical discipline of distinguishing good from evil (Hebrews 5:14).</p>
   </header>
 
   <nav class="page-nav" aria-label="Page selection">
-    <a href="index.html">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      The Five Senses Interactive Lab
-    </a>
-    <a href="biblical_senses.html" class="active">
-      Spiritual Senses (Hebrews 5:14)
-    </a>
+    <a href="index.html">← The Five Senses Interactive Lab</a>
+    <a href="biblical_senses.html" class="active" aria-current="page">📖 Spiritual Senses (Hebrews 5:14)</a>
   </nav>
 
   <div class="verse-card">
-    <div class="ref">Hebrews 5:14 · Key Anchor Verse</div>
+    <div class="ref">Hebrews 5:14 · Key Anchor Verse (Greek: aisthētēria gegymnasmena)</div>
     <blockquote>"But solid food is for the mature, who by constant use have trained themselves to distinguish good from evil."</blockquote>
-    <div class="translation">New International Version (NIV) · Emphasis on Systematic Training &amp; Neuroplastic Discernment</div>
+    <div class="translation">New International Version (NIV) · Lit. "whose sensory organs have been exercised by habitual practice"</div>
   </div>
 
   <div class="tabbar" role="tablist" aria-label="Spiritual senses tabs">
@@ -590,530 +438,230 @@
 
   <div class="panels">
 
-    <!-- PRINCIPLE PANEL -->
+    <!-- 1. PRINCIPLE PANEL -->
     <section class="panel active" data-sense="principle" id="panel-principle" role="tabpanel" aria-labelledby="tab-principle">
-      <h2>The Biblical Principle <span class="panel-badge">Foundation</span></h2>
-
+      <div class="panel-header-flex">
+        <h2>The Biblical Principle <span class="panel-badge">Foundation</span></h2>
+        <svg width="88" height="44" viewBox="0 0 88 44" aria-hidden="true">
+          <defs><radialGradient id="gPulse"><stop offset="0%" stop-color="#FACC15"/><stop offset="100%" stop-color="#855800" stop-opacity="0"/></radialGradient></defs>
+          <path d="M8 22 Q28 6 44 22 T80 22" fill="none" stroke="#855800" stroke-width="2.5"/>
+          <circle cx="44" cy="22" r="10" fill="url(#gPulse)"/><circle cx="44" cy="22" r="4" fill="#FACC15"/>
+        </svg>
+      </div>
       <div class="reading">
         <h3>Training to Distinguish Good from Evil</h3>
-        <p>The writer of Hebrews uses a powerful developmental metaphor: spiritual maturity is like transitioning from milk to solid food. An infant cannot digest solid food because their gastrointestinal physiology is not yet developed. In the same way, novice learners start with basic concepts of truth, but mature individuals actively train their mental faculties through <button class="vocab-pill" data-word="discernment">discernment <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>.</p>
-        <p>How is this discernment cultivated? <strong>"By constant use."</strong> In modern neuroscience, this principle is called <em>synaptic plasticity</em>: neural pathways that are repeatedly activated become stronger, faster, and more efficient. Just as an athlete sharpens motor coordination through daily drills, spiritual acuity is formed through repeated, <button class="vocab-pill" data-word="intentional">intentional <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button> choices.</p>
+        <p>The author of Hebrews contrasts infancy with <button class="vocab-pill" data-word="teleios">maturity (teleios)</button> by comparing milk with solid food. Just as an infant's enzymes must develop, moral <button class="vocab-pill" data-word="discernment">discernment</button> does not happen automatically—it is forged <strong>"by constant use"</strong> and <button class="vocab-pill" data-word="intentional">intentional</button> daily choices.</p>
       </div>
-
       <div class="science-box">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Scientific Bridge: Neuroplasticity &amp; Sensory Thresholds
-        </h4>
-        <p>Biological sensory receptors adjust their sensitivity depending on repetitive exposure (sensory adaptation). If you continually expose your visual or auditory cortex to extreme stimuli, baseline sensitivity is altered. In moral psychology, constant exposure to corrupting stimuli gradually <button class="vocab-pill" data-word="desensitizes">desensitizes <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button> your <button class="vocab-pill" data-word="conscience">conscience <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>, raising the threshold needed to recognize harm.</p>
+        <h4>⚛️ Neurobiology Bridge: Peripheral Adaptation vs. Central Synaptic Plasticity (LTP)</h4>
+        <p>In neurophysiology, peripheral sensory receptors adjust rapidly to steady backgrounds. By contrast, moral formation operates via central <button class="vocab-pill" data-word="synaptic">synaptic</button> plasticity: repeated deliberate choices trigger Long-Term Potentiation (LTP) via NMDA/AMPA glutamate receptors in the prefrontal cortex, strengthening pathways of self-control—whereas repeated passive exposure to harmful stimuli <button class="vocab-pill" data-word="desensitizes">desensitizes</button> the <button class="vocab-pill" data-word="conscience">conscience</button> through emotional habituation.</p>
       </div>
-
       <div class="analogy-box">
-        <h4>The Connection: Physical Perception &rarr; Moral Discernment</h4>
+        <h4>The Connection: Physical Perception &rarr; Ethical Discernment</h4>
         <ul>
-          <li><strong>Physical senses</strong> gather raw environmental data (light waves, pressure, volatile chemicals) to evaluate safety and physical survival.</li>
-          <li><strong>Spiritual senses</strong> evaluate inputs through moral and ethical frameworks to evaluate character and spiritual life.</li>
-          <li>Just as sensory deprivation or damage impairs spatial navigation, an untrained moral conscience impairs life decisions.</li>
-          <li><strong>Good news:</strong> Both biological neural circuits and spiritual habits can be renewed, recalibrated, and strengthened over time.</li>
+          <li><strong>Physical senses</strong> decode environmental energy (photons, pressure, chemicals) to keep the body physically safe.</li>
+          <li><strong>Spiritual senses</strong> evaluate ideas, relationships, and media through truth to protect character and purpose.</li>
         </ul>
       </div>
-
       <div class="challenge">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Reflective Journal &amp; CLIL Writing
-        </h4>
-        <p class="challenge-intro">Click any sentence frame below to scaffold your English answer, then complete your reflection. Your answers automatically save to your browser.</p>
-
+        <h4>✍️ Reflective Journal &amp; CLIL Writing</h4>
         <div class="sentence-frames">
           <h5>Sentence Starters (Click to Insert)</h5>
           <div class="frames-list">
-            <span class="frame-item" data-target="journal-principle">"According to Hebrews 5:14, moral maturity requires constant practice because..."</span>
-            <span class="frame-item" data-target="journal-principle">"Just as our physical nervous system adapts to stimuli, our conscience..."</span>
-            <span class="frame-item" data-target="journal-principle">"In my daily life, I can train my discernment by intentionally..."</span>
+            <button type="button" class="frame-item" data-target="journal-principle">"According to Hebrews 5:14, discernment grows by constant use just as synaptic plasticity..."</button>
+            <button type="button" class="frame-item" data-target="journal-principle">"In my daily routine, I can strengthen my conscience by..." (use verb + -ing)</button>
           </div>
         </div>
-
-        <div class="journal-input-group">
-          <label class="journal-label" for="journal-principle">Your Reflection on Spiritual Maturity &amp; Practice:</label>
-          <textarea id="journal-principle" class="journal-textarea" placeholder="Write your reflection here in English..."></textarea>
-          <div class="journal-meta">
-            <span id="wc-journal-principle">0 words</span>
-            <span class="save-indicator" id="save-journal-principle">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saved
-            </span>
-          </div>
-        </div>
+        <label class="journal-label" for="journal-principle">Your Reflection on Maturity &amp; Synaptic Practice:</label>
+        <textarea id="journal-principle" class="journal-textarea" placeholder="Write your reflection here in English..."></textarea>
+        <div class="journal-meta"><span id="wc-journal-principle">0 words</span><span class="save-indicator" id="save-journal-principle">✓ Saved</span></div>
       </div>
     </section>
 
-    <!-- SIGHT PANEL -->
+    <!-- 2. SIGHT PANEL -->
     <section class="panel" data-sense="sight" id="panel-sight" role="tabpanel" aria-labelledby="tab-sight">
-      <h2>Sight — What You Look At <span class="panel-badge">Vision &amp; Focus</span></h2>
-
+      <div class="panel-header-flex">
+        <h2>Sight — What You Look At <span class="panel-badge">Vision &amp; Attention</span></h2>
+        <svg width="88" height="44" viewBox="0 0 88 44" aria-hidden="true">
+          <path d="M12 22 C24 8 64 8 76 22 C64 36 24 36 12 22Z" fill="#EEF2FF" stroke="#4338CA" stroke-width="2.2"/>
+          <circle cx="44" cy="22" r="7" fill="#4338CA"/><circle cx="42" cy="20" r="2.2" fill="#FFF"/>
+        </svg>
+      </div>
       <div class="reading">
-        <h3>Physical Sense: The Optical Aperture</h3>
-        <p>Your eyes focus incoming photons through the cornea and crystalline lens onto the retina. Photoreceptors (rods and cones) convert light energy into action potentials via the optic nerve (Cranial Nerve II). However, the human brain executes <em>saccadic movements</em> and selective attention: you do not passively absorb everything; your fovea actively selects what receives deep processing.</p>
-
-        <h3>Spiritual Parallel: Guarding the Eye Gate</h3>
-        <p>What we intentionally fix our visual attention upon alters our inner thoughts. Just as intense radiation or prolonged direct gaze at an arc lamp destroys retinal pigment epithelium, chronic exposure to degrading visual media damages our moral clarity. Scripture commands: <em>"I will not look with approval on anything that is vile"</em> (Psalm 101:3).</p>
+        <h3>Physical Sense: Active Saccades &amp; Foveal Focus</h3>
+        <p>Your eyes execute fast <button class="vocab-pill" data-word="saccadic">saccadic</button> jumps so that the tiny central <button class="vocab-pill" data-word="fovea">fovea</button> examines only what you choose to attend to. Scripture advises fixing visual attention intentionally: <em>"I will not look with approval on anything that is vile"</em> (Psalm 101:3).</p>
       </div>
-
       <div class="science-box">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Scientific Bridge: Photoreceptor Bleaching vs Moral Desensitization
-        </h4>
-        <p>When rhodopsin in rods absorbs intense photons, it temporarily breaks down (photobleaching), creating temporary visual blindness. Similarly, consuming sensationalized violence or immorality overstimulates emotional circuits, causing emotional blunting and making everyday beauty seem dull.</p>
+        <h4>⚛️ Neurobiology Bridge: Peripheral Photobleaching vs. Central Cortical Habituation</h4>
+        <p>Staring at intense light causes temporary <button class="vocab-pill" data-word="photobleaching">photobleaching</button> of rhodopsin inside peripheral rods and cones. At the brain level, constantly scrolling through degrading or violent feeds causes central habituation in the amygdala and dopamine reward circuits—dulling your appreciation for what is genuinely pure and excellent (Philippians 4:8).</p>
       </div>
-
-      <div class="analogy-box">
-        <h4>Sight and Discernment</h4>
-        <ul>
-          <li><strong>Wholesome Vision:</strong> Focusing on what is noble, pure, lovely, and praiseworthy (Philippians 4:8) nourishes the intellect.</li>
-          <li><strong>Harmful Exposure:</strong> Binge-watching content saturated with contempt, exploitation, or envy that gradually warps your perspective.</li>
-          <li><strong>Visual Training:</strong> Curate your algorithmic digital feeds. Ask: <em>"Does this content refine my understanding or pollute my thoughts?"</em></li>
-        </ul>
-      </div>
-
       <div class="challenge">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Reflective Journal &amp; CLIL Writing
-        </h4>
+        <h4>✍️ Reflective Journal &amp; CLIL Writing</h4>
         <div class="sentence-frames">
           <h5>Sentence Starters (Click to Insert)</h5>
           <div class="frames-list">
-            <span class="frame-item" data-target="journal-sight">"When I filter the digital media I look at every day, I protect my..."</span>
-            <span class="frame-item" data-target="journal-sight">"Philippians 4:8 encourages us to fix our eyes on things that are..."</span>
-            <span class="frame-item" data-target="journal-sight">"One specific boundary I will establish for screen time is..."</span>
+            <button type="button" class="frame-item" data-target="journal-sight">"Just as my fovea selects what enters sharpest focus, I protect my attention by..." (use verb + -ing)</button>
+            <button type="button" class="frame-item" data-target="journal-sight">"One practical digital boundary I will set this week is..."</button>
           </div>
         </div>
-        <div class="journal-input-group">
-          <label class="journal-label" for="journal-sight">Reflection on Visual Discernment &amp; Media Diet:</label>
-          <textarea id="journal-sight" class="journal-textarea" placeholder="Describe your observations and commitments here..."></textarea>
-          <div class="journal-meta">
-            <span id="wc-journal-sight">0 words</span>
-            <span class="save-indicator" id="save-journal-sight">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saved
-            </span>
-          </div>
-        </div>
+        <label class="journal-label" for="journal-sight">Reflection on Visual Focus &amp; Digital Media Diet:</label>
+        <textarea id="journal-sight" class="journal-textarea" placeholder="Describe your observations and boundaries here..."></textarea>
+        <div class="journal-meta"><span id="wc-journal-sight">0 words</span><span class="save-indicator" id="save-journal-sight">✓ Saved</span></div>
       </div>
     </section>
 
-    <!-- HEARING PANEL -->
+    <!-- 3. HEARING PANEL -->
     <section class="panel" data-sense="hearing" id="panel-hearing" role="tabpanel" aria-labelledby="tab-hearing">
-      <h2>Hearing — What You Listen To <span class="panel-badge">Acoustic Discernment</span></h2>
-
+      <div class="panel-header-flex">
+        <h2>Hearing — What You Listen To <span class="panel-badge">Acoustic Filtering</span></h2>
+        <svg width="88" height="44" viewBox="0 0 88 44" aria-hidden="true">
+          <path d="M10 14 Q22 22 10 30 M20 10 Q34 22 20 34" fill="none" stroke="#C2410C" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="56" cy="22" r="11" fill="#FFF7ED" stroke="#C2410C" stroke-width="2.2"/>
+          <path d="M56 22 m-4 0 a 4 4 0 1 0 8 0 a 2 2 0 1 0 -4 0" fill="none" stroke="#C2410C" stroke-width="1.8"/>
+        </svg>
+      </div>
       <div class="reading">
         <h3>Physical Sense: Mechanoreception in the Cochlea</h3>
-        <p>Acoustic pressure waves vibrate the tympanic membrane and auditory ossicles (malleus, incus, stapes), transferring mechanical kinetic energy to fluid in the cochlea. Stereocilia on hair cells bend, transducing sound into nerve impulses carried along Cranial Nerve VIII. While our ears cannot physically close like eyelids, our central auditory cortex has the remarkable power of <em>selective auditory attention</em> (the cocktail party effect).</p>
-
-        <h3>Spiritual Parallel: Testing Every Voice</h3>
-        <p>The voices, lyrics, and cultural narratives we permit into our minds take root in memory networks. Jesus warned: <em>"Consider carefully what you hear"</em> (Mark 4:24), and James reminds us to be <em>"quick to listen, slow to speak, and slow to become angry"</em> (James 1:19).</p>
+        <p>Pressure waves bend stereocilia inside the <button class="vocab-pill" data-word="cochlea">cochlea</button>, yet unlike eyelids, our ears have no physical shutters. Instead, the auditory cortex performs selective <button class="vocab-pill" data-word="attenuation">attenuation</button> (the cocktail party effect) to filter background noise and isolate meaningful speech.</p>
       </div>
-
       <div class="science-box">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Scientific Bridge: Acoustic Filtering &amp; Moral Signal-to-Noise Ratio
-        </h4>
-        <p>In cognitive science, our auditory processor filters background noise to isolate a single conversation. In life, we are surrounded by relentless cultural "noise." Training our hearing means enhancing the signal of wisdom while damping down deceit and cynical gossip.</p>
+        <h4>⚛️ Neurobiology Bridge: Signal-to-Noise Ratio (SNR) in Selective Attention</h4>
+        <p>Our brain amplifies target voices while suppressing distracting clamor. Spiritually, Jesus warns: <em>"Consider carefully what you hear"</em> (Mark 4:24). Practicing discernment means raising the signal of wise counsel while turning down the noise of malicious gossip and cynicism.</p>
       </div>
-
-      <div class="analogy-box">
-        <h4>Hearing and Discernment</h4>
-        <ul>
-          <li><strong>Sound Hearing:</strong> Attending to truth, constructive critique, wise mentors, and uplifting music that elevates faith and peace.</li>
-          <li><strong>Toxic Auditory Diet:</strong> Harboring rumors, malicious gossip, cynical slander, or deceitful flattery.</li>
-          <li><strong>Acoustic Discipline:</strong> Practice active listening in relationships while filtering out poisonous discussions before they contaminate your thoughts.</li>
-        </ul>
-      </div>
-
       <div class="challenge">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Reflective Journal &amp; CLIL Writing
-        </h4>
+        <h4>✍️ Reflective Journal &amp; CLIL Writing</h4>
         <div class="sentence-frames">
           <h5>Sentence Starters (Click to Insert)</h5>
           <div class="frames-list">
-            <span class="frame-item" data-target="journal-hearing">"Selective auditory attention teaches me that I have the power to..."</span>
-            <span class="frame-item" data-target="journal-hearing">"When peers begin to gossip or criticize others, I can respond by..."</span>
-            <span class="frame-item" data-target="journal-hearing">"The kind of audio content that best builds my character is..."</span>
+            <button type="button" class="frame-item" data-target="journal-hearing">"When peers start gossiping around me, I can filter that noise by..." (use verb + -ing)</button>
+            <button type="button" class="frame-item" data-target="journal-hearing">"Selective auditory attention reminds me that my mind chooses to amplify..."</button>
           </div>
         </div>
-        <div class="journal-input-group">
-          <label class="journal-label" for="journal-hearing">Reflection on Acoustic Discernment &amp; Influences:</label>
-          <textarea id="journal-hearing" class="journal-textarea" placeholder="Reflect on the voices and audio you invite into your thoughts..."></textarea>
-          <div class="journal-meta">
-            <span id="wc-journal-hearing">0 words</span>
-            <span class="save-indicator" id="save-journal-hearing">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saved
-            </span>
-          </div>
-        </div>
+        <label class="journal-label" for="journal-hearing">Reflection on Auditory Filtering &amp; Voices:</label>
+        <textarea id="journal-hearing" class="journal-textarea" placeholder="Reflect on the voices and music shaping your thoughts..."></textarea>
+        <div class="journal-meta"><span id="wc-journal-hearing">0 words</span><span class="save-indicator" id="save-journal-hearing">✓ Saved</span></div>
       </div>
     </section>
 
-    <!-- SMELL PANEL -->
+    <!-- 4. SMELL PANEL -->
     <section class="panel" data-sense="smell" id="panel-smell" role="tabpanel" aria-labelledby="tab-smell">
-      <h2>Smell — What You Are Near <span class="panel-badge">Chemoreception &amp; Atmosphere</span></h2>
-
+      <div class="panel-header-flex">
+        <h2>Smell — What You Are Near <span class="panel-badge">Limbic Atmosphere</span></h2>
+        <svg width="88" height="44" viewBox="0 0 88 44" aria-hidden="true">
+          <path d="M12 30 Q30 28 42 16 Q54 6 76 16" fill="none" stroke="#15803D" stroke-width="2.4" stroke-dasharray="4 3"/>
+          <circle cx="24" cy="26" r="3" fill="#4ADE80"/><circle cx="42" cy="16" r="3.5" fill="#15803D"/><circle cx="64" cy="13" r="3" fill="#4ADE80"/>
+        </svg>
+      </div>
       <div class="reading">
-        <h3>Physical Sense: The Direct Pathway to the Limbic System</h3>
-        <p>Airborne odorants dissolve in the mucous layer covering the olfactory epithelium, binding to G-protein coupled receptors. Unlike all other sensory signals that must first pass through the thalamus, olfactory signals travel directly via Cranial Nerve I to the amygdala and hippocampus. This direct pathway is why smells provoke immediate emotional recalls and warning reactions.</p>
-
-        <h3>Spiritual Parallel: Discernment of Social Atmosphere</h3>
-        <p>Smell reflects the invisible atmosphere that surrounds you. The Apostle Paul wrote: <em>"For we are to God the pleasing aroma of Christ among those who are being saved and those who are perishing"</em> (2 Corinthians 2:15). You absorb the atmosphere of the environments where you spend time.</p>
+        <h3>Physical Sense: The Direct Limbic Pathway</h3>
+        <p>Olfactory axons project straight into the <button class="vocab-pill" data-word="limbic">limbic</button> system (amygdala and hippocampus) without an initial thalamic stop. When trauma or inflammation causes <button class="vocab-pill" data-word="anosmia">anosmia</button>, humans lose vital early warning against smoke or spoiled food.</p>
       </div>
-
       <div class="science-box">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Scientific Bridge: Olfactory Fatigue (Sensory Adaptation)
-        </h4>
-        <p>After a few minutes in a room with a distinct odor, olfactory sensory neurons cease firing action potentials. You completely stop noticing the odor (olfactory fatigue). In a similar way, people who remain in toxic, deceptive environments gradually stop noticing the dishonesty; they have adapted to moral toxicity.</p>
+        <h4>⚛️ Neurobiology Bridge: Ca²⁺-Calmodulin Olfactory Fatigue vs. Environmental Adaptation</h4>
+        <p>After minutes inside a room with a distinct odor, Ca²⁺-calmodulin feedback lowers olfactory receptor sensitivity so you stop noticing it entirely. Likewise, remaining in dishonest or toxic social spaces gradually normalizes unhealthy norms—whereas living with integrity spreads what Paul calls <em>"the pleasing aroma of Christ"</em> (2 Cor 2:15).</p>
       </div>
-
-      <div class="analogy-box">
-        <h4>Smell and Discernment</h4>
-        <ul>
-          <li><strong>Fragrance of Integrity:</strong> Cultivating spaces characterized by honesty, mutual encouragement, peace, and transparency.</li>
-          <li><strong>Hidden Toxicity:</strong> Remaining in friendships or social environments where deception, peer pressure, or cruelty is normalized.</li>
-          <li><strong>Intuitive Discernment:</strong> Paying attention to the quiet conviction that something is spiritually dangerous before obvious harm occurs.</li>
-        </ul>
-      </div>
-
       <div class="challenge">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Reflective Journal &amp; CLIL Writing
-        </h4>
+        <h4>✍️ Reflective Journal &amp; CLIL Writing</h4>
         <div class="sentence-frames">
           <h5>Sentence Starters (Click to Insert)</h5>
           <div class="frames-list">
-            <span class="frame-item" data-target="journal-smell">"Olfactory fatigue reminds me that staying in toxic environments causes me to..."</span>
-            <span class="frame-item" data-target="journal-smell">"To be an 'aroma of Christ' in my school or family, I can actively bring..."</span>
-            <span class="frame-item" data-target="journal-smell">"When an environment feels morally unhealthy, my immediate boundary should be..."</span>
+            <button type="button" class="frame-item" data-target="journal-smell">"Olfactory fatigue warns me that staying in toxic environments can cause me to..."</button>
+            <button type="button" class="frame-item" data-target="journal-smell">"I can bring a positive moral atmosphere to my classroom by..." (use verb + -ing)</button>
           </div>
         </div>
-        <div class="journal-input-group">
-          <label class="journal-label" for="journal-smell">Reflection on Moral Atmosphere &amp; Personal Influence:</label>
-          <textarea id="journal-smell" class="journal-textarea" placeholder="Write about your environments and the atmosphere you project..."></textarea>
-          <div class="journal-meta">
-            <span id="wc-journal-smell">0 words</span>
-            <span class="save-indicator" id="save-journal-smell">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saved
-            </span>
-          </div>
-        </div>
+        <label class="journal-label" for="journal-smell">Reflection on Moral Atmosphere &amp; Influence:</label>
+        <textarea id="journal-smell" class="journal-textarea" placeholder="Reflect on your environments and social influence..."></textarea>
+        <div class="journal-meta"><span id="wc-journal-smell">0 words</span><span class="save-indicator" id="save-journal-smell">✓ Saved</span></div>
       </div>
     </section>
 
-    <!-- TASTE PANEL -->
+    <!-- 5. TASTE PANEL -->
     <section class="panel" data-sense="taste" id="panel-taste" role="tabpanel" aria-labelledby="tab-taste">
-      <h2>Taste — What You Feed On <span class="panel-badge">Gustation &amp; Assimilation</span></h2>
-
+      <div class="panel-header-flex">
+        <h2>Taste — What You Feed On <span class="panel-badge">Cellular Turnover</span></h2>
+        <svg width="88" height="44" viewBox="0 0 88 44" aria-hidden="true">
+          <ellipse cx="44" cy="22" rx="22" ry="12" fill="#FFF1F2" stroke="#BE123C" stroke-width="2.2"/>
+          <circle cx="36" cy="20" r="2.2" fill="#BE123C"/><circle cx="46" cy="18" r="2.2" fill="#BE123C"/><circle cx="52" cy="24" r="2.2" fill="#BE123C"/>
+        </svg>
+      </div>
       <div class="reading">
-        <h3>Physical Sense: Chemical Tasting &amp; Cellular Assimilation</h3>
-        <p>Gustatory receptor cells arranged in taste buds detect sweet, salty, sour, bitter, and umami tastants dissolved in saliva. Signal transduction travels via Cranial Nerves VII and IX to the primary gustatory cortex. Crucially, what you ingest does not merely stimulate a nerve — nutrients pass across intestinal membranes to physically reconstruct cellular organelles. What you eat literally becomes part of you.</p>
-
-        <h3>Spiritual Parallel: Cultivating an Acquired Palate</h3>
-        <p>The Psalmist exclaims: <em>"Taste and see that the Lord is good; blessed is the one who takes refuge in him"</em> (Psalm 34:8). The Greek word in Hebrews 5:14 for "mature" (teleios) describes adults who have cultivated a desire for nutritional depth over artificial, sugary substitutes.</p>
+        <h3>Physical Sense: Chemical Assimilation &amp; Taste Buds</h3>
+        <p>Saliva dissolves <button class="vocab-pill" data-word="tastants">tastants</button> so gustatory cells can evaluate nutrients before swallowing. In Psalm 34:8, we are invited to <em>"Taste and see that the Lord is good"</em>—training our spiritual appetite toward what is genuinely <button class="vocab-pill" data-word="wholesome">wholesome</button>.</p>
       </div>
-
       <div class="science-box">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Scientific Bridge: Taste Bud Renewal &amp; Acquired Preferences
-        </h4>
-        <p>Gustatory cells have a fast turnover rate of approximately 10 to 14 days. If an individual ceases consuming ultra-processed sugars, their taste buds recalibrate within weeks, uncovering the natural subtle sweetness of whole foods. Similarly, weaning our minds off cheap digital dopamine restores genuine appreciation for quiet study and prayer.</p>
+        <h4>⚛️ Neurobiology Bridge: 14-Day Taste Cell Renewal &amp; Acquired Palates</h4>
+        <p>Gustatory receptor cells regenerate completely from basal stem cells every 10–14 days. Cutting back ultra-processed sugar resets your receptors within two weeks, revealing natural flavor in whole fruit. Similarly, stepping away from cheap digital dopamine restores your appetite for deep reading and quiet reflection.</p>
       </div>
-
-      <div class="analogy-box">
-        <h4>Taste and Discernment</h4>
-        <ul>
-          <li><strong>Nutritious Diet:</strong> Feeding upon challenging Scripture, reflective journaling, deep friendships, and serving others.</li>
-          <li><strong>Junk Food Mindset:</strong> Craving quick affirmation, superficial entertainment, and resentment that poison the spirit.</li>
-          <li><strong>Palate Transformation:</strong> What initially felt demanding (disciplined study, silence) becomes deeply nourishing as spiritual maturity grows.</li>
-        </ul>
-      </div>
-
       <div class="challenge">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Reflective Journal &amp; CLIL Writing
-        </h4>
+        <h4>✍️ Reflective Journal &amp; CLIL Writing</h4>
         <div class="sentence-frames">
           <h5>Sentence Starters (Click to Insert)</h5>
           <div class="frames-list">
-            <span class="frame-item" data-target="journal-taste">"Just as my physical body is built from the food I eat, my mind is built from..."</span>
-            <span class="frame-item" data-target="journal-taste">"Moving from 'milk' to 'solid food' in my intellectual and spiritual life means..."</span>
-            <span class="frame-item" data-target="journal-taste">"To recalibrate my mental palate away from superficial distractions, I will..."</span>
+            <button type="button" class="frame-item" data-target="journal-taste">"Just as taste buds reset after avoiding excess sugar, my mind can recalibrate by..." (use verb + -ing)</button>
+            <button type="button" class="frame-item" data-target="journal-taste">"Moving from spiritual 'milk' to 'solid food' means feeding my mind on..."</button>
           </div>
         </div>
-        <div class="journal-input-group">
-          <label class="journal-label" for="journal-taste">Reflection on Spiritual Nutrition &amp; Palate Formation:</label>
-          <textarea id="journal-taste" class="journal-textarea" placeholder="Reflect on your intellectual and spiritual consumption habits..."></textarea>
-          <div class="journal-meta">
-            <span id="wc-journal-taste">0 words</span>
-            <span class="save-indicator" id="save-journal-taste">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saved
-            </span>
-          </div>
-        </div>
+        <label class="journal-label" for="journal-taste">Reflection on Intellectual &amp; Spiritual Nutrition:</label>
+        <textarea id="journal-taste" class="journal-textarea" placeholder="Reflect on what habits feed your character..."></textarea>
+        <div class="journal-meta"><span id="wc-journal-taste">0 words</span><span class="save-indicator" id="save-journal-taste">✓ Saved</span></div>
       </div>
     </section>
 
-    <!-- TOUCH PANEL -->
+    <!-- 6. TOUCH PANEL -->
     <section class="panel" data-sense="touch" id="panel-touch" role="tabpanel" aria-labelledby="tab-touch">
-      <h2>Touch — What You Reach For <span class="panel-badge">Somatosensation &amp; Action</span></h2>
-
+      <div class="panel-header-flex">
+        <h2>Touch — What You Reach For <span class="panel-badge">Somatosensory Action</span></h2>
+        <svg width="88" height="44" viewBox="0 0 88 44" aria-hidden="true">
+          <path d="M16 26 Q32 14 48 26 T76 26" fill="none" stroke="#0E7490" stroke-width="2.2"/>
+          <ellipse cx="44" cy="24" rx="10" ry="6" fill="none" stroke="#0E7490" stroke-width="2"/><circle cx="44" cy="24" r="3" fill="#0E7490"/>
+        </svg>
+      </div>
       <div class="reading">
-        <h3>Physical Sense: Somatosensory Receptors &amp; Feedback</h3>
-        <p>The skin contains mechanoreceptors (Meissner corpuscles, Merkel discs, Pacinian corpuscles) that detect friction, pressure, and vibrations. Unlike sight or hearing, which function over distances, touch mandates physical contact. Physical contact alters both the subject and the object: to touch is to participate directly in the material state of the world.</p>
-
-        <h3>Spiritual Parallel: Discernment in Hands-on Action</h3>
-        <p>Touch represents practical agency — what you choose to build, embrace, or manipulate. The Apostle James declares: <em>"Faith by itself, if it is not accompanied by action, is dead"</em> (James 2:17). Wisdom is not just theoretical discernment in the mind; it is somatic action realized through our hands and behavior.</p>
+        <h3>Physical Sense: Active Contact &amp; Agency</h3>
+        <p><button class="vocab-pill" data-word="somatosensation">Somatosensation</button> requires direct contact—you cannot touch the world without interacting with it. James 2:17 connects belief with tangible hands-on service: faith without compassionate action is incomplete.</p>
       </div>
-
       <div class="science-box">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Scientific Bridge: Two-Point Discrimination &amp; Conscience Sensitivity
-        </h4>
-        <p>On fingertips, receptive fields are microscopic (1-2 mm threshold), allowing you to differentiate intricate textures. On the back, thresholds exceed 40 mm. An active, exercised conscience is like a fingertip — sharp, discerning subtle injustices. A neglected conscience is like calloused skin — unable to perceive pain or suffering in others.</p>
+        <h4>⚛️ Neurobiology Bridge: Two-Point Tactile Threshold vs. Calloused Skin</h4>
+        <p>On fingertips, dense PIEZO2 mechanoreceptors distinguish two points just 2 mm apart, whereas <button class="vocab-pill" data-word="calloused">calloused</button> skin loses fine tactile resolution. Keeping an active, sensitive conscience preserves our empathy to notice others' needs rather than growing indifferent.</p>
       </div>
-
-      <div class="analogy-box">
-        <h4>Touch and Discernment</h4>
-        <ul>
-          <li><strong>Healing Touch:</strong> Reaching out in service, hospitality, physical aid to the vulnerable, and gentle reconciliation.</li>
-          <li><strong>Selfish Grasping:</strong> Using agency to manipulate others, accumulate possessions obsessively, or exploit weakness.</li>
-          <li><strong>Tactile Consistency:</strong> Ensuring our daily actions and behavior match our stated values and moral convictions.</li>
-        </ul>
-      </div>
-
       <div class="challenge">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Reflective Journal &amp; CLIL Writing
-        </h4>
+        <h4>✍️ Reflective Journal &amp; CLIL Writing</h4>
         <div class="sentence-frames">
           <h5>Sentence Starters (Click to Insert)</h5>
           <div class="frames-list">
-            <span class="frame-item" data-target="journal-touch">"The two-point tactile threshold reminds me that my sensitivity to others' needs..."</span>
-            <span class="frame-item" data-target="journal-touch">"Instead of using my hands to take or manipulate, I can use them to..."</span>
-            <span class="frame-item" data-target="journal-touch">"James 2:17 shows that genuine faith must be demonstrated through tangible actions such as..."</span>
+            <button type="button" class="frame-item" data-target="journal-touch">"Avoiding a calloused conscience means responding sensitively to others by..." (use verb + -ing)</button>
+            <button type="button" class="frame-item" data-target="journal-touch">"One concrete act of service I can do with my hands this week is..."</button>
           </div>
         </div>
-        <div class="journal-input-group">
-          <label class="journal-label" for="journal-touch">Reflection on Practical Action &amp; Tangible Service:</label>
-          <textarea id="journal-touch" class="journal-textarea" placeholder="Detail concrete actions and compassionate steps you will take..."></textarea>
-          <div class="journal-meta">
-            <span id="wc-journal-touch">0 words</span>
-            <span class="save-indicator" id="save-journal-touch">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saved
-            </span>
-          </div>
-        </div>
+        <label class="journal-label" for="journal-touch">Reflection on Practical Action &amp; Service:</label>
+        <textarea id="journal-touch" class="journal-textarea" placeholder="Describe one tangible action of kindness or service..."></textarea>
+        <div class="journal-meta"><span id="wc-journal-touch">0 words</span><span class="save-indicator" id="save-journal-touch">✓ Saved</span></div>
       </div>
     </section>
 
   </div>
 </div>
 
-<!-- Modal for Academic Vocabulary Pronunciation & Definitions -->
+<!-- Accessible Vocabulary Modal -->
 <div class="modal-overlay" id="vocabModal" role="dialog" aria-modal="true" aria-labelledby="modalWord">
   <div class="modal-box">
     <div class="modal-header">
       <h3 class="modal-word" id="modalWord">Vocabulary</h3>
       <button class="modal-close" id="modalCloseBtn" aria-label="Close modal">&times;</button>
     </div>
-    <div class="modal-phonetic" id="modalPhonetic">/ˌvəʊˈkæbjʊləri/</div>
-    <div class="modal-def" id="modalDef">Definition text goes here.</div>
-    <button class="modal-listen-btn" id="modalListenBtn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-      Listen to Pronunciation
-    </button>
+    <div class="modal-phonetic" id="modalPhonetic"></div>
+    <div class="modal-def" id="modalDef"></div>
+    <div class="modal-tip" id="modalTip"></div>
+    <button class="modal-listen-btn" id="modalListenBtn">🔊 Listen to Pronunciation</button>
   </div>
 </div>
 
 <footer>
   <div class="container">
-    Spiritual Senses &middot; CLIL Science &amp; Faith &middot; Connecting sensory neurophysiology with Hebrews 5:14 to foster ethical discernment, cognitive growth, and academic English mastery.
+    Spiritual Senses · CLIL Science &amp; Faith (v4.0) — Connecting neuroplasticity &amp; sensory biology with Hebrews 5:14.
   </div>
 </footer>
 
-<script>
-  // Vocabulary Dictionary with Definitions and Phonetics
-  const VOCAB_DATA = {
-    'discernment': {
-      phonetic: '/dɪˈsɜːnmənt/',
-      def: 'The ability to judge well, understand hidden truths, and distinguish beneficial things from harmful things.'
-    },
-    'intentional': {
-      phonetic: '/ɪnˈtɛnʃənl/',
-      def: 'Done on purpose; deliberate, calculated, and mindful rather than accidental.'
-    },
-    'desensitizes': {
-      phonetic: '/diːˈsɛnsɪtaɪzɪz/',
-      def: 'Causes someone or something to experience less physical sensation or moral emotional responsiveness to harmful stimuli.'
-    },
-    'conscience': {
-      phonetic: '/ˈkɒnʃəns/',
-      def: 'An inner moral feeling or voice viewed as acting as a guide to the rightness or wrongness of one's behavior.'
-    },
-    'wholesome': {
-      phonetic: '/ˈhəʊlsəm/',
-      def: 'Conducive to physical, mental, or spiritual health and well-being; pure and morally sound.'
-    },
-    'manipulation': {
-      phonetic: '/məˌnɪpjʊˈleɪʃn/',
-      def: 'The action of managing, controlling, or influencing someone or something cleverly, unfairly, or deceitfully.'
-    }
-  };
-
-  // Accessible WAI-ARIA Tab Navigation with Keyboard support
-  const tabs = Array.from(document.querySelectorAll('.tab'));
-  const panels = Array.from(document.querySelectorAll('.panel'));
-
-  function activateTab(tab) {
-    tabs.forEach(t => {
-      t.setAttribute('aria-selected', 'false');
-      t.tabIndex = -1;
-    });
-    tab.setAttribute('aria-selected', 'true');
-    tab.tabIndex = 0;
-    tab.focus();
-
-    const target = tab.dataset.target;
-    panels.forEach(p => {
-      p.classList.toggle('active', p.dataset.sense === target);
-    });
-  }
-
-  tabs.forEach((tab, index) => {
-    tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
-    tab.addEventListener('click', () => activateTab(tab));
-
-    tab.addEventListener('keydown', (e) => {
-      let nextIndex = null;
-      if (e.key === 'ArrowRight') {
-        nextIndex = (index + 1) % tabs.length;
-      } else if (e.key === 'ArrowLeft') {
-        nextIndex = (index - 1 + tabs.length) % tabs.length;
-      } else if (e.key === 'Home') {
-        nextIndex = 0;
-      } else if (e.key === 'End') {
-        nextIndex = tabs.length - 1;
-      }
-
-      if (nextIndex !== null) {
-        e.preventDefault();
-        activateTab(tabs[nextIndex]);
-      }
-    });
-  });
-
-  // Pronunciation & TTS helper
-  function speakEnglish(text) {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const clean = text.replace(/\([^)]*\)/g, '').replace(/[^a-zA-Z\s]/g, ' ').trim();
-    const utter = new SpeechSynthesisUtterance(clean);
-    utter.lang = 'en-US';
-    utter.rate = 0.9;
-    window.speechSynthesis.speak(utter);
-  }
-
-  // Vocabulary Modal Logic
-  const modal = document.getElementById('vocabModal');
-  const modalWord = document.getElementById('modalWord');
-  const modalPhonetic = document.getElementById('modalPhonetic');
-  const modalDef = document.getElementById('modalDef');
-  const modalCloseBtn = document.getElementById('modalCloseBtn');
-  const modalListenBtn = document.getElementById('modalListenBtn');
-  let currentWord = '';
-
-  document.querySelectorAll('.vocab-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      const w = pill.dataset.word;
-      if (VOCAB_DATA[w]) {
-        currentWord = w;
-        modalWord.textContent = w.charAt(0).toUpperCase() + w.slice(1);
-        modalPhonetic.textContent = VOCAB_DATA[w].phonetic;
-        modalDef.textContent = VOCAB_DATA[w].def;
-        modal.classList.add('open');
-        speakEnglish(w);
-      }
-    });
-  });
-
-  modalListenBtn.addEventListener('click', () => {
-    if (currentWord) speakEnglish(currentWord);
-  });
-
-  modalCloseBtn.addEventListener('click', () => modal.classList.remove('open'));
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('open');
-  });
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) {
-      modal.classList.remove('open');
-    }
-  });
-
-  // Sentence Frame Click-to-Insert Scaffolding
-  document.querySelectorAll('.frame-item').forEach(frame => {
-    frame.addEventListener('click', () => {
-      const targetId = frame.dataset.target;
-      const textarea = document.getElementById(targetId);
-      if (textarea) {
-        const textToInsert = frame.textContent.replace(/^"|"$/g, '') + ' ';
-        if (!textarea.value.includes(textToInsert.trim())) {
-          textarea.value = (textarea.value ? textarea.value + '\n' : '') + textToInsert;
-        }
-        textarea.focus();
-        textarea.dispatchEvent(new Event('input'));
-      }
-    });
-  });
-
-  // LocalStorage Auto-Saving and Word Count for Reflections
-  const textareas = document.querySelectorAll('.journal-textarea');
-  textareas.forEach(ta => {
-    const key = 'spiritual_senses_' + ta.id;
-    const saved = localStorage.getItem(key);
-    if (saved) {
-      ta.value = saved;
-    }
-
-    const counter = document.getElementById('wc-' + ta.id);
-    const saveIndicator = document.getElementById('save-' + ta.id);
-
-    function updateStats() {
-      const words = ta.value.trim().split(/\s+/).filter(Boolean).length;
-      if (counter) counter.textContent = words + (words === 1 ? ' word' : ' words');
-    }
-    updateStats();
-
-    let saveTimer;
-    ta.addEventListener('input', () => {
-      updateStats();
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => {
-        localStorage.setItem(key, ta.value);
-        if (saveIndicator) {
-          saveIndicator.classList.add('visible');
-          setTimeout(() => saveIndicator.classList.remove('visible'), 2000);
-        }
-      }, 600);
-    });
-  });
-</script>
-
+<script src="js/biblical.js"></script>
 </body>
 </html>
